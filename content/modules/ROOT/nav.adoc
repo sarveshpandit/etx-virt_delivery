@@ -1,0 +1,14 @@
+* xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
+
+* Modules
+
+** xref:module-01.adoc[Baremetal VM Management and OpenShift Virtualization Requirements]
+** xref:module-00.adoc[Virtual Machine Management]
+** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
+** xref:module-05.adoc[Migrating Virtual Machines]
+** xref:module-03.adoc[Network Management]
+** xref:module-02.adoc[Storage Management]
+** xref:module-04.adoc[Introduction to Virtual Machine Customization]
+** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
+** xref:24_presales.adoc[Module: Pre Sales]
+* xref:04_thanks.adoc[Thank you and next steps]
