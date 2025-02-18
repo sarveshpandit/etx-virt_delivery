@@ -4,7 +4,7 @@
 
 * Day 1 - 8:30AM - 5:00PM
 * Day 2 - 8:30AM - 5:00PM
-* Day 3 - 8:30AM - 5:00PM
+* Day 3 - 9:00AM - 5:00PM
 
 == Day 1
 
@@ -76,11 +76,18 @@
 ** Break
 
 * 3:00 PM - 3:30 PM
+** VMware vSphere Overview Presentation 
+** VMware to OpenShift Presentation
+
+* 3:30 PM - 4:00 PM
 ** Migration Factory Deep Dive
 ** Deep Dive on the Migration Factory offering: OpenShift Virtualization Ansible Migration Factory Collection
 
-// Placeholder for Andy and Raffs labs
-
+* 4:00 PM - 5:00 PM
+** Install and configure AAP
+*** Install the operator 
+*** Configure AAP instance 
+*** Load Ansible collection
 
 
 * Night 1: Dinner at Will
@@ -88,26 +95,38 @@
 
 == Day 2
 
+* 8:30 AM - 9:00 AM 
+** Welcome to Day 2 
 
+* 9:00 AM - 10:00 AM 
+** Configure Migration Playbooks 
+*** Configure providers 
+*** Configure mappings
 
+* 10:00 AM - 11:00 AM 
+** Test migrations lab
+*** Migrate Windows Virtual machine with Windows (multi-disk, multi-network)
 
+* 11:00 AM - 12:00 PM 
+** Doing post-migration hooks 
+*** Lab: Change MAC Address while preserving an IP as part of a migration 
 
+* 12:00 PM - 1:00 PM 
+* Lunch 
 
+* 1:00 PM - 2:00 PM
+** Migration in batches Lab
+*** Migration of multiple machines with automation
 
-
-
-
-
-
+* 2:00 PM - 4:00 PM 
+** Troubleshooting Lab
 
 
 
 == Day 3
 
-
-* 9:00 AM - 9:30 PM
-** VMware vSphere Overview Presentation 
-** VMware to OpenShift Presentation
+* 9:00 AM - 9:30 AM 
+** Welcome to Day 3 
 
 * 9:30 AM - 10:00 AM
 ** Virtualization Migration Assessment (VMA)
@@ -199,7 +218,7 @@ Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift
 
 ** Pure open source innovation: The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
 
-== Content Links
+== Other Content Links
 
 link:http://demo.redhat.com[Openshift Virtualization Roadshow]
 
@@ -225,12 +244,5 @@ link:https://docs.google.com/document/d/1-sm-mjAyYezDGd0ZgbjZFcur8Tf1J2vezHNBVGY
 
 link:https://docs.google.com/spreadsheets/d/1i7e57sZVfju87Zw32lyyv1cWLN0fvP5FJW2qZlVMwoE/edit#gid=0[Resource Master]
 
-== Getting there with your friends
-
-image::introductions/virt=partners.png[]
-
-== Coming to OpenShift Virt
-
-image::introductions/toocpvirt.png[]
 
 
