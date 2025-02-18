@@ -89,6 +89,8 @@
 *** Configure AAP instance 
 *** Load Ansible collection
 
+* 5:00 PM - 5:15 PM 
+** Questions and recap
 
 * Night 1: Dinner at Will
 ** Off to hotels and free night
@@ -121,7 +123,8 @@
 * 2:00 PM - 4:00 PM 
 ** Troubleshooting Lab
 
-
+* 5:00 PM - 5:15 PM 
+** Questions and recap
 
 == Day 3
 
@@ -171,10 +174,6 @@
 **** Account/Opportunities Overview
 **** Verbiage in Close Out Bootcamp notes to sign up for Exam
 **** Survey
-
-* 6:00 PM 
-** Team dinners 
-*** Teams go out together for dinner at will. 
 
 
 == Instructors
