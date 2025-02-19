@@ -1,0 +1,76 @@
+# Preparing for migrations
+
+Once the migration factory playbooks are configured in AAP, we need to prepare the system to run migrations.
+In a real world scenario, we would have MTV running on the Hub clusters and orchestrating migration to the managed virtualization clusters, in this lab MTB is running directly on a virtualization cluster.
+To prepare the system to run migrations, we need need the following:
+
+* configure credentials to access the VMs: ssh keys for Linux VMs, and WinRM credentials for Windows VMs
+* configure the storage mappings
+* configure the network mappings
+* configure the providers
+
+[NOTE]
+====
+you can configure the all mappings for all the customer's VM landscape in a single `NetworkMap` and `StorageMap`. These manifests can then all be used by the all of the migration plans (i.e. migrations waves) that will be required to migrate all the VMs.
+====
+
+## Configure credentials
+
+you can configure linux VM credentials this way:
+
+TODO
+
+you can configure windows VM credentials this way:
+
+TODO  
+
+## Configure storage mappings
+
+This lab's storage mapping is very simple as we have a single data store in VMWare and a single storage class in OpenShift. In a real world scenario, you would have to map each data store to a storage class.
+you can configure storage mappings this way:
+
+TODO
+
+## Configure network mappings
+
+As for the storage mapping, the network mapping in a real world scenario would be more complex. Sometimes customers have hundreds of VLANs that need to be mapped.
+In this case we only have one VLAN.
+To create the storage mapping, we need to first create the NAD (network attachement definition), like this:
+
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition`
+...
+```
+
+Then we need to create the network mapping, like this:
+
+```yaml
+apiVersion: migration.openshift.io/v1alpha1
+kind: NetworkMap
+metadata:
+  name: networkmap
+spec:
+  networkAttachmentDefinitions:
+    - name: network-attachment-definition
+      namespace: openshift-migration
+```
+
+## Configure providers
+
+In MTV providers represent the concept of source and destination endpoint for the VMs. The target provider representing the local OpenShift cluster is already configured.
+In this lab we are going to configure the source provider, which is the VMWare cluster.
+To configure the provider, we need to create a provider definition, like this:
+
+```yaml
+apiVersion: migration.openshift.io/v1alpha1
+kind: Provider
+metadata:
+  name: vmware
+spec:
+  type: vsphere
+  vsphere:
+    vcenter: vcenter.example.com
+    username: admin
+    password: password
+```

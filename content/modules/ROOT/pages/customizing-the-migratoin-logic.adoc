@@ -1,0 +1,46 @@
+# Customizing the migration logic
+
+In the previous exercise we have use the migration playbook to wrap the vanilla behavior of MTV. In this exercise we are going to customize the migration logic by adding a post migration playbook.
+
+[NOTE]
+====
+It is possible to add both pre and post migration playbooks to the migration logic. This way you can customize the migration process to fit the customer's needs.
+In this exercise we just show how to add a post migration playbook.
+====
+
+The problem we are going to solve is the following: after migrating a VM we need to change the MAC address of the VM's network interface. This is a common requirement when migrating VMs from one data center to another or when the migrated VM needs to be deleted soon on the VMware side, putting the MAC address used by the VM back into the pol of usable mac addresses.
+
+## Adding a post migration playbook
+
+To add a post migration playbook we need to create a new playbook that will be executed after the migration playbook. The post migration playbook will contain the logic to change the MAC address of the VM's network interface. This playbook will be executed on all the VMs that are part of this migration wave, so you need to ensure that either all the VMs need to have their MAC address changed or that the playbook safely recognizes and ignores the VMs that don't need special treatment.
+
+To create the post migration playbook, create a new file in the `playbooks` directory, called `post-migration.yml` with the following content:
+
+```yaml
+- name: Change MAC address
+  hosts: all
+  tasks:
+    - name: Change MAC address
+      
+
+      TODO
+
+```
+
+The MAC address change logic should change the first triplet (which is vendor dependent) from the VMWare assigned triples (one of `00:50:56`, `00:0C:29`, and `00:05:69`) to anything you want. Or possibly to the OpenShift Virtualization-assigned triplet: `02:cd:1b`.
+
+The playbook should change the mac address in the VM definition and should also connect to VM to update the NetwormManager configuration to use the new mac address.
+
+You can locally test the playbook on one of the already migrated VMs by running the playbook with the following command:
+
+```sh
+ansible-playbook -i inventory/hosts playbooks/post-migration.yml
+```
+
+once the playbook works to your desire, you can upload it to AAP with the following command:
+
+```sh
+TODO
+```
+
+At this point you should be ready to run a migration with a customized migration logic.
