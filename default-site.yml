@@ -1,7 +1,7 @@
 ---
 site:
   title: Experience Red Hat OpenShift Virtualization
-  start_page: modules::index.adoc
+  start_page: modules::ROOT::nav.adoc
 
 content:
   sources:
