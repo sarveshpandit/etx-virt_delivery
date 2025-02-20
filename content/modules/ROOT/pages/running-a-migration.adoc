@@ -1,0 +1,29 @@
+# Running a migration
+
+Once the migration playbooks are in place and the prepare configuration is done we cna finally run a migration.
+
+To run a migration we need to prepare an inventory file that will contain the list of VMs to migrate.
+
+The inventory file should look like this:
+
+```yaml
+
+TODO
+```
+
+Then we can run the migration playbook with this command:
+
+```sh
+ansible-playbook -i inventory/hosts playbooks/run-migration.yml
+```
+
+or we can activate the playbook from the AAP UI, by navigating here:
+
+image::running-a-migration/run-migration-playbook.png[link=self, window=blank, width=100%]
+
+Follow the migration progress in MTV UI by navigating to this link: TODO
+
+
+## Verify the outcome of the migration
+
+Verify that the migration was successful by connecting into the migrated VMs. 

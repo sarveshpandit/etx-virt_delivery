@@ -1,0 +1,46 @@
+# Migration Factory Installation
+
+This module is about installing and creating the initial configuration of the migration factory.
+To be more precise we assume that OpenShift clusters are already created and configured via GitOps.
+In this module we are going to deploy AAP and prepare it to run the migration factory playbooks.
+
+
+[NOTE]
+====
+There will be situations in which customers already have instances of AAP deployed. In those cases you just have to configure those instances to run the migration factory playbooks.
+This behavior is driven via inventory parameters.
+====
+
+## Deploying AAP
+
+Examine this inventory needed to deploy AAP:
+
+```yaml
+lorem ipsum...
+```
+
+configure the inventory for you cluster, by changing this file [<file-link>]
+
+Run the playbook with this command
+
+```sh
+ansible-playbook -i inventory/hosts playbooks/deploy-aap.yml
+```
+
+
+## Verify the installation
+
+Verify that AAP was correctly deployed by navigating to this URL: `https://aap.apps.<cluster-domain>`
+
+Login in using the administrator account.
+
+Verify that the migration factory playbooks have be configured, you should see the following:
+
+image::app-installation/aap-playbooks.png[link=self, window=blank, width=100%]
+
+
+verify thing 1
+
+verify thing 2
+
+etc...

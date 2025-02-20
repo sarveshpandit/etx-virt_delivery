@@ -1,0 +1,23 @@
+# Troubeshooting Migrations
+
+In this lab we have a VM that cannot be migrated because it's hitting a limitation of MTV. The purpose of the lab is for the student to reason about different approaches on how to solve the issue.
+This lab is options, but differently from te other ones, it will not give you the solution to the problem.
+
+## Run the migration
+
+create the migration inventory as follows with the problematic VM:
+
+```yaml
+
+TODO  
+```
+
+Run the migration playbook with the following command:
+
+```sh 
+ansible-playbook -i inventory/hosts playbooks/run-migration.yml
+```
+
+the migration shoudl fail.
+
+Understand the error message and try to solve the issue. Use your mates and the lab assistant to compare ideas and try solutions.

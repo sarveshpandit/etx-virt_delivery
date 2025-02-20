@@ -1,0 +1,28 @@
+# Running  a customized migration playbook
+
+In this lab we will run the migration playbook with the customization that was developed in the previous lab on a different set of VMs.
+
+## Prepare the inventory file
+
+prepare the inventory file as before, but this time add a reference to the mutate mac address playbook in the field for the post migrations steps. here is an example:
+
+```yaml
+TODO
+```
+
+Add the RHEL9 VMs to this migration wave.
+
+## Run the migration playbook
+
+As before, you can run the playbook either by using the command line or by using the AAP UI.
+
+## Verify that the migration was successful
+
+Verify that the MAC addresses of the VMs were changed and that the VMs were able to start correctly and connect to the network.
+
+You cna go to this VM network detail page to very tht the MAC address was changed: 
+
+TODO
+mage::running-a-customized-migration/migrated-vm.png[link=self, window=blank, width=100%]
+
+and you can ssh into the VMs to verify that they started correclty.
