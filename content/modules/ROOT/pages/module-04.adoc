@@ -120,7 +120,7 @@ image::module-04/18_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
 .. Specify the name *windows*
 .. Enable the checkbox *Boot from CD*
 .. Choose URL *(creates PVC)* from the drop-down menu
-.. Specify the url: http://192.168.123.100:81/Windows2019.iso
+.. Specify the url: https://catalog-item-assets.s3.us-east-2.amazonaws.com/qcow_images/Windows2019.iso
 .. Reduce the CD disk size to *5 GiB*
 .. Keep the *Disk source* size disk to the default value *60 GiB*
 .. Ensure the *Mount Windows drivers disk* checkbox is enabled. **This is required to install Windows systems, which will provide the drivers for VirtIO.**
