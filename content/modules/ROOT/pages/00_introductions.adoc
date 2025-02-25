@@ -219,7 +219,7 @@ Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift
 
 == Other Content Links
 
-link:http://demo.redhat.com[Openshift Virtualization Roadshow]
+link:http://demo.redhat.com[ETX Virtualization Lab & Openshift Virtualization Roadshow]
 
 link:https://role.rhu.redhat.com/rol-rhu/app/catalog?q=do316[ROLE DO316]
 
