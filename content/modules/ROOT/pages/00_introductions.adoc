@@ -1,5 +1,47 @@
 = ETX Virtualization Delivery Bootcamp
 
+== Navigation
+
+* xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
+
+* Modules
+
+** xref:module-01.adoc[Baremetal VM Management and OpenShift Virtualization Requirements]
+** xref:module-00.adoc[Virtual Machine Management]
+** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
+** xref:module-05.adoc[Migrating Virtual Machines]
+** xref:module-03.adoc[Network Management]
+** xref:module-02.adoc[Storage Management]
+** xref:module-04.adoc[Introduction to Virtual Machine Customization]
+** xref:aap-installation.adoc[Migration Factory Installation]
+** xref:preparing-for-migrations.adoc[Preparing for Migrations]
+** xref:running-a-migration.adoc[Running a Migration]
+** xref:customizing-the-migration-logic.adoc[Customizing the Migration Logic]
+** xref:running-a-customized-migration.adoc[Running a Customized Migration]
+** xref:troubleshooting-migrations.adoc[Troubleshooting Migrations]
+** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
+** xref:24_presales.adoc[Module: Pre Sales]
+* xref:04_thanks.adoc[Thank you and next steps]
+
+== Environment Variables 
+
+Bastion Node Public Hostname: {bastion_public_hostname}
+Bastion Node SSH Password: {bastion_ssh_password}
+Bastion Node SSH Port: {bastion_ssh_port}
+Bastion SSH User Name: {bastion_ssh_user_name}
+Cloud Provider: {cloud_provider}
+Lab GUID: {guid}
+OpenShift API Server URL: {openshift_api_server_url}
+OpenShift API URL: {openshift_api_url}
+OpenShift Client Download URL: {openshift_client_download_url}
+OpenShift Cluster Admin Password: {openshift_cluster_admin_password}
+OpenShift Admin Username: {openshift_cluster_admin_username}
+OpenShift Console URL: {openshift_cluster_console_url}
+OpenShift Cluster Ingress Domain: {openshift_cluster_ingress_domain}
+OpenShift Cluster User: {openshift_cluster_user_base}
+OpenShift Cluster User Password: {openshift_cluster_user_password}
+OpenShift KubeAdmin Password: {openshift_kubeadmin_password}
+
 == Agenda
 
 * Day 1 - 8:30AM - 5:00PM
