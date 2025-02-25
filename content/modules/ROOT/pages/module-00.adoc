@@ -14,12 +14,12 @@ The beginning section of this lab will introduce you to the basics of creating a
 
 As a reminder, here are your credentials for the OpenShift Console:
 
-Your OpenShift cluster console is available {openshift_web_console}[here^].
+Your OpenShift cluster console is available {openshift_api_server_url}[here^].
 
 Administrator login is available with:
 
-* *User:* {openshift_admin_user} 
-* *Password:* {openshift_admin_password}
+* *User:* {openshift_cluster_admin_username} 
+* *Password:* {openshift_cluster_admin_password}
 
 [[create_project]]
 == Create a New Project
