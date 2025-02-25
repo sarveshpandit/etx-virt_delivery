@@ -184,7 +184,8 @@ image::Virtctl/03_virtctl.png[]
 * You will need this link for later.  
 * The link will be similar to the following - the only difference will be where the XXXXX is for your specific lab
 ** https://virtctl-route-openshift-cnv.apps.XXXXX.dynamic.redhatworkshops.io/amd/linux/virtctl.tar.gz
-. SSH to the host for the lab (inside bookbag) this will take you to the bastion 
+** For your environmnent, the link is: {openshift_client_download_url}
+. SSH to the host for the lab (inside bookbag) this will take you to the bastion: {bastion_public_hostname} with user: {bastion_ssh_password} password: {bastion_ssh_password} on port: {bastion_ssh_port}
 * example (ssh lab-user@147.28.180.143) 
 . Then type sudo ssh root@192.168.123.100
 * Inside the bastion cli-host you will need to type the following
