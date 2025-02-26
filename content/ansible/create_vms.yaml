@@ -1,0 +1,36 @@
+---
+- name: Create VMs from templates
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars.yaml
+
+  tasks:
+  - name: Create VM folders per student
+    community.vmware.vcenter_folder:
+      hostname: "{{ vsphere_host }}"
+      username: "{{ vsphere_user }}"
+      password: "{{ vsphere_password }}"
+      validate_certs: no
+      datacenter: "{{ datacenter }}"
+      folder_name: "student-{{ item }}"
+      parent_folder: "ETX"
+      state: present
+    loop: "{{ range(1, students_number + 1) | list }}"
+    delegate_to: localhost
+
+  - name: Create VMs from templates
+    community.vmware.vmware_guest:
+      hostname: "{{ vsphere_host }}"
+      username: "{{ vsphere_user }}"
+      password: "{{ vsphere_password }}"
+      validate_certs: no
+      datacenter: "{{ datacenter }}"
+      cluster: "{{ cluster }}"
+      datastore: "{{ datastore }}"
+      template: "{{ item.0.name }}"
+      name: "{{ item.0.vm_name }}-{{ item.1 }}"
+      folder: "ETX/student-{{ item.1 }}"
+      state: poweredoff
+    loop: "{{ vm_templates | product(range(1, students_number + 1)) }}"
+    delegate_to: localhost
