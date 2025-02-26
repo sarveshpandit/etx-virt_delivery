@@ -25,22 +25,23 @@
 
 == Environment Variables 
 
-Bastion Node Public Hostname: {bastion_public_hostname}
-Bastion Node SSH Password: {bastion_ssh_password}
-Bastion Node SSH Port: {bastion_ssh_port}
-Bastion SSH User Name: {bastion_ssh_user_name}
-Cloud Provider: {cloud_provider}
-Lab GUID: {guid}
-OpenShift API Server URL: {openshift_api_server_url}
-OpenShift API URL: {openshift_api_url}
-OpenShift Client Download URL: {openshift_client_download_url}
-OpenShift Cluster Admin Password: {openshift_cluster_admin_password}
-OpenShift Admin Username: {openshift_cluster_admin_username}
-OpenShift Console URL: {openshift_cluster_console_url}
-OpenShift Cluster Ingress Domain: {openshift_cluster_ingress_domain}
-OpenShift Cluster User: {openshift_cluster_user_base}
-OpenShift Cluster User Password: {openshift_cluster_user_password}
-OpenShift KubeAdmin Password: {openshift_kubeadmin_password}
+[horizontal]
+Bastion Node Public Hostname:: {bastion_public_hostname}
+Bastion Node SSH Password:: {bastion_ssh_password}
+Bastion Node SSH Port:: {bastion_ssh_port}
+Bastion SSH User Name:: {bastion_ssh_user_name}
+Cloud Provider:: {cloud_provider}
+Lab GUID:: {guid}
+OpenShift API Server URL:: {openshift_api_server_url}
+OpenShift API URL:: {openshift_api_url}
+OpenShift Client Download URL:: {openshift_client_download_url}
+OpenShift Cluster Admin Password:: {openshift_cluster_admin_password}
+OpenShift Admin Username:: {openshift_cluster_admin_username}
+OpenShift Console URL:: {openshift_cluster_console_url}
+OpenShift Cluster Ingress Domain:: {openshift_cluster_ingress_domain}
+OpenShift Cluster User:: {openshift_cluster_user_base}
+OpenShift Cluster User Password:: {openshift_cluster_user_password}
+OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 
 == Agenda
 
