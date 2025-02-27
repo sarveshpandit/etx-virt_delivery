@@ -1,0 +1,54 @@
+---
+
+- name: Remove all VMs in VMware datacenter
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Verify VSphere password provided
+      ansible.builtin.assert:
+        that:
+          - vsphere_password | default('', true) | length > 0
+        quiet: true
+        fail_msg: "'VSPHERE_PASSWORD' environment variable not set"
+
+    - name: Gather all registered virtual machines
+      community.vmware.vmware_vm_info:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+      register: vm_info
+
+    - name: Power off all VMs
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        name: "{{ vm_name }}"
+        state: powered-off
+      ignore_errors: true
+      loop: "{{ vm_info.virtual_machines }}"
+      loop_control:
+        label: "{{ vm_name }}"
+      vars:
+        vm_name: "{{ item.guest_name }}"
+
+    - name: Remove all VMs
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        name: "{{ vm_name }}"
+        state: absent
+        force: true
+      loop: "{{ vm_info.virtual_machines }}"
+      loop_control:
+        label: "{{ vm_name }}"
+      vars:
+        vm_name: "{{ item.guest_name }}"
+...

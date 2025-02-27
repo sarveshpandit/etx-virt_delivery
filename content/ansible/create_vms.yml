@@ -1,0 +1,52 @@
+---
+
+- name: Create VMs from templates
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Verify VSphere password provided
+      ansible.builtin.assert:
+        that:
+          - vsphere_password | default('', true) | length > 0
+        quiet: true
+        fail_msg: "'VSPHERE_PASSWORD' environment variable not set"
+
+    - name: Create VM folders per student
+      community.vmware.vcenter_folder:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        datacenter: "{{ datacenter }}"
+        folder_name: "{{ folder_name }}"
+        parent_folder: "{{ parent_folder | default('', true) | default(omit) }}"
+        state: present
+      loop: "{{ range(1, students_count + 1) | list }}"
+      loop_control:
+        label: "{{ folder_name }}"
+      vars:
+        folder_name: "{{ folder_name_prefix }}{{ item }}"
+
+    - name: Create VMs from template
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
+        datastore: "{{ datastore }}"
+        template: "{{ item.0.name }}"
+        name: "{{ vm_name }}"
+        folder: "{{ folder_name }}"
+        state: poweredoff
+      loop: "{{ vm_templates | product(range(1, students_count + 1)) }}"
+      loop_control:
+        label: "{{ folder_name }}/{{ vm_name }}"
+      vars:
+        vm_name: "{{ item.0.vm_name }}-{{ item.1 }}"
+        folder_name: "{{ folder_name_prefix }}{{ item.1 }}"
+...
