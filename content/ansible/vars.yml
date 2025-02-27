@@ -1,10 +1,12 @@
 vsphere_host: "vcsrs00-vc.infra.demo.redhat.com"
 vsphere_user: "etx-dev@vsphere.local"
-vsphere_password: "{{ lookup('env', 'vsphere_password') }}"
+vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
 datacenter: "RS00"
 cluster: "vcs-rs-00"
 datastore: "workload_share_QHFNI"
-students_number: 5
+students_count: 5
+folder_name_prefix: "student-"
+parent_folder: ETX
 vm_templates:
   - { name: "rhel9-tpl", vm_name: "rhel9", folder: "RHEL" }
   - { name: "rhel93-tpl", vm_name: "rhel93", folder: "RHEL" }
