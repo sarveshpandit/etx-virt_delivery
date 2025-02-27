@@ -4,6 +4,10 @@ In this lab we will run the migration playbook with the customization that was d
 
 ## Prepare the inventory file
 
+The migration will be run on two linux machines:
+- ETX/student-[student_id]/rhel86
+- ETX/student-[student_id]/rhel93
+
 prepare the inventory file as before, but this time add a reference to the mutate mac address playbook in the field for the post migrations steps. here is an example:
 
 ```yaml

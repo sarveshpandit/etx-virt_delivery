@@ -20,6 +20,7 @@
         username: "{{ vsphere_user }}"
         password: "{{ vsphere_password }}"
         validate_certs: false
+        vm_type: vm
       register: vm_info
 
     - name: Power off all VMs
@@ -30,12 +31,17 @@
         validate_certs: false
         name: "{{ vm_name }}"
         state: powered-off
+        datacenter: "{{ datacenter }}"
+        folder: "{{ folder_name }}"        
       ignore_errors: true
       loop: "{{ vm_info.virtual_machines }}"
       loop_control:
         label: "{{ vm_name }}"
       vars:
         vm_name: "{{ item.guest_name }}"
+        datacenter: "{{ item.datacenter }}"
+        cluster: "{{ item.cluster }}"
+        folder_name: "{{ item.folder }}"
 
     - name: Remove all VMs
       community.vmware.vmware_guest:
@@ -46,9 +52,31 @@
         name: "{{ vm_name }}"
         state: absent
         force: true
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
+        folder: "{{ folder_name }}"
       loop: "{{ vm_info.virtual_machines }}"
       loop_control:
         label: "{{ vm_name }}"
       vars:
         vm_name: "{{ item.guest_name }}"
+        datacenter: "{{ item.datacenter }}"
+        cluster: "{{ item.cluster }}"
+        folder_name: "{{ item.folder }}"   
+
+    - name: Remove VM folders per student
+      community.vmware.vcenter_folder:
+        hostname: "{{ vsphere_host }}"
+        username: "{{ vsphere_user }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: false
+        datacenter: "{{ datacenter }}"
+        folder_name: "{{ folder_name }}"
+        parent_folder: "{{ parent_folder | default('', true) | default(omit) }}"
+        state: absent
+      loop: "{{ range(1, students_count + 1) | list }}"
+      loop_control:
+        label: "{{ folder_name }}"
+      vars:
+        folder_name: "{{ folder_name_prefix }}{{ item }}"
 ...

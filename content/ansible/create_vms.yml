@@ -41,12 +41,13 @@
         datastore: "{{ datastore }}"
         template: "{{ item.0.name }}"
         name: "{{ vm_name }}"
-        folder: "{{ folder_name }}"
-        state: poweredoff
+        folder: "/RS00/vm/ETX/{{ folder_name }}"
+        state: "{{ powerState }}"
       loop: "{{ vm_templates | product(range(1, students_count + 1)) }}"
       loop_control:
         label: "{{ folder_name }}/{{ vm_name }}"
       vars:
-        vm_name: "{{ item.0.vm_name }}-{{ item.1 }}"
+        vm_name: "{{ item.0.vm_name }}"
         folder_name: "{{ folder_name_prefix }}{{ item.1 }}"
+        powerState: "{{ item.0.powerState }}"
 ...

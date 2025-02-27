@@ -4,6 +4,10 @@ Once the migration playbooks are in place and the prepare configuration is done 
 
 To run a migration we need to prepare an inventory file that will contain the list of VMs to migrate.
 
+This migration will be run on two windows machines:
+- ETX/student-[student_id]/winweb01
+- ETX/student-[student_id]/win2019
+
 The inventory file should look like this:
 
 ```yaml

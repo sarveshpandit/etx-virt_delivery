@@ -11,6 +11,16 @@ source etx/bin/activate
 
 2. Install required Python dependencies
 
+Create a file called `content/ansible/setenv.sh` with the following contents:
+
+```sh
+export VSPHERE_PASSWORD="your password"
+export quay_user="your quay username"
+export quay_password="your quay password"
+```
+
+install ansible navigator
+
 ```sh
 pip install ansible-navigator
 ```
@@ -18,13 +28,9 @@ pip install ansible-navigator
 3. Ensure that Podman is install and login to Quay so that required container images can be retrieved
 
 ```sh
-podman login quay.io/redhat-cop/virt-migration-factory-ee
-```
-
-Create a file called `setenv.sh` with the following contents:
-
-```sh
-export VSPHERE_PASSWORD="your password"
+chmod +x content/ansible/setenv.sh
+source content/ansible/setenv.sh
+podman --username $quay_user --password $quay_password login quay.io/redhat-cop/virt-migration-factory-ee
 ```
 
 ## Create VMs
@@ -34,7 +40,8 @@ Inspect the [vars.yml](vars.yml) to confirm the expected values are set. Be sure
 Execute the following:
 
 ```sh
-source setenv.sh
+chmod +x content/ansible/setenv.sh
+source content/ansible/setenv.sh
 ansible-navigator run --pp=missing --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/create_vms.yml
 ```
 
@@ -43,6 +50,7 @@ ansible-navigator run --pp=missing --eei=quay.io/redhat-cop/virt-migration-facto
 Execute the following
 
 ```sh
-source setenv.sh
+chmod +x content/ansible/setenv.sh
+source content/ansible/setenv.sh
 ansible-navigator run --pp=missing --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/remove_vms.yml
 ```
