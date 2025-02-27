@@ -139,14 +139,19 @@ If you prefer to set up the environment manually, follow these steps:
   These sheets must be present with the exact spelling as shown.
 
 **5. Ensure Correct File Naming**
+> **⚠️ Warning:**  
+> All RVTools export files must be in lowercase, including both the filenames and the corresponding names referenced in `index.xlsx`.
+> Failure to maintain consistent lowercase formatting may result in errors during data processing.
+
 * The exported spreadsheet **filenames** (excluding the file extension .xlsx) must match the corresponding vCenter instance names.
-* Example:
-  * If the vCenter instance is named `avcenterinstance123`, the exported file should be named: `avcenterinstance123.xlsx`
+  * Example:
+    * If the vCenter instance is named `avcenterinstance123`, the exported file should be named: `avcenterinstance123.xlsx`
 
 ## Running the JupyterLab Notebook
-> **Note:**  
-> - If you used either the `setup.sh` or `startanalyzer.bat` script, this section can be skipped.
-> - The scripts will set up the virtual environment (`venv`), install the required packages with `pip`, and launch `Jupyter Lab`.
+> **Note:**
+> - If you have already executed the `setup.sh` (Linux/macOS) or `startanalyzer.bat` (Windows) script, you can skip this section.
+> - These scripts automate the setup process by creating and activating the virtual environment (`venv`), installing all required dependencies using `pip`, and launching `Jupyter Lab`.
+
 
 **1. Activate the Python Virtual Environment**
 * Ensure that the virtual environment is activated in your shell.
