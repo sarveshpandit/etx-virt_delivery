@@ -1,0 +1,78 @@
+:scrollbar:
+:toc2:
+:numbered:
+
+= VMA Analysis Guide
+
+== Summary
+
+This lab provides a comprehensive guide on using RVTools to extract detailed inventory data from VMware vSphere environments and utilizing the VMA-ANALYSIS Jupyter Notebook to analyze and interpret the collected data. It covers the entire workflow, from setting up the necessary environment to executing the analysis and extracting meaningful insights.
+
+Additionally, this lab outlines the required software dependencies, environment configurations, and the step-by-step process for conducting the analysis. By the end of the lab, users will be equipped with the skills to efficiently process RVTools data and apply the insights for migration planning, performance optimization, and virtualization assessments.
+
+.Goals
+* Understand the purpose of using RVTools for data extraction.
+* Set up the necessary environment for running Jupyter Lab.
+* Execute the Jupyter Lab notebook for processing RVTools data.
+* Interpret the extracted data for actionable insights.
+* Understanding the high-level design (HLD) document.
+
+== Overview of RVTools and VMA-ANALYSIS Tool
+
+=== Introduction to RVTools
+
+RVTools is a powerful, free Windows-based utility designed to collect and display detailed inventory data from VMware vSphere environments. Originally released in 2008, it has undergone continuous updates and improvements, making it one of the most widely used tools for VMware infrastructure assessment. Currently, RVTools runs on Windows systems utilizing the .NET 4.7.2 Framework and supports nearly all versions of ESXi and vCenter Server.
+
+This tool provides a comprehensive snapshot of the vSphere infrastructure, offering insights into virtual machines (VMs), hosts, datastores, cluster configurations, networking, storage, and snapshots. Its user-friendly, spreadsheet-style graphical interface (GUI) organizes data across multiple tabs, allowing administrators to explore different aspects of their environment efficiently. Additionally, RVTools allows users to export reports in Excel (.xlsx) or Comma Separated Values (.csv) format, making it easier to analyze and share data.
+
+Assessing your vSphere environment with RVTools is a great way to gather insights into your virtual infrastructure, helping organizations optimize resource allocation, identify potential risks, and plan migrations effectively.
+
+image::running_vma_tool_analysis/rvtools.png[scaledwidth=100%]
+
+=== Enhancing Analysis with VMA-ANALYSIS Jupyter Notebook
+
+While RVTools provides raw data exports, deeper analysis and visualization require additional processing. The VMA-ANALYSIS Jupyter Notebook was designed to bridge this gap by analyzing RVTools-generated reports and providing a structured, interactive approach to data interpretation.
+
+This notebook parses RVTools exports to extract critical VM attributes, evaluates migration feasibility, and generates detailed reports and visualizations. By leveraging NumPy and Pandas, it performs advanced data manipulation, filtering, and calculations, allowing Red Hatters tasked to conduct VMA's to assess workload distribution, migration complexity, and infrastructure details.
+
+image::running_vma_tool_analysis/vma-analysis.png[scaledwidth=50%]
+
+.Key Features and Benefits
+* Comprehensive Inventory Collection:
+** Gathers detailed information about vCenter Servers, ESXi hosts, VMs, clusters, networks, storage, and snapshots.
+** Displays data in an intuitive, tabbed spreadsheet-style GUI.
+
+.Seamless Data Export & Processing:
+* Exports reports in Excel (.xlsx) or CSV format for external analysis.
+* VMA-ANALYSIS Jupyter Notebook automates data parsing and report generation.
+
+.Interactive Data Analysis:
+* Provides visualizations to highlight key metrics.
+* Assesses migration complexity and feasibility for Red Hat OpenShift Virtualization.
+
+.Advanced Data Processing with Python:
+* Utilizes NumPy and Pandas for structured reporting and efficient calculations.
+* Offers an interactive Jupyter Notebook environment for customized analysis.
+
+By combining RVTools’ data extraction with the VMA-ANALYSIS Jupyter Notebook’s analytical capabilities, Red Hatters can gain deeper insights into client's vSphere environments and make more informed decisions regarding optimization, migration planning, and infrastructure details.
+
+== Installing, Setting Up RVTools and Exporting Data
+
+=== Provided RVTools Data
+
+== Using the VMA ANALYSIS Tool
+
+=== Setting the Environment
+
+=== Running the Jupyter Lab Notebook
+
+=== Interpreting the Data
+* The processed data will provide:
+** Summary of VM configurations.
+** Summary of Disk Usage
+** Supported vs NonSupported OSes
+** Insights on resource utilization (for AEs)
+
+== HLD (High-Level Design)
+* The high-level design (HLD) will include:
+** Output structure and reporting format.
