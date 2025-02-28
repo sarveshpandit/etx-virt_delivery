@@ -71,7 +71,7 @@ image::module-00/06_Create_VM_Quick.png[link=self, window=blank, width=100%]
 image::module-00/07_Create_VM_Quick_Name.png[link=self, window=blank, width=100%]
 
 +
-. After a few seconds, expect to see the VM is *Running*. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes can vary based on the storage provider being used to create the boot disk.
+. After about 30 seconds, expect to see the VM is *Running*. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes can vary based on the storage provider being used to create the boot disk.
 +
 image::module-00/08_Fedora_Running.png[link=self, window=blank, width=100%]
 
@@ -113,7 +113,7 @@ image::module-00/12_Configuration_Tab.png[link=self, window=blank, width=100%]
 +
 image::module-00/13_Storage_Tab.png[link=self, window=blank, width=100%]
 +
-In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called *ocs-storagecluster-ceph-rbd-virtualization*. This storage is the default type provided by OpenShift Data Foundation (ODF) for running virtual machines. Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
+In this environment, the default StorageClass, which defines the source and type of storage used for the disk, is called *ocs-external-storagecluster-ceph-rbd*. This indicates that we are using an external Ceph cluster. Each storage provider has different storage classes that define the characteristics of the storage backing the VM disk.
 
 . Examine the network interfaces attached to the VM by clicking on the *Network interfaces* subtab:
 +
@@ -164,13 +164,17 @@ In this section, we will migrate the VM from one OpenShift node to another witho
 +
 image::module-00/20_VM_Info_Node.png[link=self, window=blank, width=100%]
 
-. Using the *Actions* menu, select the option to *Migrate*.
+(Note that you may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
+
+. Using the *Actions* menu, select *Migration* and then select *Compute*.
 +
 image::module-00/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
 
 . After a few seconds, the VM will change the status to *Migrating*. A few seconds later, it will return to the *Running* status, but on a new node. The VM has been successfully live migrated!
 +
 image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
+
+(Note that you may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
 
 == Summary
 
