@@ -1,6 +1,8 @@
 :scrollbar:
 :toc2:
 :numbered:
+:imagesdir: ../assets/images/
+
 
 = VMA Analysis Guide
 
@@ -56,22 +58,319 @@ image::running_vma_tool_analysis/vma-analysis.png[scaledwidth=50%]
 
 By combining RVTools’ data extraction with the VMA-ANALYSIS Jupyter Notebook’s analytical capabilities, Red Hatters can gain deeper insights into client's vSphere environments and make more informed decisions regarding optimization, migration planning, and infrastructure details.
 
-== Installing, Setting Up RVTools and Exporting Data
+== RVTools - Installing, Setting Up and Exporting Data
+
+RVTools is compatible with any version of Windows, provided that .NET Framework is greater or equal to 4.7.2 installed (you can download it from the official Microsoft website). The tool does not have specific operating system requirements beyond this, making it highly flexible and easy to deploy across different Windows environments.
+
+[NOTE]
+====
+This section is for reference only and can be skipped. We have already provided four pre-generated RVTools files (Section 3.3) for analysis, allowing you to proceed directly to VMA ANALYSIS Tool (Section 4) for processing and interpretation without needing to extract data from vSphere manually. However, you may review this section if you wish to understand the data extraction process in more detail.
+====
+
+=== Installing
+
+. Verify .NET Framework
+* Ensure your Windows system has .NET Framework >= 4.7.2 installed.
+** On the Windows terminal run
+
+[source, shell]
+reg query "HKLM\SOFTWARE\Microsoft\Net Framework Setup\NDP" /s
+
+[start=2]
+. Download RVTools
+* Visit https://www.robware.net/download[RVTools Download] and download the RVTools MSI package.
+
+[start=3]
+. Install RVTools
+** Double-click the MSI package and follow the installation prompts.
+
+image::running_vma_tool_analysis/install.png[scaledwidth=50%]
+
+[start=4]
+. Launch RVTools
+* Open the Start menu, type RVTools, and press Enter.
+
+. Connect to vSphere
+* In the RVTools login interface, enter the IP address or DNS of your vCenter Server or ESXi host, along with your credentials, then click Login.
+
+image::running_vma_tool_analysis/running_rvtools.png[scaledwidth=50%]
+
+=== Usage
+
+. View VM Inventory
+* Upon launching RVTools, the vInfo tab opens by default, displaying detailed information about virtual machines (VMs) in your vSphere environment.
+* This includes key details such as power state, resource allocation, and fault tolerance configuration.
+
+image::running_vma_tool_analysis/vinfo.png[scaledwidth=50%]
+
+[start=4]
+. Navigate Through Tabs and Data
+* Use the dropdown menus at the top to access different data categories.
+* For example, selecting "Switch" from the ESX dropdown menu will take you to the vSwitch tab, where network configurations are displayed.
+
+image::running_vma_tool_analysis/menus.png[scaledwidth=50%]
+
+[start=4]
+. Access Documentation for Field Descriptions
+* RVTools provides extensive documentation to explain each field.
+* To access it, go to Help > Documentation, where you can review a 144-page guide detailing all collected data points.
+
+image::running_vma_tool_analysis/documentation.png[scaledwidth=50%]
+
+[start=5]
+. Exporting Data
+* Select "File" then "Export all to Excel"
+
+image::running_vma_tool_analysis/export.png[scaledwidth=50%]
+
+[start=4]
+* or using CLI
+
+[source,shell]
+RVTools -passthroughAuth -s <virtualcenter> -c ExportAll2xlsx -d <directory> –f <filename>
+Example:
+RVTools –passthroughAuth –s vc5.robware.local -c ExportAll2xlsx -d c:\temp –f mytest.xlsx
 
 === Provided RVTools Data
 
-== Using the VMA ANALYSIS Tool
+We have provided four pre-generated RVTools files from different vCenter environments for analysis in this lab. These files have been sanitized to remove any real data, ensuring privacy and security. Additionally, certain data tab sections have been removed to streamline and optimize data ingestion, allowing for a more efficient analysis process. These modifications help simplify the workflow while still preserving the essential data needed for meaningful insights.
+
+Company "Acme, Inc." has 4 vCenters located in:
+
+* link:../../../../vma-rvtools-analysis/example_rvtools_files/dallas.xlsx[Dallas Primary]
+* link:../../../../vma-rvtools-analysis/example_rvtools_files/dallas1.xlsx[Dallas Secondary]
+* link:../../../../vma-rvtools-analysis/example_rvtools_files/houston.xlsx[Houston]
+* link:../../../../vma-rvtools-analysis/example_rvtools_files/ashburn.xlsx[Ashburn]
+
+[NOTE]
+====
+Please download these files to your laptop, as they will be required later in the lab.
+====
+
+== VMA ANALYSIS Tool (Jupyter Notebook)
 
 === Setting the Environment
 
+===== PreRequisites
+
+.Linux/macOS Requirements
+* Ensure the following are installed:
+** Python (>= 3.10)
+** pip (Python package manager)
+** Git (for version control)
+** xclip (clipboard management for Linux)
+** LibreOffice or Microsoft Excel (for spreadsheet processing)
+
+.Windows Requirements
+* Ensure the following are installed:
+** Python (>= 3.10)
+** Git
+** LibreOffice or Microsoft Excel
+** Visual Studio (Community Edition) (required for compiling dependencies)
+** Rust (required for some Python dependencies)
+
+===== Setting Up the Environment
+
+. Clone the Repository
+
+  git clone https://github.com/juliovp01/etx-virt_delivery.git
+
+. Navigate to the Project Directory
+
+  cd vma-rvtools-analysis
+
+. Set Up the Python Virtual Environment
+
+.Automated Way
+A shell script (setup.sh) for Linux/macOS and a batch file (startanalyzer.bat) for Windows are included to automate the setup as well as launch the VMA ANALYSIS Jupyter notebook
+
+_Linux/macOS_
+
+[source, shell]
+ ./setup.sh
+
+_Windows_
+
+[source, shell]
+startanalyzer.bat
+
+.Manual Way
+If you prefer to set up the environment manually, follow these steps
+
+_Linux/macOS_
+
+* Create a virtual environment inside the project's root directory
+
+  python3 -m venv .venv
+
+* Activate the virtual environment
+
+  source .venv/bin/activate
+
+* Upgrade pip to the latest version
+
+  .venv/bin/pip install --upgrade pip
+
+* Install Dependencies
+
+  .venv/bin/pip install -r requirements.txt
+
+_Windows_
+
+* Create a virtual environment
+
+  python -m venv .venv
+
+* Add the virtual environment scripts to your system path
+
+  set PATH=%USERPROFILE%\mywork\rvtools-virt-analysis\.venv\Scripts;%PATH%
+
+* Activate the virtual environment
+
+  .venv\Scripts\activate
+
+* Upgrade pip to the latest version
+
+  .venv\Scripts\pip.exe install --upgrade pip
+
+* Install Dependencies
+
+  .venv\Scripts\pip.exe install -r requirements.txt
+
+[NOTE]
+====
+* The commands above create a hidden .venv directory inside the project.
+* Unless you add .venv/bin (Linux/macOS) or .venv\Scripts (Windows) to your system path, you will need to specify the full path when using pip or python.
+====
+
+
+=== Preparing the Data
+
+. Copy Exported Spreadsheets
+* Copy the example RVTools files from `example_rvtools_files` into the `data` directory
+
+[start=2]
+. Create an Index File
+* Copy the file `_index_template.xlsx_` and rename it to `_index.xlsx_` inside the `data` directory.
+
+[start=3]
+. Update index.xlsx
+* Follow the instructions inside the file.
+* Remove sample entries before proceeding.
+
+image::running_vma_tool_analysis/index_template_spreadsheet.png[scaledwidth=100%]
+
+[start=4]
+. Verify Exported Worksheets
+* Ensure the exported RVTools spreadsheets contain the default set of worksheets.
+* The worksheets highlighted in yellow in the following image are mandatory for analysis
+
+image::running_vma_tool_analysis/rvtools-exported-worksheets.png[scaledwidth=100%]
+
+These sheets must be present with the exact spelling as shown.
+
+[start=5]
+. Ensure Correct File Naming
+* The exported spreadsheet filenames (excluding the file extension .xlsx) must match the corresponding vCenter instance names.
+** If the vCenter instance is named `vcenterinstance123`, the exported file should be named: `vcenterinstance123.xlsx`
+
+[NOTE]
+====
+All RVTools export files must be in lowercase, including both the filenames and the corresponding names referenced in `index.xlsx`.
+Failure to maintain consistent lowercase formatting may result in errors during data processing.
+====
+
 === Running the Jupyter Lab Notebook
 
+[NOTE]
+====
+If you have already executed the setup.sh (Linux/macOS) or startanalyzer.bat (Windows) script, you can skip this section.
+These scripts automate the setup process by creating and activating the virtual environment (venv), installing all required dependencies using pip, and launching Jupyter Lab.
+====
+
+. Activate the Python Virtual Environment
+* Ensure that the virtual environment is activated in your shell.
+
+. Start JupyterLab
+* Run the following command in the terminal
+
+  jupyter lab
+
+[start=3]
+. Access the Notebook
+* Jupyter Lab should launch automatically in your default web browser.
+** If it does not open automatically, navigate to: http://localhost:8888/lab[http://localhost:8888/lab]
+* Once JupyterLab opens, you should see the following interface
+
+image::running_vma_tool_analysis/jupyter-notebook.png[scaledwidth=100%]
+
+[start=4]
+. Select the Notebook
+* In the file explorer pane on the left, open `analyze-vm-inventory.ipynb`
+
+. Follow the Notebook Instructions
+* The notebook contains step-by-step guidance.
+** If the data has been prepared as described earlier, it should run automatically with minimal input.
+
+. Execute All Notebook Cells
+* Run all the cells in sequence.
+** The execution should take 60-90+ seconds, depending on the number of vCenter inventory files being processed.
+
+image::running_vma_tool_analysis/run-the-jupyter-notebook.png[scaledwidth=100%]
+
+[WARNING]
+====
+These instructions assume the use of a `Linux/macOS/WSL` shell such as _bash_ or _zsh_. If using a different shell, such as _Windows PowerShell_, adjust the commands accordingly.
+If analyzing more than 18 files, update the `nrows=19` variable in the _Read the index metadata file_ section of the Jupyter notebook.
+
+Set nrows to the total number of files + 1 (to account for the header row in the index file).
+====
+
 === Interpreting the Data
-* The processed data will provide:
-** Summary of VM configurations.
-** Summary of Disk Usage
-** Supported vs NonSupported OSes
-** Insights on resource utilization (for AEs)
+
+Once the RVTools data has been processed using the VMA-ANALYSIS Jupyter Notebook, the resulting insights will help in understanding the virtual infrastructure and planning migration strategies. 
+
+.The analysis will provide:
+
+. Data Ingestion Verification
+
+image::running_vma_tool_analysis/data_ingestion.png[scaledwidth=100%]
+
+[start=2]
+. Distribution of VMs per vCenter
+
+image::running_vma_tool_analysis/vm_per_vcenter.png[scaledwidth=100%]
+
+[start=3]
+. Insights on resource utilization (for AEs love this info)
+
+image::running_vma_tool_analysis/consolidated_view.png[scaledwidth=100%]
+
+[start=4]
+. VM / Host Scope Summary
+
+image::running_vma_tool_analysis/scope_summary.png[scaledwidth=100%]
+
+[start=5]
+. Host Model Summary
+
+image::running_vma_tool_analysis/host_model.png[scaledwidth=100%]
+
+[start=6]
+. Disk Usage Summary
+
+image::running_vma_tool_analysis/disk_summary.png[scaledwidth=100%]
+
+[start=7]
+. Supported vs NonSupported OSes
+
+[start=8]
+. Estimated Migration Time
+
+image::running_vma_tool_analysis/migration.png[scaledwidth=100%]
+
+[start=9]
+. and much, much more...
 
 == HLD (High-Level Design)
 * The high-level design (HLD) will include:
