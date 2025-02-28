@@ -163,8 +163,11 @@ In this section, we will migrate the VM from one OpenShift node to another witho
 . Navigate to the *Overview* tab to see on which worker node the VM is running:
 +
 image::module-00/20_VM_Info_Node.png[link=self, window=blank, width=100%]
-
-(Note that you may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
++
+[NOTE]
+====
+You may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
+====
 
 . Using the *Actions* menu, select *Migration* and then select *Compute*.
 +
@@ -173,8 +176,6 @@ image::module-00/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
 . After a few seconds, the VM will change the status to *Migrating*. A few seconds later, it will return to the *Running* status, but on a new node. The VM has been successfully live migrated!
 +
 image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
-
-(Note that you may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
 
 == Summary
 
