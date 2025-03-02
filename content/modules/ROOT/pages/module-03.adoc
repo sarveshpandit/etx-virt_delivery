@@ -29,7 +29,23 @@ A network attachment definition instructs openshift to utilise an existing netwo
 
 How is this done?
 
-To manage an OpenShift node's network configuration you use a tool, available as an operator, called nmstate. With nmstate you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
+To manage an OpenShift node's network configuration you use a tool, available as an operator, called NMState. With NMState you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* (NNCP) wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
+
+Before creating the network attachment definition, review the NNCP that was used to create the bridge it will use.
+
+. Navigate to *Networking* -> *NodeNetworkConfigurationPolicy*:
++
+image::module-03/001-nncp.png[link=self, window=blank, width=100%]
++
+. Click *br1*:
++
+image::module-03/002-br1.png[link=self, window=blank, width=100%]
++
+. Select the *YAML* tab and review the `spec.desiredState` section.  In particular, note the value of `spec.desiredState.ovn.bridge-mappings[0].localnet` (`localnet2`); this value will be used in the network attachment definition:
++
+image::module-03/003-localnet2.png[link=self, window=blank, width=100%]
+
+With the bridge mapping name known, the network attachment definition can be created.
 
 . Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
