@@ -22,7 +22,7 @@ The OpenShift environment has already been configured with an OVS Bridge on each
 
 == Create a Network Attachment Definition
 
-In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
+In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. (NAD) This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
 
 [NOTE]
 A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named ovs-br1. You must use that name or OpenShift won’t be able to place your VM on any compute nodes as it can only utilise nodes with that specifically named network device on it.
@@ -51,33 +51,9 @@ With the bridge mapping name known, the network attachment definition can be cre
 +
 image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
 +
-. Click the *Edit YAML* button at the top of the page.
+. Change the *Name* of the NAD to `vlan0` and enter `l2 connection for vms` in the *Description* field. Set the *Network Type* to *OVN Kubernetes secondary localnet network* and set the *Bridge mapping* to `localnet2` (the value from the NNCP). Finally, click *Create*:
 +
 image::module-03/02_NAD_Create.png[link=self, window=blank, width=100%]
-+
-. Paste in the following yaml snippet, and click the Create button:
-+
-[source,yaml,role=execute]
-----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  annotations:
-    description: l2 connection for vms
-  name: vlan0
-  namespace: vmexamples
-spec:
-  config: |-
-    {
-      "cniVersion": "0.4.0", 
-      "name": "vm-network", 
-      "type": "ovn-k8s-cni-overlay", 
-      "topology": "localnet", 
-      "netAttachDefName": "vmexamples/vlan0"
-    }
-----
-+
-image::module-03/03_NAD_YAML.png[link=self, window=blank, width=100%]
 +
 NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN Tag Number*. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0. 
 +
