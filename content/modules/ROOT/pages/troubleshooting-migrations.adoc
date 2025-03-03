@@ -1,7 +1,14 @@
 # Troubeshooting Migrations
 
 In this lab we have a VM that cannot be migrated because it's hitting a limitation of MTV. The purpose of the lab is for the student to reason about different approaches on how to solve the issue.
-This lab is options, but differently from te other ones, it will not give you the solution to the problem.
+This lab is optional, but differently from the other ones, it will not give you the solution to the problem.
+The troublesome machine is teh following: `ETX/student-[student_id]/some.troubles.here` and contains two issues that prevents migration.
+To verify that the machine has been migrated correctly, run this command from the machine:
+
+```sh
+curl localhost
+```
+you should see a simple "hello world" page as a response.
 
 ## Run the migration
 

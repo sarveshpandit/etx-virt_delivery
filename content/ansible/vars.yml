@@ -8,8 +8,8 @@ students_count: 50
 folder_name_prefix: "student-"
 parent_folder: ETX
 vm_templates:
-  - { name: "roadshow-tpl-winweb01", vm_name: "winweb", folder: "OCPVirtRoadShow", powerState: "poweredoff" }
-  - { name: "etx-win2019-template", vm_name: "win2019", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "rhel86-tpl", vm_name: "rhel86", folder: "RHEL", powerState: "poweredoff" }
-  - { name: "rhel93-tpl", vm_name: "rhel93", folder: "RHEL", powerState: "poweredoff" }
-  #- { name: "troubles", vm_name: "some.troubles.here", folder: "ETX_Templates", powerState: "poweredoff" }    
+  - { name: "etx-win2019-template", vm_name: "win2019-1", folder: "ETX_Templates", powerState: "poweredoff" }
+  - { name: "etx-win2019-template", vm_name: "win2019-2", folder: "ETX_Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel86-template", vm_name: "rhel86", folder: "ETX_Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel93-template", vm_name: "rhel93", folder: "ETX_Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel9-trouble-template", vm_name: "some.troubles.here", folder: "ETX_Templates", powerState: "poweredoff" }    
