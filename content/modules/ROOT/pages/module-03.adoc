@@ -25,7 +25,7 @@ The OpenShift environment has already been configured with an OVS Bridge on each
 In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. (NAD) This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
 
 [NOTE]
-A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named ovs-br1. You must use that name or OpenShift won’t be able to place your VM on any compute nodes as it can only utilise nodes with that specifically named network device on it.
+A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named `br1`.
 
 How is this done?
 
@@ -70,17 +70,17 @@ image::module-03/05_VM_Network_Tab.png[link=self, window=blank, width=100%]
 +
 NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires a VM restart.
 +
-. Click the three-dot menu at the end of the *default* network adapter line, and click on edit in the drop down menu.
+. Click the *Add network interface* button.
 +
-image::module-03/06_Edit_Default.png[link=self, window=blank, width=100%]
+image::module-03/06_Add_Net.png[link=self, window=blank, width=100%]
 +
-. Click the dropdown menu for the *Network* field, and select the vmexamples/vlan0 network attachment definition that we created. Click on *Save*.
+. Change the interface *Name* to `vlan0` and set the *Network* to `vmexamples/vlan0` (the NAD that you created in the previous step). Then click the *Save* button.
 +
-image::module-03/07_VM_Net_Modify.png[link=self, window=blank, width=100%]
+image::module-03/07_Net_Settings.png[link=self, window=blank, width=100%]
 +
 . Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
 +
-. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *default* interface obtains a DHCP IP address from the flat network (*192.168.3.x/24*).  
+. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *default* interface obtains a DHCP IP address from the flat network (*192.168.64.0/18*).
 +
 image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
 
