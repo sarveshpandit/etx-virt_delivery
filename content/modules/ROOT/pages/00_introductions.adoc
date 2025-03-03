@@ -166,6 +166,10 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 * 2:00 PM - 4:00 PM 
 ** Troubleshooting Lab
 
+* 4:00 PM - 5:00 PM 
+** Performing VMA Analysis
+*** Lab (running-vma-tool-analysis.adoc): Running VMA Tool Analysis
+
 * 5:00 PM - 5:15 PM 
 ** Questions and recap
 
@@ -224,7 +228,7 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 image::introductions/jvp.png[]
 
 * Julio Villareal Peregrino
-* Distinguished Architect, Global STP
+* Distinguished Architect, Services
 
 
 == BootCamp Vendor Guests
