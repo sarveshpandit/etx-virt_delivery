@@ -19,6 +19,7 @@
 ** xref:customizing-the-migration-logic.adoc[Customizing the Migration Logic]
 ** xref:running-a-customized-migration.adoc[Running a Customized Migration]
 ** xref:troubleshooting-migrations.adoc[Troubleshooting Migrations]
+** xref:running-vma-tool-analysis.adoc[Running VMA Tool Analysis]
 ** xref:25_virtualization_gitops.adoc[Module: GitOps + CI/CD lab]
 ** xref:24_presales.adoc[Module: Pre Sales]
 * xref:04_thanks.adoc[Thank you and next steps]
