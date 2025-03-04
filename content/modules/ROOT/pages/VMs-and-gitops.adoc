@@ -41,13 +41,45 @@ Notice that we have implemented the app of apps pattern with the an https://argo
 
 ## Verify the deployed applications and traffic policies
 
+Examine the network policies that were created:
+1. the nginx pod only accepts traffic from the openshift-ingress namespace. This means that we can create a route for it.
+2. the apache VM only accepts traffic from pods in the same namespace, including the nginx pod.
+
 run the following commands to start httpd on the VM after connecting to the console
 
 ```sh
 sudo su -l  # to become root
-yum install -y httpd
+dnf install -y httpd
 systemctl enable httpd
 systemctl start httpd
 ```
 
 now the VM is listening on port 80
+
+from the laptop, run the following command to get service IPs:
+
+```sh
+export nginx_ip=$(oc get svc nginx -n gitops-test -o jsonpath='{.spec.clusterIP}')
+export apache_ip=$(oc get svc apache -n gitops-test -o jsonpath='{.spec.clusterIP}')
+```
+
+Let's verify that the nginx pod can talk to the apache VM:
+
+```sh
+export nginx_pod_name=$(oc get pod -n gitops-test -l app=nginx -o jsonpath='{.items[0].metadata.name}')
+oc exec -n gitops-test $nginx_pod_name -- curl -s http://${apache_ip}:80
+```
+
+Let's verify that the apache VM cannot talk to the nginx pod:
+
+First let's retrieve the IP of the nginx service:
+
+```sh
+echo $nginx_ip
+```
+
+Then from the machine console run the following command:
+
+```sh
+curl -s http://${nginx_ip}:8080
+```
