@@ -32,6 +32,7 @@ spec:
         vm.kubevirt.io/flavor: small
         vm.kubevirt.io/os: fedora
         vm.kubevirt.io/workload: server
+        app: apache
       creationTimestamp: null
       labels:
         kubevirt.io/domain: fedora-apache
