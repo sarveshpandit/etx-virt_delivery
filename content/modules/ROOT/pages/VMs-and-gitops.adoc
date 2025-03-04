@@ -1,0 +1,44 @@
+# VMs and gitops
+
+In this exercise we will create VMs and pods using gitops. We will also configure a network policy to control the traffic between the VM and the pod.
+
+## Install the gitops Operator
+
+This Openshift environment does not have ArgoCD already deployed. So we have to deploy it.
+Run the following commands:
+
+```sh
+cd /gitops/bootstrap
+oc apply -f argocd.yaml
+oc apply -f cluster-role-binding.yaml
+```
+
+## Deploy the ArgoCD Instance
+
+Let's deploy the ArgoCD instance. In this case we are going to deploy teh default argocd instance, but in a rel world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following command:
+
+```sh
+export gitops_repo<the url to this repo are using in the *.git format>
+export cluster_name=<your cluster name>
+export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
+export platform_base_domain=${cluster_base_domain#*.}
+envsubst < .bootstrap/argocd.yaml | oc apply -f -
+```
+
+## Deploy the gitops root Application
+
+We are going to deploy two applications in the same namespace: one VM and one pod. The pod will be able to talk to the VM, but the VM will not be able to talk to the pod.
+
+To do so we are going to employ the https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern[app of apps pattern]. In this pattern, we have a root application that deploys other applications. 
+
+The root application will look for applications to deploy in the `content/gitops/applications` directory.
+
+Deploy the root application by running the following command:
+
+```sh
+envsubst < .bootstrap/appset.yaml | oc apply -f -
+```
+
+Notice that we have implemented the app of apps pattern with the an https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/[ApplicationSet].
+
+## Verify the deployed applications

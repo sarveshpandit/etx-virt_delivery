@@ -29,7 +29,7 @@ To create the post migration playbook, create a new file in the `playbooks` dire
 
 The MAC address change logic should change the first triplet (which is vendor dependent) from the VMWare assigned triples (one of `00:50:56`, `00:0C:29`, and `00:05:69`) to anything you want. Or possibly to the OpenShift Virtualization-assigned triplet: `02:cd:1b`.
 
-The playbook should change the mac address in the VM definition and should also connect to VM to update the NetwormManager configuration to use the new mac address.
+The playbook should change the mac address in the VM definition and should also connect to VM to update the NetworkManager configuration to use the new mac address.
 
 You can locally test the playbook on one of the already migrated VMs by running the playbook with the following command:
 

@@ -35,7 +35,7 @@ TODO
 
 As for the storage mapping, the network mapping in a real world scenario would be more complex. Sometimes customers have hundreds of VLANs that need to be mapped.
 In this case we only have one VLAN.
-To create the storage mapping, we need to first create the NAD (network attachement definition), like this:
+To create the storage mapping, we need to first create the NAD (network attachment definition), like this:
 
 ```yaml
 apiVersion: "k8s.cni.cncf.io/v1"

@@ -29,4 +29,4 @@ You cna go to this VM network detail page to very tht the MAC address was change
 TODO
 mage::running-a-customized-migration/migrated-vm.png[link=self, window=blank, width=100%]
 
-and you can ssh into the VMs to verify that they started correclty.
+and you can ssh into the VMs to verify that they started correctly.
