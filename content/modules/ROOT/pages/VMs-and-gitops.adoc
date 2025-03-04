@@ -8,9 +8,8 @@ This Openshift environment does not have ArgoCD already deployed. So we have to 
 Run the following commands:
 
 ```sh
-cd /gitops/bootstrap
-oc apply -f argocd.yaml
-oc apply -f cluster-role-binding.yaml
+oc apply -f content/gitops/bootstrap/argocd.yaml
+oc apply -f content/gitops/bootstrap/cluster-role-binding.yaml
 ```
 
 ## Deploy the ArgoCD Instance
@@ -18,11 +17,10 @@ oc apply -f cluster-role-binding.yaml
 Let's deploy the ArgoCD instance. In this case we are going to deploy teh default argocd instance, but in a rel world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following command:
 
 ```sh
-export gitops_repo<the url to this repo are using in the *.git format>
-export cluster_name=<your cluster name>
+export gitops_repo=<the url to this repo are using in the *.git format>
 export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
 export platform_base_domain=${cluster_base_domain#*.}
-envsubst < .bootstrap/argocd.yaml | oc apply -f -
+envsubst < content/gitops/bootstrap/argocd.yaml | oc apply -f -
 ```
 
 ## Deploy the gitops root Application
@@ -36,9 +34,20 @@ The root application will look for applications to deploy in the `content/gitops
 Deploy the root application by running the following command:
 
 ```sh
-envsubst < .bootstrap/appset.yaml | oc apply -f -
+envsubst < content/gitops/bootstrap/appset.yaml | oc apply -f -
 ```
 
 Notice that we have implemented the app of apps pattern with the an https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/[ApplicationSet].
 
-## Verify the deployed applications
+## Verify the deployed applications and traffic policies
+
+run the following commands to start httpd on the VM after connecting to the console
+
+```sh
+sudo su -l  # to become root
+yum install -y httpd
+systemctl enable httpd
+systemctl start httpd
+```
+
+now the VM is listening on port 80
