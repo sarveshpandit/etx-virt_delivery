@@ -3,7 +3,7 @@ kind: VirtualMachine
 metadata:
   name: fedora-apache
   labels:
-    app: fedora-apache
+    app: apache
     kubevirt.io/dynamic-credentials-support: 'true'
     vm.kubevirt.io/template: fedora-server-small
     vm.kubevirt.io/template.namespace: openshift
@@ -32,12 +32,12 @@ spec:
         vm.kubevirt.io/flavor: small
         vm.kubevirt.io/os: fedora
         vm.kubevirt.io/workload: server
-        app: apache
       creationTimestamp: null
       labels:
         kubevirt.io/domain: fedora-apache
         kubevirt.io/size: small
         network.kubevirt.io/headlessService: headless
+        app: apache        
     spec:
       architecture: amd64
       domain:
