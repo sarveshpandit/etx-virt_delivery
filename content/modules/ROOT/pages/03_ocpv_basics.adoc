@@ -169,39 +169,6 @@ image::Create_VM_PVC/19_Fedora_Agent_Details.png[link=self, window=blank, width=
 +
 image::Create_VM_PVC/19_Fedora_Metrics.png[]
 
-== Using virtctl to access VMs -- Pause - this may be integrated already for future labs/ Sumit
-
-In this section we will go over the virtctl command and how you can run the command inside the roadshow environment.  The steps here may be different when you run them in a production environment. 
-
-. We will need to go to the url for your linux virtctl download
-. Navigate to the Virtualization -> Overview page in the web console
-. Click the Download virtctl link to download the virtctl binary for the linux operating system
-+
-image::Virtctl/01_virtctl.png[]
-
-. Right Click on the Download virtctl for Linux for x86_64 link 
-+
-image::Virtctl/02_virtctl.png[]
-
-. Then select "Save link as..."
-+
-image::Virtctl/03_virtctl.png[]
-
-* You will need this link for later.  
-* The link will be similar to the following - the only difference will be where the XXXXX is for your specific lab
-** https://virtctl-route-openshift-cnv.apps.XXXXX.dynamic.redhatworkshops.io/amd/linux/virtctl.tar.gz
-** For your environmnent, the link is: {openshift_client_download_url}
-. SSH to the host for the lab (inside bookbag) this will take you to the bastion: {bastion_public_hostname} with user: {bastion_ssh_password} password: {bastion_ssh_password} on port: {bastion_ssh_port}
-* example (ssh lab-user@147.28.180.143) 
-. Then type sudo ssh root@192.168.123.100
-* Inside the bastion cli-host you will need to type the following
-** wget --no-check-certificate https://hyperconverged-cluster-cli-download-openshift-cnv.apps.ocp.example.com/amd64/linux/virtctl.tar.gz 
-** untar the file by running tar -xvf virtctl.tar.gz
-** you will need to move the virtctl file to the /usr/local/bin so it is in your PATH
-*** mv virtctl /usr/local/bin/
-** then export the KUBECONFIG
-*** export KUBECONFIG=/root/.kube/config
-
 == Using virtctl for VMs
 
 The lab environment provides a bastion host, with various command-line tools, including `oc` and `virtctl` installed.  To connect to the bastion host:
@@ -238,7 +205,6 @@ fedora02   113m   Running   True
 +
 [source,console]
 ----
-[root@ocp4-bastion ~]# oc get vmclusterinstancetypes
 [lab-user@bastion ~]$ oc get vmclusterinstancetypes
 NAME          AGE
 cx1.2xlarge   153m
@@ -260,7 +226,6 @@ m1.xlarge     153m
 +
 [source,console]
 ----
-[root@ocp4-bastion ~]# oc -n openshift-virtualization-os-images get datasources
 [lab-user@bastion ~]$ oc -n openshift-virtualization-os-images get datasources
 NAME              AGE
 centos-stream10   155m
@@ -278,50 +243,70 @@ win2k22           157m
 win2k25           157m
 ----
 
-. Let's create a VM in the vmexamples` project space with the information we just collected.
+. Let's create a VM project space with the information we just collected.
 +
+.. The `virtctl create` command can be used to create a VM definition.
 [source,console]
 ----
-[root@ocp4-bastion ~]# oc project vmexamples
-[root@ocp4-bastion ~]# virctl create vm \
+[lab-user@bastion ~]$ virtctl create vm \
     --name rhel9-enablement \
     --instancetype u1.small \
     --infer-preference  \
-    --volume-datasource name:root,src:openshift-virtualization-os-images/rhel9,size:50Gi | oc create -f -
+    --volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  creationTimestamp: null
+  name: rhel9-enablement
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: imported-volume-rn97x
+    spec:
+      sourceRef:
+        kind: DataSource
+        name: rhel9
+        namespace: openshift-virtualization-os-images
+      storage:
+        resources:
+          requests:
+            storage: 50Gi
+... continued
 ----
 
-
-. We can also do this slightly differently
+.. To actually create the VM, pipe the definition to `oc create`.
 +
-[source,console]
 ----
-[root@ocp4-bastion ~]# oc project vmexamples
-[root@ocp4-bastion ~]# virtctl create vm \
-    --name rhel9-enablement-02 \
-    --instancetype n1.medium \
-    --infer-preference \
-    --volume-datasource name:root,src:openshift-virtualization-os-rhel9,size:30Gi \
-    > rhel9-enablement-02.yaml
-[root@ocp4-bastion ~]# oc create -f rhel9-enablement-02.yaml 
-virtualmachine.kubevirt.io/rhel9-enablement-02 created
+[lab-user@bastion ~]$ virtctl create vm \
+    --name rhel9-enablement \
+    --instancetype u1.small \
+    --infer-preference  \
+    --volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi \
+    | oc create -f -
+virtualmachine.kubevirt.io/rhel9-enablement created
 ----
 
+== Live Migrate a Virtual Machine
 
-== Live migrate a virtual machine
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires *ReadWriteMany* (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed.
 
-In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires `ReadWriteMany` (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed. 
-
-. Navigate to the *Details* tab to see where the worker node is running:
+. Navigate to the *Overview* tab to see on which worker node the VM is running:
 +
-image::Pods_Migration/17_VM_Info_Node.png[]
-
-. Using the menu *Actions*, press *Migrate*
+image::module-00/20_VM_Info_Node.png[link=self, window=blank, width=100%]
 +
-image::Pods_Migration/19_VM_Dialog_Migrate.png[]
+[NOTE]
+====
+You may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
+====
 
-. After a few seconds, the VM will change the status to `Migrating`. A few seconds later, it will return to the `Running` status, but on a different node. The VM has been successfully live migrated!
+. Using the *Actions* menu, select *Migration* and then select *Compute*.
 +
-image::Pods_Migration/21_Migrated.png[]
+image::module-00/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
+
+. After a few seconds, the VM will change the status to *Migrating*. A few seconds later, it will return to the *Running* status, but on a new node. The VM has been successfully live migrated!
++
+image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
 
 == [Optional] Controlling virtual machine state
 
