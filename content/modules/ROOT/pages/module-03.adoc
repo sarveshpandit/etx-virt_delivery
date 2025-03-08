@@ -25,14 +25,16 @@ The OpenShift environment has already been configured with an OVS Bridge on each
 In order to use the OVS Bridge with your VM you need to create a *Network Attachment Definition*. (NAD) This is what tells OpenShift about the network and allows the virtual machines to connect to it. Network Attachment Definitions are specific to the project/namespace they're created in, unless they're created in the *default* project. This gives you, the administrator, the ability to control which networks are and aren't available to users who have access to manage their own VMs. Once the Network Attachment Definition has been created, it can then be used by virtual machines when configuring their network adapters.
 
 [NOTE]
-A network attachment definition instructs openshift to utilise an existing network device. In our case that device was previously created and is named `br1`.
+A network attachment definition instructs OpenShift to utilise an existing network device. In our case that device was previously created and is named `br1`.
 
 How is this done?
 
-To manage an OpenShift node's network configuration you use a tool, available as an operator, called NMState. With NMState you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* (NNCP) wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about nmstate, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
+To manage an OpenShift node's network configuration you use a tool, available as an operator, called NMState. With NMState you can create network interfaces on OpenShift compute nodes using Kubernetes constructs or the *NodeNetworkConfigurationPolicy* (NNCP) wizard available in the OpenShift console. You can create devices and customize those so that they follow the naming conventions that suit your needs, and your network requirements. For more info about NMState, and to learn more about the host networking and how to view and manage the configuration, see the https://docs.openshift.com/container-platform/4.15/networking/k8s_nmstate/k8s-nmstate-about-the-k8s-nmstate-operator.html[documentation here].
 
 Before creating the network attachment definition, review the NNCP that was used to create the bridge it will use.
 
+. Ensure that you are working in the `vmexamples` project.
++
 . Navigate to *Networking* -> *NodeNetworkConfigurationPolicy*:
 +
 image::module-03/001-nncp.png[link=self, window=blank, width=100%]
@@ -51,11 +53,16 @@ With the bridge mapping name known, the network attachment definition can be cre
 +
 image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
 +
-. Change the *Name* of the NAD to `vlan0` and enter `l2 connection for vms` in the *Description* field. Set the *Network Type* to *OVN Kubernetes secondary localnet network* and set the *Bridge mapping* to `localnet2` (the value from the NNCP). Finally, click *Create*:
+. Enter the following settings and click *Create*.
++
+** *Name*: `vlan0`
+** *Description*: `l2 connection for vms`
+** *Network Type*: OVN Kubernetes secondary localnet network
+** *Bridge mapping*: `localnet2` (the value from the NNCP)
 +
 image::module-03/02_NAD_Create.png[link=self, window=blank, width=100%]
 +
-NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN Tag Number*. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0. 
+NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN* number. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0.
 +
 . Examine the details of the network attachment definition. Because this was created in the *vmexamples* project, it will be available only to attach to VMs that are in that project.
 +
@@ -84,7 +91,7 @@ image::module-03/07_Net_Settings.png[link=self, window=blank, width=100%]
 +
 image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
 
-IMPORTANT: Before the next section of this lab, please repeat the actions to attach the fedora02 VM to the same vlan0 network.
+IMPORTANT: Before the next section of this lab, please repeat the actions to attach the `fedora02` VM to the same vlan0 network.  Instead of restarting the VM, live migrate it to another node to complete attaching the new NIC.
 
 [[multinetwork_policy]]
 
@@ -92,17 +99,30 @@ IMPORTANT: Before the next section of this lab, please repeat the actions to att
 
 A multinetwork policy allows you to configure network access to a namespace and to define granular rules allowing ingress and egress from the namespace to enhance security of the applications and VMs that are running in the namespace.
 
-NOTE: This section of the lab is primarily performed through the CLI. You will need to ssh to your Bastion host where the CLI tools are already installed. Use the SSH Terminal on the right to connect to your bastion host *sudo ssh root@192.168.123.100*
+[NOTE]
+====
+This section of the lab is primarily performed through the CLI. You will need to ssh to your Bastion host where the CLI tools are already installed.
+
+[source,console,subs="attributes"]
+----
+$ ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
+----
+
+The password is `{bastion_ssh_password}`.
+====
+
 
 === Create a MultiNetwork Policy
 
-For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffice from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can find tune network connections, even within the same namespace.
+For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffic from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can find tune network connections, even within the same namespace.
 
-NOTE: The IP addresses of your virtual guests may differ from those in the attached images or examples, verify the correct addresses present in your lab environment by clicking on the Overview screen for each VM and taking a look at the *Network interfaces* tile.
+NOTE: The IP addresses of your virtual guests will differ from those in the attached images or examples.
 
-image::module-03/10_Find_IP_Addresses.png[link=self, window=blank, width=100%]
-
-. From our bastion host we want to paste the following content into a new file called deny-all.yaml:
+. Navigate to the *VirtualMachines* list within the `vmexamples` namespace, and click on the *+2 more* link in the *IP addresses* column for each of your Fedora VMs. Make a note of the IP addresses within the *192.168.64.0/18* subnet.
++
+image::module-03/000-vm-ips.png[link=self, window=blank, width=100%]
++
+. On the bastion host paste the following content into a new file called deny-all.yaml:
 +
 [source,yaml,role=execute]
 ----
@@ -119,9 +139,29 @@ spec:
   ingress: []
 ----
 +
-. Once the file is saved, start a ping to the IP address of the *fedora01* virtual machine to confirm that you can currently connect.
+. Ping each of your Fedora VMs to confirm that you can currently connect to them. (This will also confirm that you are using the correct IP addresses.)
 +
-image::module-03/11_Bastion_Ping.png[link=self, window=blank, width=100%]
+[source,sh]
+----
+[lab-user@bastion ~]$ ping -c3 192.168.64.28
+PING 192.168.64.28 (192.168.64.28) 56(84) bytes of data.
+64 bytes from 192.168.64.28: icmp_seq=1 ttl=64 time=3.33 ms
+64 bytes from 192.168.64.28: icmp_seq=2 ttl=64 time=0.957 ms
+64 bytes from 192.168.64.28: icmp_seq=3 ttl=64 time=0.930 ms
+
+--- 192.168.64.28 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 0.930/1.737/3.325/1.122 ms
+[lab-user@bastion ~]$ ping -c3 192.168.64.29
+PING 192.168.64.29 (192.168.64.29) 56(84) bytes of data.
+64 bytes from 192.168.64.29: icmp_seq=1 ttl=64 time=3.12 ms
+64 bytes from 192.168.64.29: icmp_seq=2 ttl=64 time=1.03 ms
+64 bytes from 192.168.64.29: icmp_seq=3 ttl=64 time=0.870 ms
+
+--- 192.168.64.29 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 0.870/1.673/3.118/1.023 ms
+----
 +
 . Apply the multinetwork policy with the following syntax:
 +
