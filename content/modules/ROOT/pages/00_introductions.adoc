@@ -6,7 +6,7 @@
 
 * Modules
 
-** xref:module-01.adoc[Baremetal VM Management and OpenShift Virtualization Requirements]
+** xref:module-01.adoc[MISING - Baremetal VM Management and OpenShift Virtualization Requirements]
 ** xref:module-00.adoc[DEPRECATED - Virtual Machine Management]
 ** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
 ** xref:module-05.adoc[MISSING - Migrating Virtual Machines]
