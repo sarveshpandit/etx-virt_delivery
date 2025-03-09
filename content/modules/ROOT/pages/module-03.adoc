@@ -122,6 +122,15 @@ NOTE: The IP addresses of your virtual guests will differ from those in the atta
 +
 image::module-03/000-vm-ips.png[link=self, window=blank, width=100%]
 +
+. On the bastion host, edit the cluster network operator configuration to enable multi-network policy.
++
+[source,console]
+----
+$ oc edit network.operator.openshift.io cluster
+----
++
+Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.  Save and exit from the editor.
++
 . On the bastion host paste the following content into a new file called deny-all.yaml:
 +
 [source,yaml,role=execute]
