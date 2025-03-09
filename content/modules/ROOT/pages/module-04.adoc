@@ -20,7 +20,7 @@ By default pre-configured templates provided by Red Hat OpenShift Virtualization
 +
 image::module-04/01_Template_List.png[link=self, window=blank, width=100%]
 +
-. In the search bar type in *centos9* and in the list of templates that appear find the template for *centos-stream9-server-large*. 
+. In the search bar type in *stream9* and in the list of templates that appear find the template for *centos-stream9-server-large*.
 +
 image::module-04/02_Search_Centos9.png[link=self, window=blank, width=100%]
 +
@@ -43,14 +43,6 @@ image::module-04/05_Clone_Details.png[link=self, window=blank, width=100%]
 . A new window will pop out where you can edit the amount of CPU and Memory. For our XL template set the value of CPUs to 4, and Memory to 16 GiB, and click the *Save* button.
 +
 image::module-04/06_Edit_CPU_Mem.png[link=self, window=blank, width=100%]
-+
-. Navigate to the *Network Interfaces* tab, to the right of the *default* interface, select the three-dot menu and the edit option.
-+
-image::module-04/07_Edit_Network.png[link=self, window=blank, width=100%]
-+
-. When the *Edit network interface* menu appears, set the *Network* value to the *vmexamples/vlan0* network, and click the *Save* button.
-+
-image::module-04/08_Edit_Net_Int.png[link=self, window=blank, width=100%]
 +
 . Next click on the *Scripts* tab at the top, and in the section called *Cloud-init* click the *Edit* button.
 +
