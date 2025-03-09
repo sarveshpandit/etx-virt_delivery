@@ -18,14 +18,14 @@ In this lab, we are going to take a closer look at the storage behind the virtua
 +
 //add image
 +
-. Click on the *fedora01* VM and you will be presented with a screen that shows additional details about the storage volume backing the VM. 
+. Click on the *fedora01* PVC and you will be presented with a screen that shows additional details about the storage volume backing the VM.
 +
 . Notice the following information about the persistent volume claim:
 .. The PVC is currently bound successfuly
 .. The PVC has a requested capacity and size of 30GiB
 .. The Access mode of the PVC is ReadWriteMany (RWX)
 .. The Volume mode of the PVC is Block
-.. The volume is using the *ocs-storagecluster-ceph-rbd-virtualization* storage class. 
+.. The volume is using the *ocs-external-storagecluster-ceph-rbd* storage class.
 +
 image::module-02/02_Fedora01_PVC_Details.png[link=self, window=blank, width=100%]
 
@@ -75,17 +75,13 @@ image::module-02/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
 +
 image::module-02/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
 
-. Press the three-dot menu, and see that the *Restore* option is greyed out because the VM is currently running.
+. Press the three-dot menu, and see that the *Restore* option is greyed out.  This is because the VM is currently running.
 +
 image::module-02/08_VM_Restore_Disabled.png[link=self, window=blank, width=100%]
 
-. Next, switch to the *Console* tab. We are going to login and perform a modification that prevents the VM from being able to boot. 
+. Next, switch to the *Console* tab and log in to the VM. We are going to login and perform a modification that prevents the VM from being able to boot.
 +
 image::module-02/09_Console_Login.png[link=self, window=blank, width=100%]
-+
-. Click on the *Guest login credentials* dropdown to gather the username and password to log into your console.
-+
-NOTE: There is a *Copy to clipboard* button and a *Paste* button available here, which makes the login process much easier.
 +
 . Once you are logged in, execute the following command: 
 +
@@ -134,7 +130,7 @@ Cloning creates a new VM that uses its own disk image for storage, but most of t
 . Return to the *Overview* screen, and click the *Actions* dropdown menu to see the option to clone the VM.
 +
 image::module-02/17_Overview_Actions_Clone.png[link=self, window=blank, width=100%]
-. Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora02*, and select the check box to *Start VirtualMachine on clone*.
+. Press *Clone* from the *Actions* menu, and a dialog will open. Name the cloned VM *fedora03*, and select the check box to *Start VirtualMachine once created*.
 +
 image::module-02/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
 +
