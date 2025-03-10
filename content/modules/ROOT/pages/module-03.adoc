@@ -118,9 +118,41 @@ For this section of the lab we are going to create a *MultiNetwork Policy* that 
 
 NOTE: The IP addresses of your virtual guests will differ from those in the attached images or examples.
 
-. Navigate to the *VirtualMachines* list within the `vmexamples` namespace, and click on the *+2 more* link in the *IP addresses* column for each of your Fedora VMs. Make a note of the IP addresses within the *192.168.64.0/18* subnet.
+. First, change network configuration of the Fedora VMs to make their IP addresses static. This is required, because the policy will block traffic from the DHCP server to the VMs.
+
+. Navigate to the *fedora01* console.  If necessary, log in.
 +
-image::module-03/000-vm-ips.png[link=self, window=blank, width=100%]
+. Examine the current IP addresses assigned to the system. Make a note of the IP address within the *192.168.64.0/18* subnet (probably on the `enp2s0` network interface), as you will need it later in this module.  Also note that the address has been dynamically assigned.
++
+[source,sh]
+----
+$ ip a
+----
++
+image::module-03/000-ip-addrs.png[link=self, window=blank, width=100%]
++
+. Display the *NetworkManager* connection profiles. Note the name of the connection profile (*Wired connection 1*) that corresponds to the network interface that you noted above.
++
+[source,sh]
+----
+$ nmcli con show
+----
++
+image::module-03/0001-nm-conns.png[link=self, window=blank, width=100%]
++
+. Modify the connection profile.  Be sure to use the IP address that you noted above, not the address in the example.  Also be sure to use the correct prefix length (18). After modifying the connection profile, restart *NetworkManager* to make the changes effective.
++
+[source,sh]
+----
+$ nmcli con mod 'Wired connection 1' ipv4.method manual ipv4.addresses 192.168.64.36/18
+$ sudo systemctl restart NetworkManager
+----
++
+image:module-03/002-static-ip.png[link=self, window=blank, width=100%]
++
+Note that the IP address is no longer dynamic. (It is valid forever.)
++
+. Repeat the above steps on *fedora02*.
 +
 . On the bastion host, edit the cluster network operator configuration to enable multi-network policy.
 +
@@ -152,7 +184,7 @@ spec:
 +
 [source,sh]
 ----
-[lab-user@bastion ~]$ ping -c3 192.168.64.28
+$ ping -c3 192.168.64.28
 PING 192.168.64.28 (192.168.64.28) 56(84) bytes of data.
 64 bytes from 192.168.64.28: icmp_seq=1 ttl=64 time=3.33 ms
 64 bytes from 192.168.64.28: icmp_seq=2 ttl=64 time=0.957 ms
@@ -161,7 +193,8 @@ PING 192.168.64.28 (192.168.64.28) 56(84) bytes of data.
 --- 192.168.64.28 ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
 rtt min/avg/max/mdev = 0.930/1.737/3.325/1.122 ms
-[lab-user@bastion ~]$ ping -c3 192.168.64.29
+
+$ ping -c3 192.168.64.29
 PING 192.168.64.29 (192.168.64.29) 56(84) bytes of data.
 64 bytes from 192.168.64.29: icmp_seq=1 ttl=64 time=3.12 ms
 64 bytes from 192.168.64.29: icmp_seq=2 ttl=64 time=1.03 ms
@@ -176,14 +209,26 @@ rtt min/avg/max/mdev = 0.870/1.673/3.118/1.023 ms
 +
 [source,sh,role=execute]
 ----
-oc apply -f deny-all.yaml -n vmexamples
+$ oc create -f deny-all.yaml -n vmexamples
+multinetworkpolicy.k8s.cni.cncf.io/deny-by-default created
 ----
 +
-image::module-03/12_Deny_All_Applied.png[link=self, window=blank, width=100%]
+. Now try again to ping the IP addresses your Fedora virtual machines; your ping attempts should now fail.
 +
-. Now try again to ping the IP address of the fedora01 virtual machine, your ping attempts should now fail.
-+
-image::module-03/13_Bastion_Ping_Fail.png[link=self, window=blank, width=100%]
+[source,sh]
+----
+$ ping -c3 192.168.64.36
+PING 192.168.64.36 (192.168.64.36) 56(84) bytes of data.
+
+--- 192.168.64.36 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2040ms
+
+$ ping -c3 192.168.64.37
+PING 192.168.64.37 (192.168.64.37) 56(84) bytes of data.
+
+--- 192.168.64.37 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2034ms
+----
 +
 . Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine. 
 +
@@ -223,9 +268,10 @@ image::module-03/17_Allow_Host_Syntax.png[link=self, window=blank, width=100%]
 +
 . Apply the policy using the following syntax:
 +
-[source,sh,role=execute]
+[source,sh]
 ----
-oc apply -f allow-host.yaml -n vmexamples
+$ oc apply -f allow-host.yaml -n vmexamples
+multinetworkpolicy.k8s.cni.cncf.io/ingress-ipblock created
 ----
 
 +
