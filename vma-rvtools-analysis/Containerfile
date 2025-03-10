@@ -2,7 +2,6 @@ FROM registry.access.redhat.com/ubi9/ubi
 LABEL author="Dan Borkowski <dan.borkowski@redhat.com>"
 
 WORKDIR /app/
-ENV PATH="/opt/venv/bin:$PATH"
 
 COPY ./requirements.txt /app/requirements.txt
 

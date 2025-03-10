@@ -93,7 +93,48 @@ If you prefer to set up the environment manually, follow these steps:
 > - The commands above create a hidden `.venv` directory inside the project.
 > - Unless you add `.venv/bin` (Linux/macOS) or `.venv\Scripts` (Windows) to your system path, you will need to specify the full path when using `pip` or `python`.
 
-**4. Upgrade pip to the Latest Version**
+**4. Set Up a Containerized environment**
+
+Alternatively, rvtools-virt-analysis can be run in a containerized environment.
+
+#### Automated Setup
+A shell script (run-container.sh) for Linux/macOS is provided to quickly and easily start Jupyter Lab:
+* Linux/macOS:
+```sh
+./run-container.sh
+```
+
+#### Manual Setup
+If you prefer to set up the environment manually, follow these steps:
+* Linux/macOS:
+  * Build container image
+  ```sh
+  podman build -t rvtools-virt-analysis .
+  ```
+
+  * Ensure container doesnt already exist
+  ```sh
+  podman ps -a | grep rvtools-virt-analysis && podman rm rvtools-virt-analysis
+  ```
+
+  * Start container
+  ```sh
+  podman run --rm -p 8888:8888 -v $(pwd)/data:/app/data:z --name rvtools-virt-analysis localhost/rvtools-virt-analysis
+  ```
+
+#### Access Jupyter Labs
+
+Once the container has been successfully built and started, you should see some log entries similar to the following.  Port tcp/8888 has been forwarded to the container, so click/open the `http://127.0.0.1:8888/lab?token=<token>` link.  You should successfully access Jupyter Labs.
+
+```
+    To access the server, open this file in a browser:
+        file:///root/.local/share/jupyter/runtime/jpserver-1-open.html
+    Or copy and paste one of these URLs:
+        http://49d6660cece7:8888/lab?token=<token>
+        http://127.0.0.1:8888/lab?token=<token> <<<< Open this link
+```
+
+**5. Upgrade pip to the Latest Version**
 * Linux/macOS:
 ```sh
 .venv/bin/pip install --upgrade pip
@@ -103,7 +144,7 @@ If you prefer to set up the environment manually, follow these steps:
 .venv\Scripts\pip.exe install --upgrade pip
 ```
 
-**5. Install Dependencies**
+**6. Install Dependencies**
 * Linux/macOS:
 ```sh
 .venv/bin/pip install -r requirements.txt
