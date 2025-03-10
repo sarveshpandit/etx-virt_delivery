@@ -134,7 +134,7 @@ image::module-02/17_Overview_Actions_Clone.png[link=self, window=blank, width=10
 +
 image::module-02/18_VM_Clone_Dialog.png[link=self, window=blank, width=100%]
 +
-. A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM, and you can see the *Created* time as very recently.
+. A new VM is created, the disks are cloned and automatically the portal will redirect you to the new VM, and you can see that the *Created* time is very recent.
 +
 image::module-02/19_VM_Cloned.png[link=self, window=blank, width=100%]
 +
