@@ -75,7 +75,7 @@ image::module-03/04_NAD_Created.png[link=self, window=blank, width=100%]
 +
 image::module-03/05_VM_Network_Tab.png[link=self, window=blank, width=100%]
 +
-NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires a VM restart.
+NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires either restarting or live migrating the VM. This is needed, because we need to move the VM into a new Kubernetes pod which has the new network interface attached.
 +
 . Click the *Add network interface* button.
 +
@@ -163,7 +163,7 @@ $ oc edit network.operator.openshift.io cluster
 +
 Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.  Save and exit from the editor.
 +
-. On the bastion host paste the following content into a new file called deny-all.yaml:
+. On the bastion host paste the following content into a new file called `deny-all.yaml`:
 +
 [source,yaml,role=execute]
 ----
@@ -207,7 +207,7 @@ rtt min/avg/max/mdev = 0.870/1.673/3.118/1.023 ms
 +
 . Apply the multinetwork policy with the following syntax:
 +
-[source,sh,role=execute]
+[source,sh]
 ----
 $ oc create -f deny-all.yaml -n vmexamples
 multinetworkpolicy.k8s.cni.cncf.io/deny-by-default created
@@ -262,7 +262,7 @@ spec:
         cidr: <IP_ADDR_FROM_FEDORA02>/32
 ----
 +
-IMPORTANT: Make sure that you substitute the correct IP from the Fedora02 VM.
+IMPORTANT: Make sure that you substitute the correct IP from the *fedora02* VM and leave the the prefix length as *32*.  (We only want to allow traffic from this single IP address, not the subnet.)
 +
 image::module-03/17_Allow_Host_Syntax.png[link=self, window=blank, width=100%]
 +
@@ -291,9 +291,9 @@ IMPORTANT: For the next lab, it's important that we clear out the two network po
 +
 Please run the following two commands:
 +
-[source,sh,role=execute]
+[source,sh]
 ----
-oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
+$ oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
 ----
 
 == Summary
