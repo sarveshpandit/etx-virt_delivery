@@ -58,7 +58,7 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 * 9:00 AM - 9:30 AM
 ** Welcome - Icebreakers
 
-* 9:30 AM - 10:15 AM
+* 9:30 AM - 10:00 AM
 ** Migration Overview
 ** Module 1 - Welcome to ETX Virtualization Delivery Workshop
 *** Agenda: 
@@ -67,7 +67,10 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 **** ISV Overview
 **** Objectives: Understand the overall solution and GTM
 
-* 10:15 AM - 10:30 AM
+* 10:00 - 10:30 AM 
+** Advanced Cluster Management for Virtualization (ACM-V)
+
+* At any time
 ** Break
 
 * 10:30 AM - 11:00 PM
