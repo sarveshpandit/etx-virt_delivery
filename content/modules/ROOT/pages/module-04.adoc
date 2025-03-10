@@ -48,7 +48,7 @@ image::module-04/06_Edit_CPU_Mem.png[link=self, window=blank, width=100%]
 +
 image::module-04/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
 +
-. When the *Cloud-init* dialog opens, click the radio button to *Configure via: Script* then add the following YAML snippet to the end of the script.
+. When the *Cloud-init* dialog opens, click the radio button to *Configure via: Script* then add the following YAML snippet to the end of the script.  (Do not delete the existing contents.)
 +
 [source,yaml,role=execute]
 ----
@@ -70,19 +70,19 @@ image::module-04/11_User_Templates.png[link=self, window=blank, width=100%]
 +
 image::module-04/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
 +
-. When the virtual machine boots you can see on the *Overview* page that it was created from our template, and has the system resources we defined, and is already attached to the *vmexamples/vlan0* network with an assigned IP address.
+. When the virtual machine boots you can see on the *Overview* page that it was created from our template.
 +
 image::module-04/13_VM_From_Template.png[link=self, window=blank, width=100%]
 +
-. Click on the *Console* tab at the top and use the *Guest login credentials* option to login to the console of the virtual machine.
+. Click on the *Console* tab at the top and use the supplied *Guest login credentials* to login to the console of the virtual machine.
 +
 image::module-04/14_VM_Console.png[link=self, window=blank, width=100%]
 +
 . Once you are logged into the virtual machine, run the following command to test the install of MariaDB.
 +
-[source,sh,role=execute]
+[source,sh]
 ----
-sudo mysql -u root
+$ sudo mysql -u root
 ----
 +
 image::module-04/15_MariaDB_Login.png[link=self, window=blank, width=100%]
@@ -121,7 +121,7 @@ image::module-04/19_Windows_2k19_Parameters.png[link=self, window=blank, width=1
 +
 . With the options filled out, we want to click on the *Customize VirtualMachine* button at the bottom to continue configuring our Template.
 +
-. On the *Customize and create VirtualMachine screen, click on the *Scripts* tab, and then scroll down to the *Sysprep* section and click on the *Edit* button.
+. On the *Customize and create VirtualMachine* screen, click on the *Scripts* tab, and then scroll down to the *Sysprep* section and click on the *Edit* button.
 +
 image::module-04/20_Customize_Scripts.png[link=self, window=blank, width=100%]
 +
@@ -288,7 +288,7 @@ image::module-04/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%
 +
 image::module-04/23_Edit_Boot_Media.png[link=self, window=blank, width=100%]
 +
-. Select the option for *Use this disk as a boot source*, and click on the *Save* button at the bottom.
+. Note that the *Use this disk as a boot source* option has been automatically enabled.
 +
 image::module-04/24_Boot_Source.png[link=self, window=blank, width=100%]
 +
@@ -297,13 +297,25 @@ image::module-04/24_Boot_Source.png[link=self, window=blank, width=100%]
 +
 image::module-04/25_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
 +
-. After a few minutes, the Virtual VM will be in *Running* status. Switch to the *Console* tab:
+. Downloading the Windows ISO will take several minutes.  When the VM in in a *Provisioning* state, you can monitor the download by clicking on the status.
 +
-image::module-04/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
+image::module-04/provisioning.png[link=self, window=blank, width=100%]
 +
-IMPORTANT: The VM is marked as "Not migratable" because a CD-ROM disk is attached. 
+. Eventually, the Virtual VM will enter the *Running* status. Switch to the *Console* tab immediately, because the Windows installation ISO requires you to press a key to actually boot from the ISO (because Windows).
++
+image::module-04/press_any_key.png[link=self, window=blank, width=100%]
++
+.. If the ISO bootloader times out, press a key to enter the VM firmware interface.
++
+image::module-04/enter_menu.png[link=self, window=blank, width=100%]
++
+.. In the VM firmware interface, select the *Reset* option to reboot the VM.  When the ISO bootloader starts, press a key to begin the Windows installation.
++
+image::module-04/boot_mgr.png[link=self, window=blank, width=100%]
 +
 . Once the VM installation process is complete, go ahead and power it off with the stop button. We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
++
+image::module-04/install_done.png[link=self, window=blank, width=100%]
 +
 . Click on *Storage* -> *PersistentVolumeClaims* to see a list of PVCs available in the vmexamples namespace.
 +
