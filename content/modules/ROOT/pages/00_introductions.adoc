@@ -14,7 +14,7 @@
 ** xref:module-02.adoc[Storage Management]
 ** xref:module-04.adoc[Introduction to Virtual Machine Customization]
 ** xref:VMs-and-gitops.adoc[Gitops and Virtual Machines]
-** xref:aap-installation.adoc[Migration Factory Installation]
+** xref:migration-factory-installation.adoc[Migration Factory Installation]
 ** xref:preparing-for-migrations.adoc[Preparing for Migrations]
 ** xref:running-a-migration.adoc[Running a Migration]
 ** xref:customizing-the-migration-logic.adoc[Customizing the Migration Logic]

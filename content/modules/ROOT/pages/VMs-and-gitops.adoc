@@ -1,10 +1,10 @@
-# VMs and gitops
+# VMs and GitOps
 
-In this exercise we will create VMs and pods using gitops. We will also configure a network policy to control the traffic between the VM and the pod.
+In this exercise we will create VMs and pods using OpenShift GitOps. We will also configure a network policy to control the traffic between the VM and the pod.
 
-## Install the gitops Operator
+## Install the OpenShift GitOps Operator
 
-This Openshift environment does not have ArgoCD already deployed. So we have to deploy it.
+This Openshift environment does not have Argo CD already deployed. So we have to deploy it.
 Run the following commands:
 
 ```sh
@@ -12,9 +12,9 @@ oc apply -f content/gitops/bootstrap/argocd.yaml
 oc apply -f content/gitops/bootstrap/cluster-role-binding.yaml
 ```
 
-## Deploy the ArgoCD Instance
+## Deploy the Argo CD Instance
 
-Let's deploy the ArgoCD instance. In this case we are going to deploy teh default argocd instance, but in a rel world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following command:
+Let's deploy the Argo CD instance. In this case we are going to deploy the default Argo CD instance, but in a rel world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following command:
 
 ```sh
 export gitops_repo=<the url to this repo are using in the *.git format>
