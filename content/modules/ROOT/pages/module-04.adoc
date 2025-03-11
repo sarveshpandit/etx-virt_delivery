@@ -315,7 +315,7 @@ image::module-04/enter_menu.png[link=self, window=blank, width=100%]
 +
 image::module-04/boot_mgr.png[link=self, window=blank, width=100%]
 +
-. Once the VM installation process is complete, go ahead and power it off with the stop button. We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
+. Once the VM installation process is complete, go ahead and power it off with the stop button. (You may wish to check the VM's CPU utilization on the *Metrics* tab to ensure that the VM has completed all of its first boot setup.) We can now take a snapshot of the root disk, and use that to create a bootable volume template that we can use to boot other Windows 2k19 machines.
 +
 image::module-04/install_done.png[link=self, window=blank, width=100%]
 +
