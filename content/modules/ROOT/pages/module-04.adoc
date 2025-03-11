@@ -86,6 +86,8 @@ $ sudo mysql -u root
 ----
 +
 image::module-04/15_MariaDB_Login.png[link=self, window=blank, width=100%]
++
+. Before moving on to the next section, stop the virtual machine to save resources.
 
 [[create_win]]
 == Create a Windows VM Template
@@ -129,7 +131,7 @@ image::module-04/20_Customize_Scripts.png[link=self, window=blank, width=100%]
 +
 image::module-04/21_Sysprep.png[link=self, window=blank, width=100%]
 +
-. Copy and paste the following code block into the *autounattend.xml* section:
+. Copy and paste the following code block into the *Autounattend.xml* section:
 +
 [source,xml,role=execute]
 ----
