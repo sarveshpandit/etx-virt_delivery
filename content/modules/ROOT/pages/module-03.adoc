@@ -213,7 +213,7 @@ $ oc create -f deny-all.yaml -n vmexamples
 multinetworkpolicy.k8s.cni.cncf.io/deny-by-default created
 ----
 +
-. Now try again to ping the IP addresses your Fedora virtual machines; your ping attempts should now fail.
+. Now try again to ping the IP addresses your Fedora virtual machines; your ping attempts should now fail.  (It may take a few seconds for the policy to become effective.)
 +
 [source,sh]
 ----
@@ -242,7 +242,7 @@ image::module-03/15_Fedora02_Console.png[link=self, window=blank, width=100%]
 +
 image::module-03/16_Fedora02_Ping_Fail.png[link=self, window=blank, width=100%]
 +
-. Return to the bastion host console, and create a new file called allow-host.yaml, and paste in the following content:
+. Return to the bastion host console, and create a new file called `allow-host.yaml`, and paste in the following content:
 +
 [source,yaml,role=execute]
 ----
