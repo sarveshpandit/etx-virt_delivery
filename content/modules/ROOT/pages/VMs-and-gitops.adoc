@@ -2,26 +2,54 @@
 
 In this exercise we will create VMs and pods using OpenShift GitOps. We will also configure a network policy to control the traffic between the VM and the pod.
 
+## Clone the GitOps repository
+
+To run this exercise we need to fork and clone the course git repo. 
+The course git repo is located here: `https://github.com/juliovp01/etx-virt_delivery`
+Navigate to this page and fork the repo to your own account. 
+
+image::VMs-and-gitops/fork-repo.png[link=self, window=blank, width=100%]
+
+Then clone the repo to your local machine with the following commands:
+
+[source,console,subs="attributes"]
+---
+git clone https://github.com/<your-git-user>/etx-virt_delivery
+cd etx-virt_delivery
+---
+
+
 ## Install the OpenShift GitOps Operator
 
 This Openshift environment does not have Argo CD already deployed. So we have to deploy it.
-Run the following commands:
+Run the following commands (you must be logged in as a cluster admin):
 
-```sh
-oc apply -f content/gitops/bootstrap/argocd.yaml
-oc apply -f content/gitops/bootstrap/cluster-role-binding.yaml
-```
+[source,console,subs="attributes"]
+---
+oc adm new-project openshift-gitops
+oc apply -f content/gitops/bootstrap/subscription.yaml
+oc apply -f content/gitops/bootstrap/cluster-rolebinding.yaml
+---
+
+Verify that the ArgoCD operator was correctly installed.
+
+image::VMs-and-gitops/gitops-installed.png[link=self, window=blank, width=100%]
 
 ## Deploy the Argo CD Instance
 
 Let's deploy the Argo CD instance. In this case we are going to deploy the default Argo CD instance, but in a rel world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following command:
 
-```sh
-export gitops_repo=<the url to this repo are using in the *.git format>
+[source,console,subs="attributes"]
+---
+export gitops_repo=https://github.com/<your-git-user>/etx-virt_delivery.git
 export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
 export platform_base_domain=${cluster_base_domain#*.}
 envsubst < content/gitops/bootstrap/argocd.yaml | oc apply -f -
-```
+---
+
+Verify that the Argo CD instance was correctly deployed. 
+
+image::VMs-and-gitops/argocd-instance.png[link=self, window=blank, width=100%]
 
 ## Deploy the gitops root Application
 
@@ -33,53 +61,68 @@ The root application will look for applications to deploy in the `content/gitops
 
 Deploy the root application by running the following command:
 
-```sh
+[source,console,subs="attributes"]
+---
 envsubst < content/gitops/bootstrap/appset.yaml | oc apply -f -
-```
+---
 
 Notice that we have implemented the app of apps pattern with the an https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/[ApplicationSet].
 
+Verify that the two children applications have been correctly deployed:
+
+image::VMs-and-gitops/appset-working.png[link=self, window=blank, width=100%]
+
 ## Verify the deployed applications and traffic policies
 
-Examine the network policies that were created:
-1. the nginx pod only accepts traffic from the openshift-ingress namespace. This means that we can create a route for it.
-2. the apache VM only accepts traffic from pods in the same namespace, including the nginx pod.
+Examine the network policies that were created
+
+[source,console,subs="attributes"]
+---
+oc get networkpolicy -n gitops-test
+---
+
+* the nginx pod only accepts traffic from the openshift-ingress namespace. This means that we can create a route for it.
+* the apache VM only accepts traffic from pods in the same namespace, including the nginx pod.
 
 run the following commands to start httpd on the VM after connecting to the console
 
-```sh
+[source,console,subs="attributes"]
+---
 sudo su -l  # to become root
 dnf install -y httpd
 systemctl enable httpd
 systemctl start httpd
-```
+---
 
 now the VM is listening on port 80
 
 from the laptop, run the following command to get service IPs:
 
-```sh
+[source,console,subs="attributes"]
+---
 export nginx_ip=$(oc get svc nginx -n gitops-test -o jsonpath='{.spec.clusterIP}')
 export apache_ip=$(oc get svc apache -n gitops-test -o jsonpath='{.spec.clusterIP}')
-```
+---
 
 Let's verify that the nginx pod can talk to the apache VM:
 
-```sh
+[source,console,subs="attributes"]
+---
 export nginx_pod_name=$(oc get pod -n gitops-test -l app=nginx -o jsonpath='{.items[0].metadata.name}')
 oc exec -n gitops-test $nginx_pod_name -- curl -s http://${apache_ip}:80
-```
+---
 
-Let's verify that the apache VM cannot talk to the nginx pod:
-
+Let's verify that the apache VM cannot talk to the nginx pod.
 First let's retrieve the IP of the nginx service:
 
-```sh
+[source,console,subs="attributes"]
+---
 echo $nginx_ip
-```
+---
 
 Then from the machine console run the following command:
 
-```sh
-curl -v http://${nginx_ip}:8080
-```
+[source,console,subs="attributes"]
+---
+curl -v http://<replace with nginx_ip>:8080
+---
