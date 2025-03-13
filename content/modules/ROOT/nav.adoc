@@ -1,7 +1,6 @@
-* xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
 
 * Modules
-
+** xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
 ** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
 ** xref:module-03.adoc[Network Management]
 ** xref:module-02.adoc[Storage Management]
