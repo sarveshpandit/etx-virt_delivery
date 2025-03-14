@@ -97,30 +97,7 @@ If you prefer to set up the environment manually, follow these steps:
 
 Alternatively, rvtools-virt-analysis can be run in a containerized environment.
 
-#### Automated Setup
-A shell script (run-container.sh) for Linux/macOS is provided to quickly and easily start Jupyter Lab:
-* Linux/macOS:
-```sh
-./run-container.sh
-```
-
-#### Manual Setup
-If you prefer to set up the environment manually, follow these steps:
-* Linux/macOS:
-  * Build container image
-  ```sh
-  podman build -t rvtools-virt-analysis .
-  ```
-
-  * Ensure container doesnt already exist
-  ```sh
-  podman ps -a | grep rvtools-virt-analysis && podman rm rvtools-virt-analysis
-  ```
-
-  * Start container
-  ```sh
-  podman run --rm -p 8888:8888 -v $(pwd)/data:/app/data:z --name rvtools-virt-analysis localhost/rvtools-virt-analysis
-  ```
+You can see more information on this topic in the `containers` folder README.
 
 #### Access Jupyter Labs
 
