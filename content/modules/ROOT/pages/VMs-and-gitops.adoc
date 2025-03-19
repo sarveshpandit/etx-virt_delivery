@@ -124,5 +124,5 @@ Then from the machine console run the following command:
 
 [source,console,subs="attributes"]
 ---
-curl -v http://<replace with nginx_ip>:8080
+curl -v http://{replace_with nginx_ip}:8080
 ---
