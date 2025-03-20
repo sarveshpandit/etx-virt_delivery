@@ -29,3 +29,5 @@
 ^Linux\ 6\.5\.0\-45\-generic\ Appgate\ SDP\ 1\.0\ Appgate\ SDP\ 1\.0(?:\s*\(.*\))?$
 ^Other\ 5\.x\ or\ later\ Linux(?:\s*\(.*\))?$
 ^Other\ 2\.6\.x\ Linux(?:\s*\(.*\))?$
+^Other\ 4\.x\ Linux(?:\s*\(.*\))?$
+^Other\ 4\.x\ or\ later\ Linux(?:\s*\(.*\))?$
