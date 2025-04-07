@@ -1,6 +1,6 @@
 ---
 
-# Migration Factory Ansible Inventory for ETX Workshop
+# Ansible for OpenShift Virtualization Migration Ansible Inventory for ETX Workshop
 all:
   vars:
 
@@ -21,8 +21,8 @@ all:
     vmware_username: <username>
     vmware_password: <password>
 
-# Migration Factory Spoke clusters to configure
-migration_factory_spoke:
+# Ansible for OpenShift Virtualization Migration Spoke clusters to configure
+migration_spoke:
   hosts:
     etx.redhat.com:
       openshift_verify_ssl: false
