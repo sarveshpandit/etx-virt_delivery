@@ -1,7 +1,7 @@
 ---
-# Migration Factory Base Inventory
+# Ansible for OpenShift Virtualization Migration Base Inventory
 
-# This inventory file contains common variable for the Migration Factory that
+# This inventory file contains common variable for the Ansible for OpenShift Virtualization Migration that
 # should not require modifications. Variables that should be modified to suit the environment
 # should be made in a separate inventory file
 
@@ -10,24 +10,24 @@ all:
   vars:
 
     # OpenShift Configurations
-    aap_namespace: migration-factory
+    aap_namespace: virtualization-migration
     aap_version: 2.5
     aap_channel: stable-2.5
     aap_instance_name: aap-etx
 
     # AAP Configurations
-    aap_project: Migration
-    aap_org_name: MTV
+    aap_project: OpenShift Virtualization Migration
+    aap_org_name: OpenShift Virtualization Migration
     controller_validate_certs: false
 
     # Git Repository Details
-    aap_project_repo: https://gitlab.consulting.redhat.com/redhat-cop/vmware-openshift-virt-migration/virt_migration_factory.git
+    aap_project_repo: https://gitlab.consulting.redhat.com/redhat-cop/openshift-virtualization-migration/openshift_virtualization_migration.git
     aap_project_branch: main
 
     # Execution Environment Details
     container_host: quay.io/redhat-cop
-    aap_execution_environment: Migration Factory
-    aap_execution_environment_image: quay.io/redhat-cop/virt-migration-factory-ee:2.5-v1.0.0
+    aap_execution_environment: OpenShift Virtualization Migration
+    aap_execution_environment_image: quay.io/redhat-cop/openshift-virtualization-migration-ee:2.5
 
     # Automation Hub Configurations. These are not utilized within the workshop, but still needs to be defined
     automation_hub_certified_url: https://cloud.redhat.com/api/automation-hub/content/published/
@@ -38,16 +38,15 @@ all:
     automation_hub_validated_auth_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
     automation_hub_validated_token: notused
 
-    # OpenShift Operators that are installed via the Migration Factory deployment
+    # OpenShift Operators that are installed via the Ansible for OpenShift Virtualization Migration deployment
     aap_seed_operator_management_hub: []
-    aap_seed_operator_management_spoke:
-      - nmstate
+    aap_seed_operator_management_spoke: []
     
     # MTV Configurations
-    mtv_vmware_vddk_init_image: quay.io/redhat-cop/virt-migration-factory-vddk:latest
+    mtv_vmware_vddk_init_image: quay.io/redhat-cop/openshift-virtualization-migration-vddk:latest
 
-# Migration Factory Hub clusters to configure
-migration_factory_hub:
+# Ansible for OpenShift Virtualization Migration Hub clusters to configure
+migration_hub:
   hosts:
     etx.redhat.com:
       openshift_verify_ssl: false
@@ -55,8 +54,8 @@ migration_factory_hub:
       # Install AAP on the Hub cluster
       install_aap: true
 
-# Migration Factory Spoke clusters to configure
-migration_factory_spoke:
+# Ansible for OpenShift Virtualization Migration Spoke clusters to configure
+migration_spoke:
   hosts:
     etx.redhat.com:
       openshift_verify_ssl: false

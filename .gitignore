@@ -1,2 +1,3 @@
 content/ansible/setenv.sh
 ansible-navigator.log
+.DS_Store
