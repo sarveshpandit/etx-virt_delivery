@@ -6,9 +6,9 @@ As individual Migration Waves are defined and related applications are migrated 
 
 == Creating a Dedicated Project for Automation
 
-Create a new Project called `vmexamples-automated` by navigating the OpenShift Web Console, expanding *Home* on the left hand navigation bar, and then selecting *Projects*.
+Create a new Project called `vmexamples-automation` by navigating the OpenShift Web Console, expanding *Home* on the left hand navigation bar, and then selecting *Projects*.
 
-Click the *Create Project* button and enter the name *vmexamples-automated* into the _Name_ field. Feel free to optionally enter a _Display name_ and _Description_. Click the *Create* button to create the new _Project_.
+Click the *Create Project* button and enter the name *vmexamples-automation* into the _Name_ field. Feel free to optionally enter a _Display name_ and _Description_. Click the *Create* button to create the new _Project_.
 
 image::Ansible-Migration-Prep/openshift-console-projects.png[link=self, window=blank, width=100%]
 
@@ -31,11 +31,11 @@ Open a web browser and navigate to Ansible Controller and select *Job Templates*
 
 Locate the Job Template named *Configure Networks - vmware-etx - etx.redhat.com* and select the rocket icon.
 
-image::Ansible-Migration-Prep/openshift-console-job-templates-nmstate.png[link=self, window=blank, width=100%]
+image::Ansible-Migration-Prep/aap-job-templates-nmstate.png[link=self, window=blank, width=100%]
 
 This job template is configured to allow additional variables to be specified at launch time. Since the ETX OpenShift environment includes a customized network set up, we will define how the automation creates the associated Nmstate resources.
 
-image::Ansible-Migration-Prep/openshift-console-nmstate-variables.png[link=self, window=blank, width=100%]
+image::Ansible-Migration-Prep/aap-nmstate-variables.png[link=self, window=blank, width=100%]
 
 Enter the following into the _Variables_ dialog:
 
@@ -61,7 +61,7 @@ network_mgmt_manual_nad_list:
 
 Click *Next* to review the settings.
 
-image::Ansible-Migration-Prep/openshift-console-nmstate-job-template-review.png[link=self, window=blank, width=100%]
+image::Ansible-Migration-Prep/aap-nmstate-job-template-review.png[link=self, window=blank, width=100%]
 
 Click *Finish* to launch the Job Template.
 
