@@ -56,4 +56,4 @@ Once all of the issues for during the migration process for the Virtual Machine 
 curl localhost
 ----
 
-If a response of `hello world` is returned, the Virtual Machine was migrated successfully.
+If a response containing the HTML markup with the content `Hello World ETX OpenShift virtualization` is returned, the Virtual Machine was migrated successfully.
