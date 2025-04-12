@@ -9,7 +9,6 @@
 ** xref:openshift-virtualization-migration-installation.adoc[Ansible for OpenShift Virtualization Migration Installation]
 ** xref:preparing-for-migrations.adoc[Preparing for Migrations]
 ** xref:running-a-migration.adoc[Running a Migration]
-** xref:customizing-the-migration-logic.adoc[Customizing the Migration Logic]
 ** xref:running-a-customized-migration.adoc[Running a Customized Migration]
 ** xref:troubleshooting-migrations.adoc[Troubleshooting Migrations]
 ** xref:24_presales.adoc[Module: Pre Sales]
