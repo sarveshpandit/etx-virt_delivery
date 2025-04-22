@@ -45,6 +45,13 @@ all:
     # MTV Configurations
     mtv_vmware_vddk_init_image: quay.io/redhat-cop/openshift-virtualization-migration-vddk:latest
 
+    # Override Organizational Credentials
+    aap_seed_controller_organizations:
+      - name: "{{ aap_seed_aap_org_name }}"
+        galaxy_credentials:
+          - Red Hat Automation Hub Certified
+          - Red Hat Automation Hub Validated
+
 # Ansible for OpenShift Virtualization Migration Hub clusters to configure
 migration_hub:
   hosts:
