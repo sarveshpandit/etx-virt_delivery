@@ -243,7 +243,21 @@ Navigate to the root of the cloned Ansible for OpenShift Virtualization Migratio
 
 [IMPORTANT]
 ====
-Ensure that your OpenShift CLI has a valid and active session to the OpenShift cluster. Otherwise, failures will occur.
+Ensure that your OpenShift CLI has a valid and active token for the OpenShift cluster. Otherwise, failures will occur. You can confirm by running the following commands:
+
+[source,shell]
+----
+oc whoami -t
+oc get pods -n openshift-ingress
+----
+
+A token for the session and the list of OpenShift Ingress pods should be returned. Otherwise, authenticate to OpenShift by running the following command:
+
+[source,shell]
+----
+oc login --insecure-skip-tls-verify=true -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} {openshift_api_server_url}
+----
+
 ====
 
 [source,shell]
