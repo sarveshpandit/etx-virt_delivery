@@ -74,7 +74,7 @@ NOTE: VMs can also be created from an InstanceType wizard as well as created by 
 +
 image::module-00/04_Create_VM_Button.png[link=self, window=blank, width=100%]
 
-. The wizard will appear showing the available pre-defined VM templates. 
+. The wizard will appear showing the available pre-defined VM templates.
 +
 Reviewing the list of available templates you’ll notice that some have a blue badge which indicates "Source available". These are templates which are using the automatically downloaded and stored template disks reviewed in the previous page. If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
 +
@@ -106,7 +106,7 @@ The IP address of the virtual machine on the software-defined network (SDN) is a
 +
 image::module-00/10_Fedora_Details.png[link=self, window=blank, width=100%]
 
-== Create a VM using instancetypes 
+== Create a VM using instancetypes
 
 . Ensure that you are working in the `vmexamples` project (namespace).
 +
@@ -161,9 +161,15 @@ image::Create_VM_PVC/17_Fedora_CPU_Memory.png[link=self, window=blank, width=100
 
 . To review the guest customization, mount the `cloud-init` disk:
 +
+[source,console]
+----
+$ sudo mount -o ro /dev/vdb /mnt
+$ sudo cat /mnt/user-data; echo
+----
++
 image::Create_VM_PVC/21_Fedora01_Cloud_Init.png[link=self, window=blank, width=100%]
 
-. The instance is running the guest agent to surface information about the guest OS to the hypervisor, along with coordinating tasks such as disk quiescing for snapshots.
+. The instance is running the guest agent to surface information about the guest OS to the hypervisor, along with coordinating tasks such as disk quiescing for snapshots. You can check by running `systemctl | grep guest`.
 +
 image::Create_VM_PVC/19_Fedora_Agent.png[link=self, window=blank, width=100%]
 
@@ -189,7 +195,7 @@ The lab environment provides a bastion host, with various command-line tools, in
 $ ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
 ----
 
-The password is `{bastion_ssh_password}`.
+The password is `{bastion_ssh_password}`
 
 . Set the project (namespace) with which you are working.
 * oc project vmexamples
@@ -367,7 +373,7 @@ This overview page provides the OpenShift Virtualization administrator a global 
 +
 [NOTE]
 ====
-Don't forget to check out the `Getting started resources` panel and click the "View all quick starts" link there to access more information about OpenShift virtualization, including Quick Starts which provide many guided walkthroughs including how to create a VM and upload a custom boot source for your virtual machines. 
+Don't forget to check out the `Getting started resources` panel and click the "View all quick starts" link there to access more information about OpenShift virtualization, including Quick Starts which provide many guided walkthroughs including how to create a VM and upload a custom boot source for your virtual machines.
 
 image::Create_VM_PVC/create_quickstarts413.png[]
 ====

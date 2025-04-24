@@ -9,7 +9,7 @@ By default, all virtual machines are attached to the OpenShift software-defined 
 
 However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed. This is in addition or in alternative to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
 
-At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top. With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network. The next section in this lab will cover those steps. 
+At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top. With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network. The next section in this lab will cover those steps.
 
 [NOTE]
 The OpenShift environment has already been configured with an OVS Bridge on each compute node your virtual machines will connect to, thus allowing for easy connectivity with/from outside network resources.
@@ -108,7 +108,7 @@ This section of the lab is primarily performed through the CLI. You will need to
 $ ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
 ----
 
-The password is `{bastion_ssh_password}`.
+The password is `{bastion_ssh_password}`
 ====
 
 
@@ -118,7 +118,7 @@ For this section of the lab we are going to create a *MultiNetwork Policy* that 
 
 NOTE: The IP addresses of your virtual guests will differ from those in the attached images or examples.
 
-. First, change network configuration of the Fedora VMs to make their IP addresses static. This is required, because the policy will block traffic from the DHCP server to the VMs.
+To begin, we are going to change the network configuration of the Fedora VMs to make their IP addresses static. This is required, because the policy will block traffic from the DHCP server to the VMs.
 
 . Navigate to the *fedora01* console.  If necessary, log in.
 +
@@ -164,6 +164,8 @@ $ oc edit network.operator.openshift.io cluster
 Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.  Save and exit from the editor.
 +
 . On the bastion host paste the following content into a new file called `deny-all.yaml`:
++
+TIP: If vi/vim is messing yaml indentation, type `:set paste` to turn off automatic indenting. To turn back on, use `:unset paste`.
 +
 [source,yaml,role=execute]
 ----
@@ -230,7 +232,7 @@ PING 192.168.64.37 (192.168.64.37) 56(84) bytes of data.
 3 packets transmitted, 0 received, 100% packet loss, time 2034ms
 ----
 +
-. Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine. 
+. Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine.
 +
 image::module-03/14_Fedora02_Overview.png[link=self, window=blank, width=100%]
 +
@@ -289,7 +291,7 @@ image::module-03/20_Fedora02_Ping_Allowed.png[link=self, window=blank, width=100
 +
 IMPORTANT: For the next lab, it's important that we clear out the two network policies we created.
 +
-Please run the following two commands:
+Please run the following command:
 +
 [source,sh]
 ----
@@ -298,4 +300,4 @@ $ oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
 
 == Summary
 
-In this section we learned a little bit more about how networking works in OpenShift Virtualization. We created a network attachment definition so that our VMs have network access from outside of the cluster. We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access. 
+In this section we learned a little bit more about how networking works in OpenShift Virtualization. We created a network attachment definition so that our VMs have network access from outside of the cluster. We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access.
