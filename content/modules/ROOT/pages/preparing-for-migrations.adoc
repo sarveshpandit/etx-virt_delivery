@@ -27,7 +27,7 @@ Nmstate is a declarative network manager and is responsible for many of the netw
 
 An Ansible Automation Platform _Job Template_ was created during the provisioning of the Ansible for OpenShift Virtualization Migration in the prior section to manage NMstate configurations.
 
-Open a web browser and navigate to Ansible Controller and select *Job Templates*.
+Open a web browser and navigate to Ansible Controller, expand _Automation Execution_ and select *Templates*.
 
 Locate the Job Template named *Configure Networks - vmware-etx - etx.redhat.com* and select the rocket icon.
 
@@ -43,12 +43,12 @@ Enter the following into the _Variables_ dialog:
 ----
 network_mgmt_manual_localnet_name: localnet2 # <1>
 network_mgmt_openshift_network_bridge_mode: ovs-bridge # <2>
-network_mgmt_manual_nad_list: 
+network_mgmt_manual_nad_list:
  - name: vlan5 # <3>
    portgroup: segment-migrating-to-ocpvirt # <4>
    namespace: vmexamples-automation # <5>
    trunk: false # <6>
-   vlan: 
+   vlan:
       vlan_id: 0 # <7>
 ----
 <1> Name of the localnet as seen in the `NodeNetworkConfigurationPolicy`
@@ -87,7 +87,7 @@ Navigate to Ansible Automation Platform and select *Templates* underneath the _A
 
 Click the Rocket icon next to the _Configure Target - vmware-etx - etx.redhat.com_ Workflow Job Template which, like the Nmstate Job Template, allow for additional Ansible variables to be specified.
 
-Within the _Variables_ dialog, specify tbe `mtv_management_migration_namespace` variable to be `vmexamples-automation` so that any of the resources that are to be created are created within this namespace instead of the default `openshift-mtv` Namespace as shown below:
+Within the _Variables_ dialog, specify the `mtv_management_migration_namespace` variable to be `vmexamples-automation` so that any of the resources that are to be created are created within this namespace instead of the default `openshift-mtv` Namespace as shown below:
 
 [source,yaml]
 ----
@@ -100,13 +100,13 @@ image::Ansible-Migration-Prep/aap-configure-target.png[link=self, window=blank, 
 
 Review the resources that were created in OpenShift by navigating back to the OpenShift Console.
 
-On the left hand navigation bar, expand _Workloads_ and select *Secrets*. Confirm that you are in the `vmexamples-automation` namespace by confirming that the *vmware-automation* Project is selected at the _Project_ dropdown at the top of the screen.
+On the left hand navigation bar, expand _Workloads_ and select *Secrets*. Confirm that you are in the `vmexamples-automation` namespace by confirming that the *vmexamples-automation* Project is selected at the _Project_ dropdown at the top of the screen.
 
 Confirm the *vmware-etx-vddk* _Secret_ is present in the namespace.
 
 image::Ansible-Migration-Prep/openshift-console-namespace-secrets.png[link=self, window=blank, width=100%]
 
-Review the _NetworkMaps_ and _StorageMaps_ that were also created in the `vmware-automation` Namespace. If you look at the *vmware-etx-host* _NetworkMap_ within the *NetworkMaps for Virtualization* page under the _Migration_ section of the left hand navigation bar, select the *YAML* tab to view the details of the resource.
+Review the _NetworkMaps_ and _StorageMaps_ that were also created in the `vmexamples-automation` Namespace. If you look at the *vmware-etx-host* _NetworkMap_ within the *NetworkMaps for Virtualization* page under the _Migration_ section of the left hand navigation bar, select the *YAML* tab to view the details of the resource.
 
 image::Ansible-Migration-Prep/openshift-console-networkmap.png[link=self, window=blank, width=100%]
 
