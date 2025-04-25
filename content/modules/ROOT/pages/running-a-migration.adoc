@@ -15,7 +15,7 @@ image::Ansible-Migration-Execution/aap-job-templates-migrate.png[link=self, wind
 The `OpenShift Virtualization Migration - Migrate - etx.redhat.com` Job Template may not be immediately visible as there are more than 10 templates in total. To enable a greater number of Job Templates on a page, select the *1-10* button at the bottom of the page, and choose a desired Job Template count until this Job Template becomes visible.
 =====
 
-Since Virtual Machine migrations are a primary activity of any journey into OpenShift, automation, being able to trigger automation for a variety of sources aside from within the Ansible Automation Platform is essential. The Automation Controller API affords external components, like an ITSM (IT Service Management), the ability to invoke migration activities as part of typical business processes. As a result, migrations make use of a variable named `mtv_migrate_migration_request` that defines the Virtual Machines that should be migrated including any additional information needed to generate MTV `Plan` and `Migration` resources.
+Since Virtual Machine migrations are a primary activity of any journey into OpenShift, being able to trigger automation for a variety of sources aside from within the Ansible Automation Platform is essential. The Automation Controller API affords external components, like an ITSM (IT Service Management), the ability to invoke migration activities as part of typical business processes. As a result, migrations make use of a variable named `mtv_migrate_migration_request` that defines the Virtual Machines that should be migrated including any additional information needed to generate MTV `Plan` and `Migration` resources.
 
 A `mtv_migrate_migration_request` includes a variety of properties that incorporates required information to support the generation of MTV `Plan` resources, including _Providers_, _NetworkMaps_ and _StorageMaps_ as well as whether a migration should be started or staged for later. Most importantly, a set of VM's and or folders within VMware can be selected to enable the migration of multiple Virtual Machines with ease.
 
@@ -72,7 +72,7 @@ Click *Finish* to launch the Job.
 
 Wait until the _Job_ completes successfully.
 
-Once complete, navigate back to the OpenShift Console and underneath the migrations _Migrations_ section on the left hand navigation bar, select *Plans for virtualization*. Ensure that you are within the `vmexamples-automation` _Project_ by selecting the project from the Project dropdown at the top of the screen. Notice the single _Plan_ called *etx-migration* was created in this namespace and that a _Migration_ will commence once the _Plan_ has been validated.
+Once complete, navigate back to the OpenShift Console and underneath the _Migration_ section on the left hand navigation bar, select *Plans for virtualization*. Ensure that you are within the `vmexamples-automation` _Project_ by selecting the project from the Project dropdown at the top of the screen. Notice the single _Plan_ called *etx-migration* was created in this namespace and that a _Migration_ will commence once the _Plan_ has been validated.
 
 image::Ansible-Migration-Execution/openshift-console-plans.png[link=self, window=blank, width=100%]
 
@@ -84,7 +84,7 @@ By clicking on the *2 VMs* link under the _Virtual Machines_ column, you can rev
 
 image::Ansible-Migration-Execution/openshift-console-plan-virtual-machines.png[link=self, window=blank, width=100%]
 
-Track the progress of the _Migration in the OpenShift Web Console until the migration completes successfully.
+Track the progress of the _Migration_ in the OpenShift Web Console until the migration completes successfully.
 
 image::Ansible-Migration-Execution/openshift-console-migration-complete.png[link=self, window=blank, width=100%]
 
