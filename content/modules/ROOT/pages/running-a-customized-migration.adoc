@@ -21,7 +21,7 @@ Before we start writing the automation, lets discuss the requirements that will 
 
 This time around, you will migrate two Red Hat Enterprise Linux Virtual Machines. Since these instances are running within VMware, they have been assigned vendor specific MAC addresses using one of the following prefixes: `00:50:56`, `00:0C:29`, or `00:05:69`). Our task is to replace those prefixes with another value, such as the OpenShift assigned triplet `02:cd:1b`. The remaining values of the MAC address should be retained as only the first 8 characters should be replaced.
 
-Navigate to the root of the ETX git repository and create a new file called `migrate_vms_update_mac_address.yml` in the `content/ansible/openshift-virtualization` directory with the following content:
+Navigate to the root of the ETX git repository and create a new file called `migrate_vms_update_mac_address.yml` in the `content/ansible/openshift-virtualization-migration` directory with the following content:
 
 .content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml
 [source,shell]
@@ -201,6 +201,7 @@ ansible-navigator run \
   -m stdout \
   --pp=missing \
   --eev=$(pwd):/runner/project:Z \
+  --eev=/home/lab-user/.kube:/root/.kube:Z \
   content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml \
   --pae false \
   -e @migrate_vms_update_mac_address_vars.yml \
