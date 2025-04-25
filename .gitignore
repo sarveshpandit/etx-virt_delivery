@@ -1,3 +1,5 @@
 content/ansible/setenv.sh
 ansible-navigator.log
 .DS_Store
+content/ansible/openshift-virtualization-migration/inventory-etx-base-raf.yml
+content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml

@@ -23,7 +23,7 @@ This time around, you will migrate two Red Hat Enterprise Linux Virtual Machines
 
 Navigate to the root of the ETX git repository and create a new file called `migrate_vms_update_mac_address.yml` in the `content/ansible/openshift-virtualization` directory with the following content:
 
-.content/ansible/openshift-virtualization/migrate_vms_update_mac_address.yml
+.content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml
 [source,shell]
 ----
 - name: Update Virtual Machine MAC Address
@@ -201,9 +201,9 @@ ansible-navigator run \
   -m stdout \
   --pp=missing \
   --eev=$(pwd):/runner/project:Z \
-  content/ansible/openshift-virtualization/migrate_vms_update_mac_address.yml \
+  content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml \
   --pae false \
-  -e @migrate_vms_update_mac.yml \
+  -e @migrate_vms_update_mac_address_vars.yml \
   -e mac_address_prefix=02:cd:1b \
   -e openshift_api_key=$(oc whoami -t)
 ----
