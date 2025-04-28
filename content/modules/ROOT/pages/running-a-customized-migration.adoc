@@ -83,13 +83,6 @@ Navigate to the root of the ETX git repository and create a new file called `mig
       register: mtv_plan
 
     - name: Migration Activities
-      when:
-        - "'resources' in mtv_plan"
-        - mtv_plan.resources | length > 0
-        - "'status' in (mtv_plan.resources | first)"
-        - "'migration' in (mtv_plan.resources | first).status"
-        - (mtv_plan.resources | first).status.migration is not none
-        - (mtv_plan.resources | first).status.migration | length > 0
       block:
 
         - name: Check on Migration
