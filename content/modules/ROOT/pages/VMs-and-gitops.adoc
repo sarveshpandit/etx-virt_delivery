@@ -4,22 +4,19 @@ In this exercise we will create VMs and pods using OpenShift GitOps. We will als
 
 [NOTE]
 ====
-Many of the commands in this module use variable substitutions, which will identified by curly braces.  For example, you will need to replace `{your_github_user}` with your GitHub user name in the next section.
+Many of the commands in this module use variable substitutions, which will identified by curly braces.
 ====
 
 ## Clone the GitOps repository
 
-To run this exercise we need to fork and clone the course git repo.
+To run this exercise we need to clone the course git repo.
 The course git repo is located at `https://github.com/juliovp01/etx-virt_delivery`.
-Log in to GitHub, navigate to this page, and fork the repo to your own account.
 
-image::VMs-and-gitops/fork-repo.png[link=self, window=blank, width=100%]
-
-Then clone the repo to your bastion VM with the following commands.
+Clone the repository to your  bastion VM.
 
 [source,console,subs="attributes"]
 ----
-$ git clone https://github.com/{your_github_user}/etx-virt_delivery
+$ git clone https://github.com/juliovp01/etx-virt_delivery
 Cloning into 'etx-virt_delivery'...
 remote: Enumerating objects: 1300, done.
 remote: Counting objects: 100% (169/169), done.
@@ -71,7 +68,7 @@ Let's deploy the Argo CD instance. In this case we are going to deploy the defau
 
 [source,console,subs="attributes"]
 ----
-$ export gitops_repo=https://github.com/{your_github_user}/etx-virt_delivery.git
+$ export gitops_repo=https://github.com/juliovp01/etx-virt_delivery.git
 
 $ export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
 
