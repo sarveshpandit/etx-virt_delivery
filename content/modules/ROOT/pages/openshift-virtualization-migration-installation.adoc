@@ -178,6 +178,46 @@ rh_username: <username>
 rh_password: <password>
 ----
 
+IMPORTANT: If you would like to encrypt your password instead of saving it in clear text, you could use `ansible-vault` to encrypt it. 
+In the following example, we will be using `RedHat123` as your Red Hat password. 
+A prompt will ask you for a new vault password. This will be the secret that must be provided in order for ansible to decrypt the vault content.
+
+[source,yaml]
+----
+ansible-vault encrypt_string "RedHat123"
+New Vault password:
+Confirm New Vault password:
+----
+
+Once completed, ansible will output the following: 
+
+[source,yaml]
+----
+Encryption successful
+!vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32363961356135633636396339363465623130393635323766633131343432633764666334623737
+          3862376532656134613635346530653436316535616262310a353965326536363831323666396561
+          37613131353337326231666662303165396636376262636165663534623364343165623037613066
+          6533643336656630350a356162656136333438313362373734363564393361366633303734663733
+          6437
+----
+
+You will need to copy the entire block and paste it within the var section, in place of the value. 
+Here is an example:
+
+[source,yaml]
+----
+rh_username: <username>
+rh_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32363961356135633636396339363465623130393635323766633131343432633764666334623737
+          3862376532656134613635346530653436316535616262310a353965326536363831323666396561
+          37613131353337326231666662303165396636376262636165663534623364343165623037613066
+          6533643336656630350a356162656136333438313362373734363564393361366633303734663733
+          6437
+----
+
 To obtain the Ansible for OpenShift Virtualization Migration Ansible Execution Environment, set the `container_username` and `container_password` properties using the provided credentials.
 
 [source,yaml]
@@ -257,6 +297,8 @@ A token for the session and the list of OpenShift Ingress pods should be returne
 ----
 oc login --insecure-skip-tls-verify=true -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} {openshift_api_server_url}
 ----
+
+If you used `ansible-vault` to encrypt your password, you will need to add an additional parameter `--ask-vault-password` to the following command
 
 ====
 
