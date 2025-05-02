@@ -137,10 +137,10 @@ We have provided four pre-generated RVTools files from different vCenter environ
 
 Company "Acme, Inc." has 4 vCenters located in:
 
-* link:../../../../vma-rvtools-analysis/example_rvtools_files/dallas.xlsx[Dallas Primary]
-* link:../../../../vma-rvtools-analysis/example_rvtools_files/dallas1.xlsx[Dallas Secondary]
-* link:../../../../vma-rvtools-analysis/example_rvtools_files/houston.xlsx[Houston]
-* link:../../../../vma-rvtools-analysis/example_rvtools_files/ashburn.xlsx[Ashburn]
+* link:https://github.com/juliovp01/etx-virt_delivery/raw/refs/heads/main/vma-rvtools-analysis/example_rvtools_files/dallas.xlsx[Dallas Primary]
+* link:https://github.com/juliovp01/etx-virt_delivery/raw/refs/heads/main/vma-rvtools-analysis/example_rvtools_files/dallas1.xlsx[Dallas Secondary]
+* link:https://github.com/juliovp01/etx-virt_delivery/raw/refs/heads/main/vma-rvtools-analysis/example_rvtools_files/houston.xlsx[Houston]
+* link:https://github.com/juliovp01/etx-virt_delivery/raw/refs/heads/main/vma-rvtools-analysis/example_rvtools_files/ashburn.xlsx[Ashburn]
 
 [NOTE]
 ====
