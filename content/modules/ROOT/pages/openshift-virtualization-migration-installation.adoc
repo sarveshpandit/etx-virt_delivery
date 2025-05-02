@@ -215,7 +215,7 @@ rh_username: <username>
 rh_password: <password>
 ----
 
-IMPORTANT: If you would like to encrypt your password instead of saving it in clear text, you could use `ansible-vault` to encrypt it. This step is optional, but highlights how to encrypt sensitive information. 
+TIP: If you would like to encrypt your password instead of saving it in clear text, you could use `ansible-vault` to encrypt it. This step is optional, but highlights how to encrypt sensitive information. 
 In the following example, we will be using `RedHat123` as your Red Hat password. 
 A prompt will ask you for a new vault password. This will be the secret that must be provided in order for ansible to decrypt the vault content.
 
