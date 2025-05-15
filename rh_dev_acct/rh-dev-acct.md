@@ -6,8 +6,9 @@ recommended that all attendees create a Red Hat developer account for use
 during the workshop.  This is true even for attendees that have one or more
 existing Red Hat accounts.
 
-If desired, a service such as [GMail](https://gmail.com) can be used to create a new (possibly
-temporary) email address to avoid interfering with any existing Red Hat logins.
+If desired, a service such as [GMail](https://gmail.com) can be used to create a
+new (possibly temporary) email address to avoid interfering with any existing
+Red Hat logins.
 
 1. Navigate to https://developer.redhat.com.
 
@@ -42,7 +43,21 @@ temporary) email address to avoid interfering with any existing Red Hat logins.
    ![](login2.png)
 
 1. You should be taken to the **Welcome to Red Hat Developer** page.  This
-   confirms that you have successfully created your developer account.  These
-   credentials can be used during the workshop when a Red Hat login is required.
+   confirms that you have successfully created your developer account.
 
    ![](great-success.png)
+
+1. *But wait, there's more!!!*
+
+   Before using the new account to access Red Hat software, you must log in to
+   the [Red Hat Customer Portal](https://access.redhat.com) and answer some
+   additional questions.  Once you have provided all of the required information
+   (which may change as you fill out the form) click on the **Submit** button.
+
+   ![](more_info.png)
+
+1. You should be taken to the Customer Portal home page, and your name should
+   be displayed.  Your account is now (finally!) ready to be used when Red Hat
+   credentials are required during the workshop.
+
+   ![](finally.png)
