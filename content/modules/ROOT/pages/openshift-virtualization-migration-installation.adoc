@@ -201,21 +201,37 @@ Also included in the ETX Git repository in the `content/ansible/openshift-virtua
 cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx.yml $OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/inventory-etx.yml
 ----
 
+There are several methods for which Ansible Automation Platform can be subscribed, including using a Service Account from the Red Hat Hybrid Cloud Console or a Subscription manifest. For this workshop, you will make use of a Subscription manifest that provides the necessary entitlements for the target Ansible Automation Platform. Download the manifest file to your local machine from the location provided by the instructors.
+
+If you using the bastion machine provided by the RHDP deployment as your instance, upload the manifest file from your local machine to a temporary directory on your your VM using SCP:
+
+[source,shell]
+----
+scp -P <port_number> <path_to_manifest_file> lab-user@<hostname>:/tmp/aap-manifest.zip
+----
+
+On the VM, move the uploaded manifest file to the root of the directory containing yor previously cloned Ansible for OpenShift Virtualization Migration Git repository.
+
+[source,shell]
+----
+mv /tmp/aap-manifest.zip $OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/aap-manifest.zip
+----
+
 The next section will describe the changes that you will need to make in order to properly deploy the Ansible for OpenShift Virtualization Migration within your OpenShift environment.
 
 ### General Variables
 
 There are a set of variables that are used throughout the automation and are found within the `all` Inventory Group. The `all` Inventory Group applies variables to every _Inventory Group_ that is defined.
 
-Set the `rh_username` and `rh_password` properties with your Red Hat Customer Portal or Red Hat Developers account as shown below:
+To obtain the Ansible for OpenShift Virtualization Migration Ansible Execution Environment, set the `container_username` and `container_password` properties using the provided credentials.
 
 [source,yaml]
 ----
-rh_username: <username>
-rh_password: <password>
+container_username: <username>
+container_password: <password>
 ----
 
-TIP: If you would like to encrypt your password instead of saving it in clear text, you could use `ansible-vault` to encrypt it. This step is optional, but highlights how to encrypt sensitive information. 
+TIP: If you would like to encrypt the password instead of saving it in clear text, you could use `ansible-vault` to encrypt it. This step is optional, but highlights how to encrypt sensitive information. 
 In the following example, we will be using `RedHat123` as your Red Hat password. 
 A prompt will ask you for a new vault password. This will be the secret that must be provided in order for ansible to decrypt the vault content.
 
@@ -245,22 +261,13 @@ Here is an example:
 
 [source,yaml]
 ----
-rh_username: <username>
-rh_password: !vault |
+container_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           32363961356135633636396339363465623130393635323766633131343432633764666334623737
           3862376532656134613635346530653436316535616262310a353965326536363831323666396561
           37613131353337326231666662303165396636376262636165663534623364343165623037613066
           6533643336656630350a356162656136333438313362373734363564393361366633303734663733
           6437
-----
-
-To obtain the Ansible for OpenShift Virtualization Migration Ansible Execution Environment, set the `container_username` and `container_password` properties using the provided credentials.
-
-[source,yaml]
-----
-container_username: <username>
-container_password: <password>
 ----
 
 An Ansible Controller _Project_ will be configured to source the baseline set of Ansible automation so that it can be managed by the platform. Set the `git_username` and `git_password` properties using the provided credentials for accessing Git content.
@@ -347,12 +354,14 @@ ansible-navigator run \
   -m stdout \
   --pp=missing \
   --eev=$(pwd):/runner/project:Z \
+  --eev=$(pwd):/usr/share/ansible/collections/ansible_collections/infra/openshift_virtualization_migration:Z \
   playbooks/migration_factory_aap.yml \
   -i inventory-etx-base.yml \
   -i inventory-etx.yml \
   --pae false \
   -e openshift_host=$(oc whoami --show-server) \
-  -e openshift_temporary_api_key=$(oc whoami -t)
+  -e openshift_temporary_api_key=$(oc whoami -t) \
+  -e bootstrap_aap_license_manifest=$(pwd)/aap-manifest.zip
 ----
 
 The provisioning will take a few minutes to complete as OpenShift is populated with Ansible for OpenShift Virtualization Migration resources.

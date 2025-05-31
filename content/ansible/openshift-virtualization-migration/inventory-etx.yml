@@ -4,10 +4,6 @@
 all:
   vars:
 
-    # Red Hat Account to attach Subscriptions to the AAP Instance 
-    rh_username: <username>
-    rh_password: <password>
-
     # Container Registry Credentials
     container_username: <username>
     container_password: <password>
