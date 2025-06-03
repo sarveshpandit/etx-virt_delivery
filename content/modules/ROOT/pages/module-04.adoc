@@ -290,7 +290,7 @@ image::module-04/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%
 +
 image::module-04/23_Edit_Boot_Media.png[link=self, window=blank, width=100%]
 +
-. Note that the *Use this disk as a boot source* option has been automatically enabled.
+. Note that the *Use this disk as a boot source* option has been automatically enabled. There seems to be a bug in 4.18 on this page. When you click on the *Save* button, the page crashes. Just exit the screen without clicking on the "Save" button for now.
 +
 image::module-04/24_Boot_Source.png[link=self, window=blank, width=100%]
 +
