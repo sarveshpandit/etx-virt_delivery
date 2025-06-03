@@ -221,7 +221,9 @@ The next section will describe the changes that you will need to make in order t
 
 ### General Variables
 
-There are a set of variables that are used throughout the automation and are found within the `all` Inventory Group. The `all` Inventory Group applies variables to every _Inventory Group_ that is defined.
+There are a set of variables within the Inventory file located at `$OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/inventory-etx.yml` that are used throughout the automation and are found within the `all` Inventory Group. Update this file using the steps described below. 
+
+The `all` Inventory Group applies variables to every _Inventory Group_ that is defined.
 
 To obtain the Ansible for OpenShift Virtualization Migration Ansible Execution Environment, set the `container_username` and `container_password` properties using the provided credentials.
 
