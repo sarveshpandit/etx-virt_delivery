@@ -87,7 +87,7 @@ image::module-03/07_Net_Settings.png[link=self, window=blank, width=100%]
 +
 . Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
 +
-. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *default* interface obtains a DHCP IP address from the flat network (*192.168.64.0/18*).
+. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *vlan0* interface obtains a DHCP IP address from the flat network (*192.168.64.0/18*).
 +
 image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
 
@@ -144,7 +144,7 @@ image::module-03/0001-nm-conns.png[link=self, window=blank, width=100%]
 +
 [source,sh]
 ----
-$ nmcli con mod 'Wired connection 1' ipv4.method manual ipv4.addresses 192.168.64.36/18
+$ sudo nmcli con mod 'Wired connection 1' ipv4.method manual ipv4.addresses 192.168.64.36/18
 $ sudo systemctl restart NetworkManager
 ----
 +
@@ -158,7 +158,7 @@ Note that the IP address is no longer dynamic. (It is valid forever.)
 +
 [source,console]
 ----
-$ oc edit network.operator.openshift.io cluster
+$ oc edit networks.operator.openshift.io cluster
 ----
 +
 Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.  Save and exit from the editor.
