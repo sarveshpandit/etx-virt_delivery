@@ -69,6 +69,9 @@ image::module-02/05_Snapshot_Menu.png[link=self, window=blank, width=100%]
 [NOTE]
 There is a warning about the *cloudinitdisk* not being included in the snapshot. This is expected and happens because it is an ephemeral disk.
 +
+[WARNING]
+There is a bug in the software that causes it to malfunction if you change the default snapshot name (`Name`) to anything other than the default. Please keep the name as *appears* on the GUI.
++
 image::module-02/06_VM_Snapshot_Dialog.png[link=self, window=blank, width=100%]
 
 . Press *Save* and wait till the _Snapshot_ has been created and the *status* shows as *Operation complete*.
