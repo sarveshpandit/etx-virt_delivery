@@ -1,0 +1,46 @@
+---
+
+# Ansible for OpenShift Virtualization Migration Ansible Inventory for ETX Workshop
+all:
+  vars:
+
+    # Container Registry Credentials
+    container_username: <username>
+    container_password: <password>
+
+    # Git Repository
+    git_username: <username>
+    git_password: <password>
+
+    # VMware Credentials
+    vmware_host: <host>
+    vmware_username: <username>
+    vmware_password: <password>
+
+# Ansible for OpenShift Virtualization Migration Spoke clusters to configure
+migration_spoke:
+  hosts:
+    etx.redhat.com:
+      openshift_verify_ssl: false
+
+      # List of migration targets to configure 
+      configured_migration_targets:
+        - vmware-etx
+
+  # Variables to apply to all Spoke clusters
+  vars:
+
+    # Migration Targets
+    migration_targets:
+      - name: vmware-etx
+        type: vmware
+        host: "{{ vmware_host }}"
+        username: "{{ vmware_username }}"
+        password: "{{ vmware_password }}"
+        vddk:
+          image: "{{ mtv_vmware_vddk_init_image }}"
+          username: "{{ container_username }}"
+          password: "{{ container_password }}"
+        mapping:
+          create: true
+...

@@ -1,32 +1,228 @@
-# Running  a customized migration playbook
+# Running a Customized Migration
 
-In this lab we will run the migration playbook with the customization that was developed in the previous lab on a different set of VMs.
+In the prior exercise xref:running-a-migration.adoc[Running a Migration], you explored how the Ansible for OpenShift Virtualization Migration can be used to Migrate several Virtual Machines from VMware to OpenShift.
 
-## Prepare the inventory file
+As part of migration activities, there may be a need to customize the actions that takes place as Virtual Machines are brought into OpenShift.
 
-The migration will be run on two linux machines:
-- ETX/student-[student_id]/rhel86
-- ETX/student-[student_id]/rhel93
+In this exercise, you will use Ansible and the Ansible for OpenShift Virtualization Migration to update the MAC address of a Virtual Machine network interface once they have been migrated. This activity represents a common task when migrating a Virtual Machine from one datacenter to another.
 
-prepare the inventory file as before, but this time add a reference to the mutate mac address playbook in the field for the post migrations steps. here is an example:
+We can create a playbook to wrap capabilities provided by the Ansible for OpenShift Virtualization Migration and include our own customized logic to suit our use case. You can think of the Ansible for OpenShift Virtualization Migration as a toolkit for performing Migration activities and incorporate requirements as you see fit.
 
-```yaml
-TODO
-```
+We will develop, test and verify our solution on our local machine to demonstrate how to accomplish such a task.
 
-Add the RHEL9 VMs to this migration wave.
+[NOTE]
+====
+The Migration Toolkit for Virtualization contains functionality to directly incorporate Ansible automation by specifying a _Playbook_ within a `Hook` custom resource that can be executed before or after a Virtual Machine is migrated. This approach will not be leveraged within this exercise.
+====
 
-## Run the migration playbook
+## Developing an Ansible Playbook to Customize the Migration
 
-As before, you can run the playbook either by using the command line or by using the AAP UI.
+Before we start writing the automation, lets discuss the requirements that will need to be performed. Our playbook should trigger the migration of Virtual Machines and once complete, the MAC address on the defined network interfaces for these machines should be updated. 
 
-## Verify that the migration was successful
+This time around, you will migrate two Red Hat Enterprise Linux Virtual Machines. Since these instances are running within VMware, they have been assigned vendor specific MAC addresses using one of the following prefixes: `00:50:56`, `00:0C:29`, or `00:05:69`). Our task is to replace those prefixes with another value, such as the OpenShift assigned triplet `02:cd:1b`. The remaining values of the MAC address should be retained as only the first 8 characters should be replaced.
 
-Verify that the MAC addresses of the VMs were changed and that the VMs were able to start correctly and connect to the network.
+Navigate to the root of the ETX git repository and create a new file called `migrate_vms_update_mac_address.yml` in the `content/ansible/openshift-virtualization-migration` directory with the following content:
 
-You cna go to this VM network detail page to very tht the MAC address was changed: 
+.content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml
+[source,shell]
+----
+- name: Update Virtual Machine MAC Address
+  hosts: localhost
+  gather_facts: false
+  vars:
+    mac_address_prefix: ""
+    openshift_api_key: ""
+  tasks:
 
-TODO
-mage::running-a-customized-migration/migrated-vm.png[link=self, window=blank, width=100%]
+    - name: Verify MAC Prefix Provided
+      ansible.builtin.assert:
+        that:
+          - mac_address_prefix | default('', true) | length > 0
+          - mac_address_prefix | length >= 8
+        quiet: true
+        fail_msg: "Invalid MAC Address Prefix Provided"
 
-and you can ssh into the VMs to verify that they started correctly.
+    - name: Verify OpenShift API Key Provided
+      ansible.builtin.assert:
+        that:
+          - openshift_api_key | default('', true) | length > 0
+        quiet: true
+        fail_msg: "OpenShift API Key Not Provided"
+
+    - name: Verify Migration Request Present
+      ansible.builtin.assert:
+        that:
+          - mtv_migrate_migration_request is defined
+          - mtv_migrate_migration_request is not none
+        quiet: true
+        fail_msg: "Failed to provide Migration Request"
+
+    - name: Retrieve Migration Plan
+      kubernetes.core.k8s_info:
+        api_version: forklift.konveyor.io/v1beta1
+        kind: Plan
+        name: "{{ mtv_migrate_migration_request['plan_name'] }}"
+        namespace: "{{ mtv_migrate_migration_request['mtv_namespace'] }}"
+      register: mtv_plan
+
+    - name: Trigger Migration
+      when:
+        - "'resources' in mtv_plan"
+        - "mtv_plan.resources | length == 0 or 'status' in (mtv_plan.resources | first) and ('migration' not in (mtv_plan.resources | first).status or 'migration' in (mtv_plan.resources | first).status and (mtv_plan.resources | first).status.migration | length == 0)"
+      block:
+        - name: Migrate Virtual Machines
+          ansible.builtin.include_role:
+            name: infra.openshift_virtualization_migration.mtv_migrate
+
+    - name: Retrieve Migration Plan
+      kubernetes.core.k8s_info:
+        api_version: forklift.konveyor.io/v1beta1
+        kind: Plan
+        name: "{{ mtv_migrate_migration_request['plan_name'] }}"
+        namespace: "{{ mtv_migrate_migration_request['mtv_namespace'] }}"
+      register: mtv_plan
+
+    - name: Migration Activities
+      block:
+
+        - name: Check on Migration
+          kubernetes.core.k8s_info:
+            api_version: forklift.konveyor.io/v1beta1
+            kind: Plan
+            name: "{{ mtv_migrate_migration_request['plan_name'] }}"
+            namespace: "{{ mtv_migrate_migration_request['mtv_namespace'] }}"
+          register: mtv_plan
+          retries: 360
+          delay: 20
+          until:
+            - mtv_plan is defined
+            - "'resources' in mtv_plan"
+            - mtv_plan.resources | length == 1
+            - "'status' in mtv_plan.resources|first"
+            - "'migration' in (mtv_plan.resources | first).status"
+            - "'completed' in (mtv_plan.resources|first).status.migration"
+            - (mtv_plan.resources|first).status.migration.completed | trim | length > 0
+            - "'conditions' in (mtv_plan.resources|first).status"
+            - (mtv_plan.resources|first).status.conditions | selectattr('type', 'defined') | selectattr('status', 'defined') | selectattr('type', 'equalto', 'Succeeded') | selectattr('status', 'equalto', 'True') | list | length == 1
+
+        - name: Set Virtual Machine Names
+          ansible.builtin.set_fact:
+            vm_names: "{{ (mtv_plan.resources | first).status.migration.vms | map(attribute='name') | list }}"
+
+        - name: Retrieve Virtual Machines
+          redhat.openshift_virtualization.kubevirt_vm_info:
+            namespace: "{{ mtv_migrate_migration_request['mtv_namespace'] }}"
+          register: namespace_vms
+
+        - name: Set Virtual Machines to Update
+          ansible.builtin.set_fact:
+            plan_vms: "{{ namespace_vms.resources | selectattr('metadata.name', 'in', vm_names) | list }}"
+
+        - name: Set Virtual Machines to Update
+          ansible.builtin.set_fact:
+            plan_vms: "{{ namespace_vms.resources | selectattr('metadata.name', 'in', vm_names) | list }}"
+
+        - name: Update MAC Address
+          kubernetes.core.k8s_json_patch:
+            api_version: "{{ plan_vm.0.apiVersion }}"
+            kind: "{{ plan_vm.0.kind }}"
+            name: "{{ plan_vm.0.metadata.name }}"
+            namespace: "{{ plan_vm.0.metadata.namespace }}"
+            patch:
+              - op: replace
+                path: "/spec/template/spec/domain/devices/interfaces/{{ lookup('ansible.utils.index_of', data=plan_vm.0.spec.template.spec.domain.devices.interfaces, test='eq', key='macAddress', value=plan_vm.1.macAddress)  }}/macAddress"
+                value: "{{ mac_address_prefix[:8] + plan_vm.1.macAddress[8:] }}"
+          loop_control:
+            loop_var: plan_vm
+            label: "{{ plan_vm.0.metadata.name }}"
+          loop: "{{ (plan_vms | default([])) | subelements('spec.template.spec.domain.devices.interfaces', skip_missing=True) }}"
+----
+
+
+Take note at the `vars` property which defines the variables, `mac_address_prefix` which represents the MAC address prefix that should replace the prefix as defined on the Virtual Machine network interface and `openshift_api_key` which represents the OAuth token of the authenticated user within OpenShift. These values will need to be provided in order to run the playbook successfully.
+
+At a high level, this playbook performs the following activities:
+
+. Verify the required properties/variables are provided
+. Invoke the `infra.openshift_virtualization_migration.mtv_migrate` from the Ansible for OpenShift Virtualization Migration Content Collection which will create a MTV `Plan` and `Migration` resource
+. Track the status of the Virtual Machine migration
+. Update the MAC address of the Virtual Machine where the MAC address has been defined on the Network interface with the prefix provided
+
+[NOTE]
+====
+Creating the Ansible Playbook within the `playbooks` directory was performed as a convenience as there is no requirement on where this file should be placed. The contents of the Execution Environment is used when referencing content from the Ansible for OpenShift Virtualization Migration collection.
+====
+
+As described above, the `infra.openshift_virtualization_migration.mtv_migrate` role is invoked within the playbook contents. The Ansible for OpenShift Virtualization Migration collection makes it easy to leverage common capabilities that are needed when performing automation activities.
+
+In our case, we are using the same logic that the _OpenShift Virtualization Migration - Migrate - etx.redhat.com_ Job Template in Ansible Automation Platform executed. However, we are adding automation before and after the migration.
+
+## Testing and Verifying Our Automation
+
+Now that the Ansible playbook has been created, let's perform the migration of two Red Hat Enterprise Linux Virtual Machines from your VMware student directory. These machines are named `rhel86` and `rhel93` respectively.
+
+Instead of using the Ansible Automation Platform user interface to define how the migration will be performed by specifying Job Template Variables, create a new file called `migrate_vms_update_mac_address_vars.yml` containing the following:
+
+.migrate_vms_update_mac_address_vars.yml
+[source,yaml]
+----
+mtv_migrate_migration_request:
+  mtv_namespace: vmexamples-automation
+  source: vmware-etx
+  source_namespace: openshift-mtv
+  destination_namespace: openshift-mtv
+  network_map: vmware-etx-host
+  network_map_namespace: vmexamples-automation
+  storage_map: vmware-etx-host
+  storage_map_namespace: vmexamples-automation
+  plan_name: etx-update-mac
+  start_migration: true
+  vms:
+    - path: "/RS00/vm/ETX/student-<ID>/rhel86"
+    - path: "/RS00/vm/ETX/student-<ID>/rhel93"
+----
+
+Once again, be sure to update `<ID>` in the `vms` property with your student ID.
+
+Perform the migration by running the playbook using `ansible-navigator` using the following command.
+
+[source,shell]
+----
+ansible-navigator run \
+  --pp=missing \
+  --eei=quay.io/redhat-cop/openshift-virtualization-migration-ee:2.5 \
+  -m stdout \
+  --pp=missing \
+  --eev=$(pwd):/runner/project:Z \
+  --eev=/home/lab-user/.kube:/root/.kube:Z \
+  content/ansible/openshift-virtualization-migration/migrate_vms_update_mac_address.yml \
+  --pae false \
+  -e @migrate_vms_update_mac_address_vars.yml \
+  -e mac_address_prefix=02:cd:1b \
+  -e openshift_api_key=$(oc whoami -t)
+----
+
+Monitor the execution of the playbook until it has completed successfully.
+
+Notice at the end of the playbook in the task `Update MAC Address`, the `rhel93` Virtual Machine was Updated:
+
+[source,shell]
+----
+TASK [Update MAC Address] ****************************
+changed: [localhost] => (item=rhel93)
+----
+
+Confirm the MAC address has been updated with the prefix specified by querying the manifest of the `Virtual Machine`
+
+[source,yaml]
+----
+oc get vm -n vmexamples-automation rhel93 -o jsonpath='{ .spec.template.spec.domain.devices.interfaces[*].macAddress }'
+----
+
+As you can see, the MAC address has been updated to confirm with the expected range of OpenShift Virtualization addresses.
+
+## Summary
+
+In this exercise, you explored how to extend the capabilities of the Ansible for OpenShift Virtualization Migration by wrapping automation activities before and after the Virtual Machine Migration process. By utilizing the Ansible for OpenShift Virtualization Migration as a reusable library complex automation activities can be achieved with ease.
+
+Automation, such as this playbook that was developed in this exercise, can be checked in to a Git repository and leveraged within Ansible Automation Platform in a similar fashion to how automation was executed in prior exercises. However, you wil not need to perform those actions during this exercise.

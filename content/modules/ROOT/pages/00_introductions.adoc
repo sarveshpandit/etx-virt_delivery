@@ -8,13 +8,11 @@
 ** xref:module-03.adoc[Network Management]
 ** xref:module-02.adoc[Storage Management]
 ** xref:module-04.adoc[Introduction to Virtual Machine Customization]
-** xref:VMs-and-gitops.adoc[Gitops and Virtual Machines]
-** xref:migration-factory-installation.adoc[Migration Factory Installation]
+** xref:VMs-and-gitops.adoc[GitOps and Virtual Machines]
+** xref:openshift-virtualization-migration-installation.adoc[OpenShift Virtualization Migration Installation]
 ** xref:preparing-for-migrations.adoc[Preparing for Migrations]
 ** xref:running-a-migration.adoc[Running a Migration]
-** xref:customizing-the-migration-logic.adoc[Customizing the Migration Logic]
 ** xref:running-a-customized-migration.adoc[Running a Customized Migration]
-** xref:troubleshooting-migrations.adoc[Troubleshooting Migrations]
 ** xref:running-vma-tool-analysis.adoc[Running VMA Tool Analysis]
 ** xref:24_presales.adoc[Module: Pre Sales Resources]
 * xref:04_thanks.adoc[Thank you and next steps]
@@ -121,8 +119,8 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 ** VMware to OpenShift Presentation
 
 * 3:30 PM - 4:00 PM
-** Migration Factory Deep Dive
-** Deep Dive on the Migration Factory offering: OpenShift Virtualization Ansible Migration Factory Collection
+** Ansible for OpenShift Virtualization Migration Deep Dive
+** Deep Dive on the Ansible for OpenShift Virtualization Migration offering: OpenShift Virtualization Ansible for OpenShift Virtualization Migration Collection
 
 * 4:00 PM - 5:00 PM
 ** Install and configure AAP
