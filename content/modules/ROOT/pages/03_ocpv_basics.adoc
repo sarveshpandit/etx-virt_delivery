@@ -265,6 +265,12 @@ win2k25           157m
     --instancetype u1.small \
     --infer-preference  \
     --volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi
+----
+
+NOTE: You will see the following output as result of the command above:
+
+[source,yaml]
+----
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
