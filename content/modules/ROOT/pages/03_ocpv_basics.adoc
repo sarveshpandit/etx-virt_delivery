@@ -137,7 +137,7 @@ image::Create_VM_PVC/13_Fedora_Console.png[link=self, window=blank, width=100%]
 . Log in to the VM using the `fedora` user and the indicated password.
 +
 [TIP]
-If you are using a non US or International Keyboard in your system, you could chage the virtual machine settings to match your system's keyboard layout. To do this, in your VM console type the following command: `sudo localctlset-keymap <lang>`. For example, for German, the command will be: `sudo localctlset-keymap <de>`. For a complete list of available keymaps, you can run the command `localectl list-keymaps`.
+If you are using a non US or International Keyboard in your system, you could change the virtual machine settings to match your system's keyboard layout. To do this, in your VM console type the following command: `sudo localctlset-keymap <lang>`. For example, for German, the command will be: `sudo localctlset-keymap <de>`. For a complete list of available keymaps, you can run the command `localectl list-keymaps`.
 +
 [IMPORTANT]
 You can click on `Paste` to paste the password after copying it.
