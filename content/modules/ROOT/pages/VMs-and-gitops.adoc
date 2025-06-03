@@ -145,7 +145,7 @@ $ export nginx_ip=$(oc get svc nginx -n gitops-test -o jsonpath='{.spec.clusterI
 $ export apache_ip=$(oc get svc apache -n gitops-test -o jsonpath='{.spec.clusterIP}')
 ----
 
-Verify that the nginx pod can talk to the apache VM.
+Verify that the nginx pod *can* talk to the apache VM.
 
 [source,console,subs="attributes"]
 ----
@@ -154,7 +154,7 @@ $ export nginx_pod_name=$(oc get pod -n gitops-test -l app=nginx -o jsonpath='{.
 $ oc exec -n gitops-test $nginx_pod_name -- curl -s http://${apache_ip}:80
 ----
 
-To verify that the apache VM cannot talk to the nginx pod, you will need the IP address of the nginx service:
+To verify that the apache VM *cannot* talk to the nginx pod, you will need the IP address of the nginx service:
 
 [source,console,subs="attributes"]
 ----
@@ -173,3 +173,5 @@ Then go to OpenShift web interface, log in to the console of the `fedora-apache`
 ----
 $ curl -v http://{replace_with nginx_ip}:8080
 ----
+
+No output should be returned.
