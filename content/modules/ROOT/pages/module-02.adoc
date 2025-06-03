@@ -80,6 +80,9 @@ image::module-02/07_VM_Snapshot_Taken.png[link=self, window=blank, width=100%]
 
 . Press the three-dot menu, and see that the *Restore* option is greyed out.  This is because the VM is currently running.
 +
+[WARNING]
+This method may not work in the deployed version due to a software bug. If you deploy the virtual machine from a Template it will error out. This will work with virtual machines deployed from *Instance Types*. Another method/work around is instead of restore, to create a new virtual machine from the snapshot.
++
 image::module-02/08_VM_Restore_Disabled.png[link=self, window=blank, width=100%]
 
 . Next, switch to the *Console* tab and log in to the VM. We are going to login and perform a modification that prevents the VM from being able to boot.
