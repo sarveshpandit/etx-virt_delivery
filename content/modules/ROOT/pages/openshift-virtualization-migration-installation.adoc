@@ -18,7 +18,7 @@ In addition, the following will be provided for you:
 * Image Registry Credentials to retrieve the Ansible for OpenShift Virtualization Migration Ansible Execution Environment
 * Git Credentials to retrieve the Ansible for OpenShift Virtualization Migration Ansible Content Collection
 
-The process of deploying the Ansible for OpenShift Virtualization Migration makes use of Ansible on the local machine to prepare an instance of Ansible Automation Platform on OpenShift for use managing the lifecycle of Virtual Machines and OpenShift Virtualization. While several architectural patterns are available for deploying the Ansible for OpenShift Virtualization Migration, including configuring an existing instanceof Ansible Automation Platform, you will use the tooling provided with the Ansible for OpenShift Virtualization Migration to deploy a new instance of Ansible Automation Platform to your single OpenShift environment.
+The process of deploying the Ansible for OpenShift Virtualization Migration makes use of Ansible on the local machine to prepare an instance of Ansible Automation Platform on OpenShift for use managing the lifecycle of Virtual Machines and OpenShift Virtualization. While several architectural patterns are available for deploying the Ansible for OpenShift Virtualization Migration, including configuring an existing instance of Ansible Automation Platform, you will use the tooling provided with the Ansible for OpenShift Virtualization Migration to deploy a new instance of Ansible Automation Platform to your single OpenShift environment.
 
 Utilize the following sections to deploy the Ansible for OpenShift Virtualization Migration by first installing any prerequisite software necessary on your machine and then configure the Ansible for OpenShift Virtualization Migration for use in your OpenShift environment.
 
@@ -215,7 +215,7 @@ If you using the bastion machine provided by the RHDP deployment as your instanc
 scp -P <port_number> <path_to_manifest_file> lab-user@<hostname>:/tmp/aap-manifest.zip
 ----
 
-On the VM, move the uploaded manifest file to the root of the directory containing yor previously cloned Ansible for OpenShift Virtualization Migration Git repository.
+On the VM, move the uploaded manifest file to the root of the directory containing your previously cloned Ansible for OpenShift Virtualization Migration Git repository.
 
 [source,shell]
 ----
@@ -375,7 +375,7 @@ The provisioning will take a few minutes to complete as OpenShift is populated w
 
 ## Verify the Provisioning
 
-Once the playbook associated with the provisioning of the Ansible for OpenShift Virtualization Migration has completed successfully, perform te following steps to confirm Ansible Automation Platform is available within the OpenShift cluster and it has been configured properly.
+Once the playbook associated with the provisioning of the Ansible for OpenShift Virtualization Migration has completed successfully, perform the following steps to confirm Ansible Automation Platform is available within the OpenShift cluster and it has been configured properly.
 
 Launch a web browser and navigate to the OpenShift Web Console.
 
@@ -463,7 +463,7 @@ The output for the Workflow Job will be shown which provides a graphical view of
 
 image::Ansible-Migration-Install/aap-workflow-job-execution.png[link=self, window=blank, width=100%]
 
-The progress of each individual _Job_ that was spawned by the Workflow Job Template can be viewed by selecting **Jobs* under the _Automation Execution_ section on the left hand navigation bar.
+The progress of each individual _Job_ that was spawned by the Workflow Job Template can be viewed by selecting *Jobs* under the _Automation Execution_ section on the left hand navigation bar.
 
 image::Ansible-Migration-Install/aap-jobs.png[link=self, window=blank, width=100%]
 
