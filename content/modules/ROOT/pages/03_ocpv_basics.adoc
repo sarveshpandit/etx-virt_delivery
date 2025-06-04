@@ -1,7 +1,3 @@
-:scrollbar:
-:toc2:
-:numbered:
-
 = OpenShift Virtualization Basics
 
 This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
@@ -164,10 +160,10 @@ image::Create_VM_PVC/17_Fedora_CPU_Memory.png[link=self, window=blank, width=100
 
 . To review the guest customization, mount the `cloud-init` disk:
 +
-[source,console]
+[source,console,role=execute]
 ----
-$ sudo mount -o ro /dev/vdb /mnt
-$ sudo cat /mnt/user-data; echo
+sudo mount -o ro /dev/vdb /mnt
+sudo cat /mnt/user-data; echo
 ----
 +
 image::Create_VM_PVC/21_Fedora01_Cloud_Init.png[link=self, window=blank, width=100%]
@@ -189,19 +185,17 @@ image::Create_VM_PVC/19_Fedora_Agent_Details.png[link=self, window=blank, width=
 +
 image::Create_VM_PVC/19_Fedora_Metrics.png[]
 
-== Using virtctl for VMs
-
+== Using the CLI for VM management
 The lab environment provides a bastion host, with various command-line tools, including `oc` and `virtctl` installed.  To connect to the bastion host:
 
-[source,console,subs="attributes"]
+[source,console,subs="attributes",role=execute]
 ----
-$ ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
+ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
 ----
 
 The password is `{bastion_ssh_password}`
 
-. Set the project (namespace) with which you are working.
-* oc project vmexamples
+. First, set the project (namespace) with which you are working:
 +
 [source,console]
 ----
@@ -209,8 +203,7 @@ The password is `{bastion_ssh_password}`
 Now using project "vmexamples" on server "https://api.cluster-8jkpv.dynamic.redhatworkshops.io:6443".
 ----
 
-. To get the list of current VMs, type the following.
-* oc get vms
+. Get the list of VMs in the current namespace:
 +
 [source,console]
 ----
@@ -220,8 +213,7 @@ fedora01   140m   Running   True
 fedora02   113m   Running   True
 ----
 
-. Let's get a list of current instance types; type the following.
-* oc get vmclusterinstancetypes
+. Get a list of available instance types:
 +
 [source,console]
 ----
@@ -241,12 +233,11 @@ m1.xlarge     153m
 ... continued
 ----
 
-. Let's get a list of the current datasources.
-* oc -n openshift-virtualization-os-images get datasources
+. Get a list of datasources. Make sure to look in the `openshift-virtualization-os-images` namespace:
 +
 [source,console]
 ----
-[lab-user@bastion ~]$ oc -n openshift-virtualization-os-images get datasources
+[lab-user@bastion ~]$ oc get datasources -n openshift-virtualization-os-images
 NAME              AGE
 centos-stream10   155m
 centos-stream9    157m
@@ -263,10 +254,10 @@ win2k22           157m
 win2k25           157m
 ----
 
-. Let's create a VM project space with the information we just collected.
-+
-.. The `virtctl create` command can be used to create a VM definition.
-+
+=== Creating a VM with virtctl
+
+Let's create a VM project space with the information we just collected. The `virtctl create` command can be used to create a VM definition:
+
 [source,console]
 ----
 [lab-user@bastion ~]$ virtctl create vm \
@@ -276,7 +267,7 @@ win2k25           157m
     --volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi
 ----
 
-NOTE: You will see the following output as result of the command above:
+You will see the following output as result of the command above. Note that no VM has been created, `virtctl` has only generated a YAML template: 
 
 [source,yaml]
 ----
@@ -302,8 +293,9 @@ spec:
 ... continued
 ----
 
-.. To actually create the VM, pipe the definition to `oc create`.
-+
+So, to actually create the VM, pipe the definition to `oc create`:
+
+[source,console]
 ----
 [lab-user@bastion ~]$ virtctl create vm \
     --name rhel9-enablement \
