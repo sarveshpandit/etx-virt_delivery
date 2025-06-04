@@ -208,7 +208,7 @@ cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx.ym
 
 There are several methods for which Ansible Automation Platform can be subscribed, including using a Service Account from the Red Hat Hybrid Cloud Console or a Subscription manifest. For this workshop, you will make use of a Subscription manifest that provides the necessary entitlements for the target Ansible Automation Platform. Download the manifest file to your local machine from the location provided by the instructors.
 
-If you using the bastion machine provided by the RHDP deployment as your instance, upload the manifest file from your local machine to a temporary directory on your your VM using SCP:
+If you're using the bastion machine provided by the RHDP deployment as your instance, upload the manifest file from your local machine to a temporary directory on your your VM using SCP:
 
 [source,shell]
 ----
