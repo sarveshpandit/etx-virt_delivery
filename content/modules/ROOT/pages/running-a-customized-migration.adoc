@@ -164,7 +164,7 @@ Now that the Ansible playbook has been created, let's perform the migration of t
 Instead of using the Ansible Automation Platform user interface to define how the migration will be performed by specifying Job Template Variables, create a new file called `migrate_vms_update_mac_address_vars.yml` containing the following:
 
 .migrate_vms_update_mac_address_vars.yml
-[source,yaml]
+[source,yaml,role=execute]
 ----
 mtv_migrate_migration_request:
   mtv_namespace: vmexamples-automation
@@ -186,7 +186,7 @@ Once again, be sure to update `<ID>` in the `vms` property with your student ID.
 
 Perform the migration by running the playbook using `ansible-navigator` using the following command.
 
-[source,shell]
+[source,shell,role=execute]
 ----
 ansible-navigator run \
   --pp=missing \
@@ -214,7 +214,7 @@ changed: [localhost] => (item=rhel93)
 
 Confirm the MAC address has been updated with the prefix specified by querying the manifest of the `Virtual Machine`
 
-[source,yaml]
+[source,shell,role=execute]
 ----
 oc get vm -n vmexamples-automation rhel93 -o jsonpath='{ .spec.template.spec.domain.devices.interfaces[*].macAddress }'
 ----
