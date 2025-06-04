@@ -161,7 +161,7 @@ In our case, we are using the same logic that the _OpenShift Virtualization Migr
 
 Now that the Ansible playbook has been created, let's perform the migration of two Red Hat Enterprise Linux Virtual Machines from your VMware student directory. These machines are named `rhel86` and `rhel93` respectively.
 
-Instead of using the Ansible Automation Platform user interface to define how the migration will be performed by specifying Job Template Variables, create a new file called `migrate_vms_update_mac_address_vars.yml` containing the following:
+Instead of using the Ansible Automation Platform user interface to define how the migration will be performed by specifying Job Template Variables, create a new file in the root of the ETX git repo called `migrate_vms_update_mac_address_vars.yml` containing the following:
 
 .migrate_vms_update_mac_address_vars.yml
 [source,yaml,role=execute]
@@ -184,7 +184,7 @@ mtv_migrate_migration_request:
 
 Once again, be sure to update `<ID>` in the `vms` property with your student ID.
 
-Perform the migration by running the playbook using `ansible-navigator` using the following command.
+Perform the migration by running the playbook using `ansible-navigator` using the following command, running it from the root of the ETX git repository.
 
 [source,shell,role=execute]
 ----
