@@ -387,7 +387,3 @@ image::running_vma_tool_analysis/migration.png[scaledwidth=100%]
 
 [start=9]
 . and much, much more...
-
-== HLD (High-Level Design)
-* The high-level design (HLD) will include:
-** Output structure and reporting format.
