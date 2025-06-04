@@ -81,7 +81,7 @@ In the prior section when the Ansible for OpenShift Virtualization Migration was
 
 Similar to the management of Nmstate resources, the creation of StorageMap and NetworkMap resources can be customized and their configurations can be influenced to achieve the desired results.
 
-A _Workflow Job Template_ called *Configure Target - vmware-etx - etx.redhat.com* is available initialize individual Namespaces, such as the `vmexamples-automation` Namespace, with the remaining set of resources the is needed to support Migration activities including the NetworkMaps, StorageMaps, and credentials for the VDDK image.
+A _Workflow Job Template_ called *Configure Target - vmware-etx - etx.redhat.com* is available to initialize individual Namespaces, such as the `vmexamples-automation` Namespace, with the remaining set of resources the is needed to support Migration activities including the NetworkMaps, StorageMaps, and credentials for the VDDK image.
 
 Navigate to Ansible Automation Platform and select *Templates* underneath the _Automation Execution_ section of the left hand navigation bar.
 
