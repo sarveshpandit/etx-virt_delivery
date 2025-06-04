@@ -6,7 +6,7 @@ In the prior exercise, xref:preparing-for-migrations.adoc[Preparing for Migratio
 
 == Migration Requests
 
-As part of the installation of the Ansible for OpenShift Virtualization Migration, a _Job Template_ was created specifically to manage Virtual Machine migrations. This Job Template can be found by navigating to Ansible Automation Platform and selecting *Job Templates* underneath _Automation Execution_ on the left hand navigation bar. The Job Template is named *OpenShift Virtualization Migration - Migrate - etx.redhat.com*.
+As part of the installation of the Ansible for OpenShift Virtualization Migration, a _Job Template_ was created specifically to manage Virtual Machine migrations. This Job Template can be found by navigating to Ansible Automation Platform and selecting *Templates* underneath _Automation Execution_ on the left hand navigation bar. The Job Template is named *OpenShift Virtualization Migration - Migrate - etx.redhat.com*.
 
 image::Ansible-Migration-Execution/aap-job-templates-migrate.png[link=self, window=blank, width=100%]
 
@@ -64,7 +64,14 @@ The rest of the possible options that can be included in the `mtv_migrate_migrat
 
 == Migrate Virtual Machines
 
-Start a migration by selecting the rocket icon next to the OpenShift Virtualization Migration - Migrate - etx.redhat.com_ Job Template. Enter the content of the `mtv_migrate_migration_request` variable into the _Variables_ textbox. Select *Next* to review the content of the Job that will be launched including the Variables that you specified on the previous page.
+Start a migration by selecting the rocket icon next to the OpenShift Virtualization Migration - Migrate - etx.redhat.com_ Job Template. Enter the content of the `mtv_migrate_migration_request` variable into the _Variables_ textbox. 
+
+[NOTE]
+=====
+Remember to replace the `student-id` section with the ID given to you.
+=====
+
+Select *Next* to review the content of the Job that will be launched including the Variables that you specified on the previous page.
 
 image::Ansible-Migration-Execution/aap-job-template-migrate-review.png[link=self, window=blank, width=100%]
 
