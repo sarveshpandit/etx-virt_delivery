@@ -175,3 +175,53 @@ $ curl -v http://{replace_with nginx_ip}:8080
 ----
 
 No output should be returned.
+
+### Using FQDNs of the Kubernetes services
+
+In this example, one can also use the K8s services' fully qualified domain names instead of omitting name resolution by using explicitely the IP addresses.
+
+nginx is a regular container workload, the VM workload itself is only in the pod network. Hence we can also make use of the service FQDNs.
+
+The service FQDN follows the following naming pattern: `svc-name`.`namespace`.svc.cluster.local.
+
+Typically the following search domains are included in a pod in the default pod network:
+
+* `<namespace>.svc.cluster.local`
+* `svc.cluster.local`
+* `cluster.local`
+
+So you can e.g. reach the apache by calling the following endpoints from within the _same namespace_:
+
+* `apache` -> the resolver ends up using the `gitops-test.svc.cluster.local` search domain
+* `apache.gitops-test` -> the resolver ends up using the `svc.cluster.local` search domain
+
+So, you can also run the following command, that only relies on names, not on actual IP addresses:
+
+[source,bash]
+----
+oc exec -n gitops-test $nginx_pod_name -- curl -s http://apache:80
+----
+
+
+Earlier we've verified that the network policies are in place, so that nginx, can only be reached via route.
+
+
+To create that route run the following command:
+
+[source,bash]
+----
+oc create route edge --service nginx --port 8080 nginx -n gitops-test
+----
+
+To retrieve the hostname run:
+
+```bash
+export nginx_route_host=`oc get route nginx -n gitops-test -ojsonpath='{.spec.host}'`
+```
+
+To verify you can reach it via route, run:
+
+```bash
+curl -s https://${nginx_route_host}
+```
+
