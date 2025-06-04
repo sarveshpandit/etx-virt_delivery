@@ -324,7 +324,7 @@ Throughout all of the configurations that have been defined thus far in the prio
 
 At this location, you can specifying the address of the OpenShift API server using the `openshift_host` variable. Credentials can either be provided via Username/Password combination with the `openshift_username` and `openshift_password` variables or using an API Token. Either a long-lived token associated with a Service Account or a temporary API key, such as a token associated with a User, can be provided.
 
-Since there is only 1 OpenShift cluster, we can provide the location of the OpenShift API server and the token of the currently authenticated uer as _Extra Variables_.
+Since there is only 1 OpenShift cluster, we can provide the location of the OpenShift API server and the token of the currently authenticated user as _Extra Variables_.
 
 ## Provision the Ansible for OpenShift Virtualization Migration
 
