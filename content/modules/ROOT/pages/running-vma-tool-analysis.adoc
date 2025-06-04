@@ -387,3 +387,5 @@ image::running_vma_tool_analysis/migration.png[scaledwidth=100%]
 
 [start=9]
 . and much, much more...
+
+Please feel free to explore the notebook and its outputs to gain a deeper understanding of the vSphere environment and contribute to the tool if possible. 
