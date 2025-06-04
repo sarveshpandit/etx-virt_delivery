@@ -318,6 +318,15 @@ migration_targets:
       create: true
 ----
 
+[IMPORTANT]
+====
+The VDDK image that has been referenced previously is available exclusively for use within this workshop and **CANNOT** be used outside of this workshop or copied to other environments or container repositories as it contains licensed VMWare components.
+
+Tooling is available to help produce a VDDK image of your own using the licensed VMWare components that are provided by the customer which can be found in the following repository:
+
+link:https://gitlab.consulting.redhat.com/redhat-cop/openshift-virtualization-migration/openshift-virtualization-vmware-vddk[https://gitlab.consulting.redhat.com/redhat-cop/openshift-virtualization-migration/openshift-virtualization-vmware-vddk]
+====
+
 ### OpenShift Connectivity
 
 Throughout all of the configurations that have been defined thus far in the prior sections, one area that you might be wondering about is how Ansible connects to the OpenShift environment. Since the Ansible for OpenShift Virtualization Migration supports multiple deployment architectures, support is available for specifying the locations of the OpenShift environments as well as how to authenticate within the _Host Group_ for either the `migration_hub` or `migration_spoke` Inventory Group. Whether looking at the `inventory-etx-base.yml` or `inventory-etx.yml` Inventory file, you will notice the variable `openshift_verify_ssl` which allows for SSL verification errors to be ignored.
