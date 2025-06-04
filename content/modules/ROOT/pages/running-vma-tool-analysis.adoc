@@ -171,6 +171,12 @@ Please download these files to your laptop, as they will be required later in th
 
 ===== Setting Up the Environment
 
+[IMPORTANT]
+====
+The tool and repo below are an export of a non-supported project, and are not maintained by Red Hat. It is provided as a reference for educational purposes only and could be used at Consulting engagements without any guarantees. The version of the code provided in this repository for the execution of this lab is not the latest version of the tool.
+If you are a Red Hatter, please check the latest version of the tool in the following internal GitLab repository: https://gitlab.cee.redhat.com/etx-virt-delivery/vma-rvtools-analysis[GitLab VMA RVTools Analysis].
+====
+
 . Clone the Repository
 
   git clone https://github.com/juliovp01/etx-virt_delivery.git
@@ -301,6 +307,16 @@ These scripts automate the setup process by creating and activating the virtual 
 * Jupyter Lab should launch automatically in your default web browser.
 ** If it does not open automatically, navigate to: http://localhost:8888/lab[http://localhost:8888/lab]
 * Once JupyterLab opens, you should see the following interface
+
+[TIP]
+====
+If you deployed the rvtool analysis tool in your bastion node, you could access it by forwarding the port using the following command: 
+
+[source, shell]
+----
+ssh -L 8888:localhost:8888 <bastion-node>
+----
+====
 
 image::running_vma_tool_analysis/jupyter-notebook.png[scaledwidth=100%]
 
