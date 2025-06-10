@@ -163,6 +163,10 @@ image::Create_VM_PVC/17_Fedora_CPU_Memory.png[link=self, window=blank, width=100
 [source,console,role=execute]
 ----
 sudo mount -o ro /dev/vdb /mnt
+----
++
+[source,console,role=execute]
+----
 sudo cat /mnt/user-data; echo
 ----
 +
