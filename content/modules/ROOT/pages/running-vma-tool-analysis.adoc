@@ -314,7 +314,7 @@ If you deployed the rvtool analysis tool in your bastion node, you could access 
 
 [source, shell]
 ----
-ssh -L 8888:localhost:8888 <bastion-node>
+ssh -L 8888:localhost:8888 lab-user@<bastion-node> -p <port>
 ----
 ====
 
