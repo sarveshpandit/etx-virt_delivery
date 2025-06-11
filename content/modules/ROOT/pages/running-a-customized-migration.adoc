@@ -118,10 +118,6 @@ Navigate to the root of the ETX git repository and create a new file called `mig
           ansible.builtin.set_fact:
             plan_vms: "{{ namespace_vms.resources | selectattr('metadata.name', 'in', vm_names) | list }}"
 
-        - name: Set Virtual Machines to Update
-          ansible.builtin.set_fact:
-            plan_vms: "{{ namespace_vms.resources | selectattr('metadata.name', 'in', vm_names) | list }}"
-
         - name: Update MAC Address
           kubernetes.core.k8s_json_patch:
             api_version: "{{ plan_vm.0.apiVersion }}"
