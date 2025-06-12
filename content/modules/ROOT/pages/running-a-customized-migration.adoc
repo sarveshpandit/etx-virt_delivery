@@ -185,7 +185,6 @@ Perform the migration by running the playbook using `ansible-navigator` using th
 [source,shell,role=execute]
 ----
 ansible-navigator run \
-  --pp=missing \
   --eei=quay.io/redhat-cop/openshift-virtualization-migration-ee:2.5 \
   -m stdout \
   --pp=missing \
