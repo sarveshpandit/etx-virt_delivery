@@ -100,13 +100,26 @@ Next, set a new environment variable called `ETX_REPO` to be the location of the
 
 [TIP]
 ====
-The *ETX Workshop Git Repository* is the one located at https://github.com/juliovp01/etx-virt_delivery/  that was cloned in the previous CI/CD exercise into the bastion node.
+The *ETX Workshop Git Repository* is the repository located at link:https://github.com/juliovp01/etx-virt_delivery[https://github.com/juliovp01/etx-virt_delivery] which was cloned in the prior exercise relating to xref:VMs-and-gitops.adoc[GitOps and Virtual Machines].
 ====
 
 [source,shell]
 ----
 export ETX_REPO=/path/to/etx-workshop-repo
 ----
+
+[IMPORTANT]
+====
+Be sure to replace `/path/to/etx-workshop-repo` with the location that you cloned previously. If the repository is not available on your machine, you can obtain the repository and configure the `ETX_REPO` environment variable by running the following commands:
+
+[source,shell]
+----
+cd /home/lab-user
+git clone https://github.com/juliovp01/etx-virt_delivery
+cd etx-virt_delivery
+export ETX_REPO=$(pwd)
+----
+====
 
 Confirm that both the `OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO` and `ETX_REPO` environment variables are set correctly by running the following command:
 
