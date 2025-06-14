@@ -42,7 +42,7 @@ Execute the following:
 ```sh
 chmod +x content/ansible/setenv.sh
 source content/ansible/setenv.sh
-ansible-navigator run --pp=missing --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/create_vms.yml
+ansible-navigator run --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/create_vms.yml
 ```
 
 ## Clean up
@@ -52,5 +52,5 @@ Execute the following
 ```sh
 chmod +x content/ansible/setenv.sh
 source content/ansible/setenv.sh
-ansible-navigator run --pp=missing --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/remove_vms.yml
+ansible-navigator run --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/remove_vms.yml
 ```

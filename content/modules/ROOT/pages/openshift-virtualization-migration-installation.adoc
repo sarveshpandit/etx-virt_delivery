@@ -365,7 +365,6 @@ If you used `ansible-vault` to encrypt your password, you will need to add an ad
 [source,shell]
 ----
 ansible-navigator run \
-  --pp=missing \
   --eei=quay.io/redhat-cop/openshift-virtualization-migration-ee:2.5 \
   -m stdout \
   --pp=missing \
