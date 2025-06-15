@@ -221,18 +221,11 @@ cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx.ym
 
 There are several methods for which Ansible Automation Platform can be subscribed, including using a Service Account from the Red Hat Hybrid Cloud Console or a Subscription manifest. For this workshop, you will make use of a Subscription manifest that provides the necessary entitlements for the target Ansible Automation Platform. Download the manifest file to your local machine from the location provided by the instructors.
 
-If you're using the bastion machine provided by the RHDP deployment as your instance, upload the manifest file from your local machine to a temporary directory on your your VM using SCP:
+If you're using the bastion machine provided by the RHDP deployment as your instance, download the manifest file provided to the root of your OpenShift Virtualization Migration Git repository. 
 
 [source,shell]
 ----
-scp -P <port_number> <path_to_manifest_file> lab-user@<hostname>:/tmp/aap-manifest.zip
-----
-
-On the VM, move the uploaded manifest file to the root of the directory containing your previously cloned Ansible for OpenShift Virtualization Migration Git repository.
-
-[source,shell]
-----
-mv /tmp/aap-manifest.zip $OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/aap-manifest.zip
+curl -L -o $OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/aap-manifest.zip <URL_TO_MANIFEST>
 ----
 
 The next section will describe the changes that you will need to make in order to properly deploy the Ansible for OpenShift Virtualization Migration within your OpenShift environment.
