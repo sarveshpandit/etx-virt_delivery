@@ -385,7 +385,7 @@ ansible-navigator run \
   -e bootstrap_aap_license_manifest=$(pwd)/aap-manifest.zip
 ----
 
-The provisioning will take a few minutes to complete as OpenShift is populated with Ansible for OpenShift Virtualization Migration resources.
+The provisioning will take a few minutes to complete as OpenShift is populated with Ansible for OpenShift Virtualization Migration resources.  Re-run the the above `ansible-navigator run` command if you run into a `HTTP Error 503: Service Unavailable` during the `Apply license to AAP` Task.
 
 ## Verify the Provisioning
 
