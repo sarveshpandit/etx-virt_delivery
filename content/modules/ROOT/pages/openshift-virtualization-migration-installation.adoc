@@ -361,7 +361,7 @@ A token for the session and the list of OpenShift Ingress pods should be returne
 
 [source,shell]
 ----
-oc login --insecure-skip-tls-verify=true -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} {openshift_api_server_url}
+oc login --insecure-skip-tls-verify=true -u ${openshift_cluster_admin_username} -p ${openshift_cluster_admin_password} ${openshift_api_server_url}
 ----
 
 If you used `ansible-vault` to encrypt your password, you will need to add an additional parameter `--ask-vault-password` to the following command
