@@ -7,9 +7,12 @@ By default, all virtual machines are attached to the OpenShift software-defined 
 * The SDN provides additional features for abstracting, connecting, and exposing applications in a controlled manner, whether deployed as VMs or Pods in the cluster. These include the *Service* and *Route* features of OpenShift.
 * OpenShift's network policy engine allows the VM user or administrator to create rules which allow or deny network traffic to and from individual VMs or entire projects/namespaces.
 
-However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed. This is in addition or in alternative to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
+However, virtual machines may also connect directly to one or more external networks, such as VLANs, when needed.
+This is in addition or in alternative to the SDN, which means that, for example, the administrator can connect to the VM from an external IP address, but the application communicates across the SDN with other VMs hosted by OpenShift Virtualization.
 
-At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top. With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network. The next section in this lab will cover those steps.
+At a high level, this is done by configuring the host networking, by creating a *NodeNetworkConfigurationPolicy* such as creating a mode 4 (LACP) bond and a OVS bridge on top.
+With this networking infrastructure set up, we can define *NetworkAttachmentDefinitions* to allow VMs to connect to that bridge, and therefore, directly to the external network.
+The next section in this lab will cover those steps.
 
 [NOTE]
 The OpenShift environment has already been configured with an OVS Bridge on each compute node your virtual machines will connect to, thus allowing for easy connectivity with/from outside network resources.
@@ -34,25 +37,26 @@ To manage an OpenShift node's network configuration you use a tool, available as
 Before creating the network attachment definition, review the NNCP that was used to create the bridge it will use.
 
 . Ensure that you are working in the `vmexamples` project.
-+
+
 . Navigate to *Networking* -> *NodeNetworkConfigurationPolicy*:
 +
 image::module-03/001-nncp.png[link=self, window=blank, width=100%]
-+
+
 . Click *br1*:
 +
 image::module-03/002-br1.png[link=self, window=blank, width=100%]
-+
-. Select the *YAML* tab and review the `spec.desiredState` section.  In particular, note the value of `spec.desiredState.ovn.bridge-mappings[0].localnet` (`localnet2`); this value will be used in the network attachment definition:
+
+. Select the *YAML* tab and review the `spec.desiredState` section.
+In particular, note the value of `spec.desiredState.ovn.bridge-mappings[0].localnet` (`localnet2`); this value will be used in the network attachment definition:
 +
 image::module-03/003-localnet2.png[link=self, window=blank, width=100%]
 
-With the bridge mapping name known, the network attachment definition can be created.
+. With the bridge mapping name known, the network attachment definition can be created.
 
 . Navigate to *Networking* -> *Network Attachment Definitions* and click *Create network attachment definition*:
 +
 image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
-+
+
 . Enter the following settings and click *Create*.
 +
 ** *Name*: `vlan0`
@@ -62,9 +66,12 @@ image::module-03/01_NAD_Dashboard.png[link=self, window=blank, width=100%]
 +
 image::module-03/02_NAD_Create.png[link=self, window=blank, width=100%]
 +
-NOTE: In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN* number. In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0.
-+
-. Examine the details of the network attachment definition. Because this was created in the *vmexamples* project, it will be available only to attach to VMs that are in that project.
+[NOTE]
+In most cases a single OVS bridge can support many Network Attachment Definitions each with their own designated *VLAN* number.
+In this lab we use an untagged network, so no VLAN number is required here, as such our Network Attachment Definition is labeled as vlan0.
+
+. Examine the details of the network attachment definition.
+Because this was created in the *vmexamples* project, it will be available only to attach to VMs that are in that project.
 +
 image::module-03/04_NAD_Created.png[link=self, window=blank, width=100%]
 
@@ -75,23 +82,28 @@ image::module-03/04_NAD_Created.png[link=self, window=blank, width=100%]
 +
 image::module-03/05_VM_Network_Tab.png[link=self, window=blank, width=100%]
 +
-NOTE: Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network. We can choose to modify this existing connection or add a new interface to the VM. Either action we choose currently requires either restarting or live migrating the VM. This is needed, because we need to move the VM into a new Kubernetes pod which has the new network interface attached.
-+
+[NOTE]
+Notice that the VM is currently using a single interface *default* which is connected to the  *Pod networking* network.
+We can choose to modify this existing connection or add a new interface to the VM.
+Either action we choose currently requires either restarting or live migrating the VM. This is needed, because we need to move the VM into a new Kubernetes pod which has the new network interface attached.
+
 . Click the *Add network interface* button.
 +
 image::module-03/06_Add_Net.png[link=self, window=blank, width=100%]
-+
+
 . Change the interface *Name* to `vlan0` and set the *Network* to `vmexamples/vlan0` (the NAD that you created in the previous step). Then click the *Save* button.
 +
 image::module-03/07_Net_Settings.png[link=self, window=blank, width=100%]
-+
+
 . Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
-+
+
 . Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *vlan0* interface obtains a DHCP IP address from the flat network (*192.168.64.0/18*).
 +
 image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
 
-IMPORTANT: Before the next section of this lab, please repeat the actions to attach the `fedora02` VM to the same vlan0 network.  Instead of restarting the VM, live migrate it to another node to complete attaching the new NIC.
+[IMPORTANT]
+Before the next section of this lab, please repeat the actions to attach the `fedora02` VM to the same vlan0 network.
+Instead of restarting the VM, live migrate it to another node to complete attaching the new NIC.
 
 [[multinetwork_policy]]
 
@@ -101,71 +113,88 @@ A multinetwork policy allows you to configure network access to a namespace and 
 
 [NOTE]
 ====
-This section of the lab is primarily performed through the CLI. You will need to ssh to your Bastion host where the CLI tools are already installed.
+This section of the lab is primarily performed through the CLI.
+You will need to ssh to your Bastion host where the CLI tools are already installed.
 
-[source,console,subs="attributes"]
+[source,console,subs="attributes",role=execute]
 ----
-$ ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
+ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
 ----
 
 The password is `{bastion_ssh_password}`
 ====
 
-
 === Create a MultiNetwork Policy
 
-For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffic from reaching the VM's that are attached to our vmexamples/vlan0 *Network Attachment Definition* including our VMs fedora01, and fedora02. We will then explictly allow one-way connectivity from fedora02 to fedora01 to show how we can fine tune network connections, even within the same namespace.
+For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffic from reaching the VM's that are attached to our `vmexamples/vlan0` *Network Attachment Definition* including our VMs `fedora01`, and `fedora02`.
+We will then explictly allow one-way connectivity from `fedora02` to `fedora01` to show how we can fine tune network connections, even within the same namespace.
 
 NOTE: The IP addresses of your virtual guests will differ from those in the attached images or examples.
 
-To begin, we are going to change the network configuration of the Fedora VMs to make their IP addresses static. This is required, because the policy will block traffic from the DHCP server to the VMs.
+To begin, we are going to change the network configuration of the Fedora VMs to make their IP addresses static.
+This is required, because the policy will block traffic from the DHCP server to the VMs.
 
-. Navigate to the *fedora01* console.  If necessary, log in.
+. Navigate to the `fedora01` console.
+If necessary, log in.
+
+. Examine the current IP addresses assigned to the system.
+Make a note of the IP address within the *192.168.XX.0/18* subnet (probably on the `enp2s0` network interface), as you will need it later in this module.
+Also note that the address has been dynamically assigned.
 +
-. Examine the current IP addresses assigned to the system. Make a note of the IP address within the *192.168.64.0/18* subnet (probably on the `enp2s0` network interface), as you will need it later in this module.  Also note that the address has been dynamically assigned.
-+
-[source,sh]
+[source,sh,role=execute]
 ----
-$ ip a
+ip a
 ----
 +
 image::module-03/000-ip-addrs.png[link=self, window=blank, width=100%]
-+
+
 . Display the *NetworkManager* connection profiles. Note the name of the connection profile (*Wired connection 1*) that corresponds to the network interface that you noted above.
 +
-[source,sh]
+[source,sh,role=execute]
 ----
-$ nmcli con show
+nmcli con show
 ----
 +
 image::module-03/0001-nm-conns.png[link=self, window=blank, width=100%]
+
+. Modify the connection profile.
+Be sure to use the IP address that you noted above, not the address in the example.
+Also be sure to use the correct prefix length (18).
 +
-. Modify the connection profile.  Be sure to use the IP address that you noted above, not the address in the example.  Also be sure to use the correct prefix length (18). After modifying the connection profile, restart *NetworkManager* to make the changes effective.
-+
-[source,sh]
+[source,sh,role=execute]
 ----
-$ sudo nmcli con mod 'Wired connection 1' ipv4.method manual ipv4.addresses 192.168.64.36/18
-$ sudo systemctl restart NetworkManager
+sudo nmcli con mod 'Wired connection 1' ipv4.method manual ipv4.addresses 192.168.64.36/18
+----
++
+After modifying the connection profile, restart *NetworkManager* to make the changes effective.
++
+[source,sh,role=execute]
+----
+sudo systemctl restart NetworkManager
 ----
 +
 image:module-03/002-static-ip.png[link=self, window=blank, width=100%]
 +
 Note that the IP address is no longer dynamic. (It is valid forever.)
-+
-. Repeat the above steps on *fedora02*.
-+
+
+. Repeat the above steps on `fedora02`.
+
 . On the bastion host, edit the cluster network operator configuration to enable multi-network policy.
 +
-[source,console]
+[source,sh,role=execute]
 ----
-$ oc edit networks.operator.openshift.io cluster
+oc edit networks.operator.openshift.io cluster
 ----
 +
-Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.  Save and exit from the editor.
+Search for `useMultiNetworkPolicy` and ensure that it is set to `true`.
+Save and exit from the editor.
+
+. On the bastion host paste the following content into a new file called `deny-all.yaml`.
 +
-. On the bastion host paste the following content into a new file called `deny-all.yaml`:
-+
-TIP: If vi/vim is messing yaml indentation, type `:set paste` to turn off automatic indenting. To turn back on, use `:unset paste`.
+[TIP]
+If vi/vim is messing yaml indentation, type `:set paste` to turn off automatic indenting.
+To turn back on, use `:unset paste`.
+
 +
 [source,yaml,role=execute]
 ----
@@ -181,7 +210,7 @@ spec:
   - Ingress
   ingress: []
 ----
-+
+
 . Ping each of your Fedora VMs to confirm that you can currently connect to them. (This will also confirm that you are using the correct IP addresses.)
 +
 [source,sh]

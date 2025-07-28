@@ -1,11 +1,11 @@
 name: modules
-title: ETX Virtualization Delivery Bootcamp
+title: "Product Enablement: ETX Virtualization Lab"
 version: master
 nav:
   - modules/ROOT/nav.adoc
 
 asciidoc:
   attributes:
-    lab_name: "I'm the lab_name var"
+    lab_name: "Product Enablement: ETX Virtualization Lab"
     release-version: master
     page-pagination: true

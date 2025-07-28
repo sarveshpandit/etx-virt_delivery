@@ -1,23 +1,19 @@
-= ETX Virtualization Delivery Bootcamp
+= Product Enablement: ETX Virtualization Lab
 
-== Navigation
+Welcome to the ETX Virtualization Lab.
+This lab is the self-paced version of the ETX-Virtualization Delivery Workshop.
 
-* Modules
-** xref:00_introductions.adoc[Introductions & Bootcamp Agenda]
-** xref:03_ocpv_basics.adoc[Module Lab: OpenShift Virtualization Basics]
-** xref:module-03.adoc[Network Management]
-** xref:module-02.adoc[Storage Management]
-** xref:module-04.adoc[Introduction to Virtual Machine Customization]
-** xref:VMs-and-gitops.adoc[GitOps and Virtual Machines]
-** xref:openshift-virtualization-migration-installation.adoc[OpenShift Virtualization Migration Installation]
-** xref:preparing-for-migrations.adoc[Preparing for Migrations]
-** xref:running-a-migration.adoc[Running a Migration]
-** xref:running-a-customized-migration.adoc[Running a Customized Migration]
-** xref:running-vma-tool-analysis.adoc[Running VMA Tool Analysis]
-** xref:24_presales.adoc[Module: Pre Sales Resources]
-* xref:04_thanks.adoc[Thank you and next steps]
+== Objectives
 
-== Environment Variables 
+On completing this lab, you should be able to:
+
+* Create Virtual Machines
+* Manage Virtual Machines
+* Migrate Virtual Machines
+* Migrate Virtual Machines from VMware to OpenShift Virtualization using Ansible
+* Use Virtualization Migration Assessment (VMA) Tools
+
+== Environment Variables
 
 [horizontal]
 Bastion Node Public Hostname:: {bastion_public_hostname}
@@ -42,29 +38,4 @@ OpenShift KubeAdmin Password:: {openshift_kubeadmin_password}
 * Julio Villareal Peregrino
 * Andrew Block
 * Raffaele Spazzoli
-
-== Objectives
-
-* Everything OpenShift VIRT
-** Admin
-** Virtual machines as containers
-** VM Deployments
-** The great VM Migration
-** Automating with Ansible
-** VM networking
-** Pre Sales
-** Backup and Recovery
-
-== OCP and Virt
-** Why switch from a traditional VM platform?
-Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice. Code in production mode, anywhere you choose to build. Get back to doing work that matters.
-
-** Complete app dev stack: Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
-
-** Shift infrastructure spend to innovation: OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
-
-** Risk mitigation: With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in.
-
-** Independent from infrastructure: Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
-
-** Pure open source innovation: The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+* Freddy Montero

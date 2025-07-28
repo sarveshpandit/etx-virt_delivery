@@ -1,6 +1,6 @@
 ---
 site:
-  title: Experience Red Hat OpenShift Virtualization
+  title: "Product Enablement: ETX Virtualization Lab"
   start_page: modules::00_introductions.adoc
 
 content:

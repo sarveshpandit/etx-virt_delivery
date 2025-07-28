@@ -1,28 +1,62 @@
 = OpenShift Virtualization Basics
 
-This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization. You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization. In the next lab you will customize the VMs a little bit further.
+This lab will introduce you to the basics of creating and managing VMs in OpenShift Virtualization.
+You will see how the web console guides you through the whole process and how easy it is to review VM properties and do some basic customization.
+In the next lab you will customize the VMs a little bit further.
 
-Among other things, this lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here. All VM provisioning methods work with all supported operating systems.
+Among other things, this lab will show two methods for provisioning virtual machines, however, there are many different ways, and they are not limited to just what is shown here.
+All VM provisioning methods work with all supported operating systems.
 
-Creating virtual machines is one of the most frequently accomplished tasks for a virtualization administrator. This section will walk through the process of creating a new virtual machine using a pre-created template. As the virtualization administrator, you have the ability to create your own templates that use guest operating system disks with your organization's customizations, preferred VM sizing options, and additional customization options using cloud-init or sysprep.
+Creating virtual machines is one of the most frequently accomplished tasks for a virtualization administrator.
+This section will walk through the process of creating a new virtual machine using a pre-created template.
+As the virtualization administrator, you have the ability to create your own templates that use guest operating system disks with your organization's customizations, preferred VM sizing options, and additional customization options using cloud-init or sysprep.
 
-In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform. You create a new virtual machine based on a bootable operating system disk image provided in the default configuration of OpenShift Virtualization.
+In this lab, you become familiar with running virtual machines (VMs) on Red Hat^(R)^ OpenShift^(R)^ Container Platform.
+You create a new virtual machine based on a bootable operating system disk image provided in the default configuration of OpenShift Virtualization.
 
 .Goals
-* Understand the difference between an VM and a VMI
+* Reasons to switch from a traditional VM platform
+* Familarize yourself with the difference between an VM and a VMI
 * Create a new virtual machine
 * Access the VM console
 * Gain experience using the VM console
 
+== OpenShift Container Platform and Virtualization
+
+*Why switch from a traditional VM platform?:*
+Adopt cloud-native development and/or cloud-native operations: Red Hat OpenShift helps your team build applications with speed, agility, confidence, and choice.
+Code in production mode, anywhere you choose to build. Get back to doing work that matters.
+
+*Complete app dev stack:*
+Red Hat OpenShift Dev Spaces (formerly Red Hat CodeReady Workspaces), Runtimes, Integration and Process Automation, Serverless, Pipelines, and more with security throughout.
+
+*Shift infrastructure spend to innovation:*
+OpenShift native architecture changes the heavyweight cost structure from SDDC legacy to lightweight container-native frameworks.
+
+*Risk mitigation:*
+With OpenShift support for on-premises and public cloud options, OpenShift is insurance against public cloud lock-in.
+
+*Independent from infrastructure:*
+Red Hat OpenShift runs consistently on bare metal, on-premises virtualization, or public cloud for ultimate choice and flexibility of deployment and updates.
+
+*Pure open source innovation:*
+The innovation in Kubernetes, serverless, service mesh, Kubernetes Operators, and more powered by the velocity of open source, with Red Hat in the lead.
+
 == Difference betwen a VM and VMI
 
-In general, a *virtual machine (VM)* is a virtual environment that simulates the resources of a physical machine, which include CPU, memory, network interfaces, and storage. Typically, VMs maintain application state and persistent data, similar to StatefulSet pods.
+In general, a *virtual machine (VM)* is a virtual environment that simulates the resources of a physical machine, which include CPU, memory, network interfaces, and storage.
+Typically, VMs maintain application state and persistent data, similar to StatefulSet pods.
 
-In Red Hat OpenShift Virtualization, a VM object specifies a template to create a running instance of the VM inside your cluster. *The running instance of a VM is a virtual machine instance (VMI)*. A container inside a pod executes and manages the VMI.
+In Red Hat OpenShift Virtualization, a VM object specifies a template to create a running instance of the VM inside your cluster.
+*The running instance of a VM is a virtual machine instance (VMI)*.
+A container inside a pod executes and manages the VMI.
 
-The relationship between a VM and a VMI is similar to the relationship between a deployment and a replica set. A VM object specifies the template for a VMI pod. If a VMI is deleted, then Kubernetes generates another instance that is based on the VM object configuration.
+The relationship between a VM and a VMI is similar to the relationship between a deployment and a replica set.
+A VM object specifies the template for a VMI pod.
+If a VMI is deleted, then Kubernetes generates another instance that is based on the VM object configuration.
 
-When a VM is created and started, a virt-controller pod signals to a virt-handler pod on a cluster node to create a virt-launcher pod for the VMI. The virt-launcher pod consists of a running libvirtd container instance to execute the VMI as an isolated process.
+When a VM is created and started, a virt-controller pod signals to a virt-handler pod on a cluster node to create a virt-launcher pod for the VMI.
+The virt-launcher pod consists of a running libvirtd container instance to execute the VMI as an isolated process.
 
 == Log in to your OpenShift console
 
@@ -37,7 +71,8 @@ Administrator login is available with:
 
 == Create a new Project
 
-Like other objects in OpenShift, Projects, which are an abstraction for Kubnernetes namespaces, are the boundaries for permissions and other aspects of using and maintaining the resources. Creating a Project is an important first step for any deployment.
+Like other objects in OpenShift, Projects, which are an abstraction for Kubnernetes namespaces, are the boundaries for permissions and other aspects of using and maintaining the resources.
+Creating a Project is an important first step for any deployment.
 
 . Browse to *Virtualization* -> *VirtualMachines* using the left navigation menu:
 +
@@ -48,11 +83,14 @@ image::module-00/01_Left_Menu.png[link=self, window=blank, width=100%]
 The *Virtualization* tab is available only when Red Hat OpenShift Virtualization is installed and properly configured.
 ====
 
-. Examine the *VirtualMachines* dashboard that appears. There are currently no VMs running.
+. Examine the *VirtualMachines* dashboard that appears.
+There are currently no VMs running.
 +
 image::Create_VM_PVC/51_vm_list.png[]
 
-. Before creating a VM we need to create a new project. Virtual machines are deployed to a specific project, or namespace, where, by default, users without permission to the namespace cannot access, manage, or control them. Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
+. Before creating a VM we need to create a new project.
+Virtual machines are deployed to a specific project, or namespace, where, by default, users without permission to the namespace cannot access, manage, or control them.
+Administrators can access all projects, and therefore view all virtual machines, however regular users must be given access to projects as needed.
 +
 .. Click *Project: All Projects* and then click *Create Project*.
 +
@@ -72,7 +110,9 @@ image::module-00/04_Create_VM_Button.png[link=self, window=blank, width=100%]
 
 . The wizard will appear showing the available pre-defined VM templates.
 +
-Reviewing the list of available templates you’ll notice that some have a blue badge which indicates "Source available". These are templates which are using the automatically downloaded and stored template disks reviewed in the previous page. If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
+Reviewing the list of available templates you’ll notice that some have a blue badge which indicates `Source available`.
+These are templates which are using the automatically downloaded and stored template disks reviewed in the previous page.
+If you were deploying in your own environment, you have the option of preventing these from being created and/or removing those source disks, followed by creating and uploading custom disks for your organization.
 +
 image::module-00/05_Create_VM_Templates.png[link=self, window=blank, width=100%]
 
@@ -85,20 +125,29 @@ image::module-00/06_Create_VM_Quick.png[link=self, window=blank, width=100%]
 image::module-00/07_Create_VM_Quick_Name.png[link=self, window=blank, width=100%]
 
 +
-. After about 30 seconds, expect to see the VM is `Running`. During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine. The amount of time this takes will depend on the storage provider.
+. After about 30 seconds, expect to see the VM is `Running`.
+During this time, the storage provider has cloned the template disk so that it can be used by the newly created virtual machine.
+The amount of time this takes will depend on the storage provider.
 +
 image::module-00/08_Fedora_Running.png[link=self, window=blank, width=100%]
 
-. After the VM is created, examine the *Events* tab to see some details of the process. If there are any issues with the creation of the VM, they will show up on this tab as well.
+. After the VM is created, examine the *Events* tab to see some details of the process.
+If there are any issues with the creation of the VM, they will show up on this tab as well.
 +
 image::module-00/09_Fedora_Events.png[link=self, window=blank, width=100%]
 +
-* A _DataVolume_ is created. _DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation flow.
+* A _DataVolume_ is created.
+_DataVolumes_ are used to manage the creation of a VM disk, abstracting the clone or import process onto OpenShift native storage during the virtual machine's creation flow.
 * The _VM_ is started.
 
-. Click the *Overview* tab to return to the primary screen detailing information related to the VM. Note that for this template, the default is 1 CPU and 2 GiB of memory. As the administrator, you can create templates that customize the default configuration of virtual machines. Later in this lab we will have the opportunity to explore the creation of custom templates.
+. Click the *Overview* tab to return to the primary screen detailing information related to the VM.
+Note that for this template, the default is 1 CPU and 2 GiB of memory.
+As the administrator, you can create templates that customize the default configuration of virtual machines.
+Later in this lab we will have the opportunity to explore the creation of custom templates.
 +
-The IP address of the virtual machine on the software-defined network (SDN) is also displayed on this page, along with information about the storage devices, system utilization, the cluster node hosting the virtual machine, and more. By default VMs are attached to the default pod network. Later in this lab we will explore advanced networking options, and how to customize connectivity for VMs.
+The IP address of the virtual machine on the software-defined network (SDN) is also displayed on this page, along with information about the storage devices, system utilization, the cluster node hosting the virtual machine, and more.
+By default VMs are attached to the default pod network.
+Later in this lab we will explore advanced networking options, and how to customize connectivity for VMs.
 +
 image::module-00/10_Fedora_Details.png[link=self, window=blank, width=100%]
 
@@ -126,14 +175,19 @@ image::Create_VM_PVC/003-name-create.png[link=self, window=blank, width=100%]
 
 == Access the virtual machine console
 
-. Click the *Console* tab to access the VM's console. Note that login credentials are shown for the `fedora` user. These are only shown when they have been injected into the guest via `cloud-init`.
+. Click the *Console* tab to access the VM's console.
+Note that login credentials are shown for the `fedora` user.
+These are only shown when they have been injected into the guest via `cloud-init`.
 +
 image::Create_VM_PVC/13_Fedora_Console.png[link=self, window=blank, width=100%]
 
 . Log in to the VM using the `fedora` user and the indicated password.
 +
 [TIP]
-If you are using a non US or International Keyboard in your system, you could change the virtual machine settings to match your system's keyboard layout. To do this, in your VM console type the following command: `sudo localectl set-keymap <lang>`. For example, for German, the command will be: `sudo localectl set-keymap <de>`. For a complete list of available keymaps, you can run the command `localectl list-keymaps`.
+If you are using a non US or International Keyboard in your system, you could change the virtual machine settings to match your system's keyboard layout.
+To do this, in your VM console type the following command: `sudo localectl set-keymap <lang>`.
+For example, for German, the command will be: `sudo localectl set-keymap <de>`.
+For a complete list of available keymaps, you can run the command `localectl list-keymaps`.
 +
 Unfortunately this will most likely break the copy/paste functionality for username and password in the VNC console: this will switch keyboard mapping. When passwords contain affected characters, they will be entered wrong. For example, a password like yyf8-khyi-bbgt will be entered as zzf8-khzi-bbgt with a german keymap. You can verify that easily when pasting the password to the login prompt, where it will be visible. The serial console is not affected.
 +
@@ -141,13 +195,15 @@ Unfortunately this will most likely break the copy/paste functionality for usern
 You can click on `Paste` to paste the password after copying it.
 +
 [IMPORTANT]
-If the `Paste` functionality is not working, take into consideration that the console input is using US keymap. One small trick is to write in the login the password to ensure you are writing the proper characters (specifically that the `-` character is correct).
+If the `Paste` functionality is not working, take into consideration that the console input is using US keymap.
+One small trick is to write in the login the password to ensure you are writing the proper characters (specifically that the `-` character is correct).
 
 . After you log in, run the `ip a` command to display the interfaces and IP addresses:
 +
 image::Create_VM_PVC/15_Fedora_Network.png[link=self, window=blank, width=100%]
 +
-Since this network adapter is connected to the SDN, the IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not an externally accessible IP. This IP will not change even if the VM is live migrated to a different node and the external IP where the VM is connected to the SDN changes.
+Since this network adapter is connected to the SDN, the IP address assigned is an internal IP address used by the _KVM hypervisor_ and is not an externally accessible IP.
+This IP will not change even if the VM is live migrated to a different node and the external IP where the VM is connected to the SDN changes.
 
 . Run `lsblk` to display the list of disks and their capacities and free space:
 +
@@ -162,19 +218,25 @@ image::Create_VM_PVC/17_Fedora_CPU_Memory.png[link=self, window=blank, width=100
 
 . To review the guest customization, mount the `cloud-init` disk:
 +
-[source,console,role=execute]
+[source,sh,role=execute]
 ----
 sudo mount -o ro /dev/vdb /mnt
 ----
 +
-[source,console,role=execute]
+[source,sh,role=execute]
 ----
 sudo cat /mnt/user-data; echo
 ----
 +
 image::Create_VM_PVC/21_Fedora01_Cloud_Init.png[link=self, window=blank, width=100%]
 
-. The instance is running the guest agent to surface information about the guest OS to the hypervisor, along with coordinating tasks such as disk quiescing for snapshots. You can check by running `systemctl | grep guest`.
+. The instance is running the guest agent to surface information about the guest OS to the hypervisor, along with coordinating tasks such as disk quiescing for snapshots.
+You can check by running `systemctl | grep guest`.
++
+[source,console,role=execute]
+----
+systemctl | grep guest
+----
 +
 image::Create_VM_PVC/19_Fedora_Agent.png[link=self, window=blank, width=100%]
 
@@ -192,9 +254,11 @@ image::Create_VM_PVC/19_Fedora_Agent_Details.png[link=self, window=blank, width=
 image::Create_VM_PVC/19_Fedora_Metrics.png[]
 
 == Using the CLI for VM management
-The lab environment provides a bastion host, with various command-line tools, including `oc` and `virtctl` installed.  To connect to the bastion host:
 
-[source,console,subs="attributes",role=execute]
+The lab environment provides a bastion host, with various command-line tools, including `oc` and `virtctl` installed.
+To connect to the bastion host:
+
+[source,sh,subs="attributes",role=execute]
 ----
 ssh lab-user@{bastion_public_hostname} -p {bastion_ssh_port}
 ----
@@ -203,15 +267,27 @@ The password is `{bastion_ssh_password}`
 
 . First, set the project (namespace) with which you are working:
 +
-[source,console]
+[source,sh,role=execute]
+----
+oc project vmexamples
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 [lab-user@bastion ~]$ oc project vmexamples
 Now using project "vmexamples" on server "https://api.cluster-8jkpv.dynamic.redhatworkshops.io:6443".
 ----
 
-. Get the list of VMs in the current namespace:
+. Get the list of VMs in the current namespace by running `oc get vms` command.
 +
-[source,console]
+[source,sh,role=execute]
+----
+oc get vms
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 [lab-user@bastion ~]$ oc get vms
 NAME       AGE    STATUS    READY
@@ -219,9 +295,15 @@ fedora01   140m   Running   True
 fedora02   113m   Running   True
 ----
 
-. Get a list of available instance types:
+. Get a list of available instance types by running `oc get vmclusterinstancetypes` command.
 +
-[source,console]
+[source,sh,role=execute]
+----
+oc get vmclusterinstancetypes
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 [lab-user@bastion ~]$ oc get vmclusterinstancetypes
 NAME          AGE
@@ -239,9 +321,16 @@ m1.xlarge     153m
 ... continued
 ----
 
-. Get a list of datasources. Make sure to look in the `openshift-virtualization-os-images` namespace:
+. Get a list of datasources.
+Make sure to look in the `openshift-virtualization-os-images` namespace.
 +
-[source,console]
+[source,sh,role=execute]
+----
+oc get datasources -n openshift-virtualization-os-images
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 [lab-user@bastion ~]$ oc get datasources -n openshift-virtualization-os-images
 NAME              AGE
@@ -262,9 +351,20 @@ win2k25           157m
 
 === Creating a VM with virtctl
 
-Let's create a VM project space with the information we just collected. The `virtctl create` command can be used to create a VM definition:
+Let's create a VM project space with the information we just collected.
+The `virtctl create` command can be used to create a VM definition:
 
-[source,console]
+[source,sh,role=execute]
+----
+virtctl create vm \
+--name rhel9-enablement \
+--instancetype u1.small \
+--infer-preference  \
+--volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 [lab-user@bastion ~]$ virtctl create vm \
     --name rhel9-enablement \
@@ -273,7 +373,8 @@ Let's create a VM project space with the information we just collected. The `vir
     --volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi
 ----
 
-You will see the following output as result of the command above. Note that no VM has been created, `virtctl` has only generated a YAML template: 
+You will see the following output as result of the command above.
+Note that no VM has been created, `virtctl` has only generated a YAML template:
 
 [source,yaml]
 ----
@@ -301,6 +402,16 @@ spec:
 
 So, to actually create the VM, pipe the definition to `oc create`:
 
+[source,sh,role=execute]
+----
+virtctl create vm \
+--name rhel9-enablement \
+--instancetype u1.small \
+--infer-preference  \
+--volume-import type:ds,src:openshift-virtualization-os-images/rhel9,size:50Gi \
+| oc create -f -
+----
+
 [source,console]
 ----
 [lab-user@bastion ~]$ virtctl create vm \
@@ -314,24 +425,30 @@ virtualmachine.kubevirt.io/rhel9-enablement created
 
 == Live Migrate a Virtual Machine
 
-In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM. Live migration requires *ReadWriteMany* (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time. OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs. Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed.
+In this section, we will migrate the VM from one OpenShift node to another without shutting down the VM.
+Live migration requires *ReadWriteMany* (RWX) storage so that the VM disks can be mounted on both the source and destination nodes at the same time.
+OpenShift Virtualization, unlike other virtualization solutions, does not use monolithic datastores mounted to each cluster member that hold many VM disks for many different VMs.
+Instead, each VM disk is stored in its own volume that is only mounted when and where it's needed.
 
 . Navigate to the `fedora01` VM in your OpenShift console
-+
+
 . Navigate to the *Overview* tab to see on which worker node the VM is running:
 +
 image::module-00/20_VM_Info_Node.png[link=self, window=blank, width=100%]
 +
 [NOTE]
 ====
-You may have to make your browser window wider to see the node's full name. Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.)
+You may have to make your browser window wider to see the node's full name.
+Alternatively, you can click on the abbreviated name, which will take you to the details page for that node, where the full name is displayed; use your browser's back arrow to return to the virtual machine overview.
 ====
 
 . Using the *Actions* menu, select *Migration* and then select *Compute*.
 +
 image::module-00/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
 
-. After a few seconds, the VM will change the status to *Migrating*. A few seconds later, it will return to the *Running* status, but on a new node. The VM has been successfully live migrated!
+. After a few seconds, the VM will change the status to *Migrating*.
+A few seconds later, it will return to the *Running* status, but on a new node.
+The VM has been successfully live migrated!
 +
 image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
 
