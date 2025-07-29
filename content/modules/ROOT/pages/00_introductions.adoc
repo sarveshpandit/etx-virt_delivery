@@ -10,6 +10,7 @@ On completing this lab, you should be able to:
 * Create Virtual Machines
 * Manage Virtual Machines
 * Migrate Virtual Machines
+* Perform Template Management
 * Migrate Virtual Machines from VMware to OpenShift Virtualization using Ansible
 * Use Virtualization Migration Assessment (VMA) Tools
 
