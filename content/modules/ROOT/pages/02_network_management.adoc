@@ -95,9 +95,10 @@ image::module-03/06_Add_Net.png[link=self, window=blank, width=100%]
 +
 image::module-03/07_Net_Settings.png[link=self, window=blank, width=100%]
 
-. Use the *Actions* menu or icon in the upper right corner to restart the VM. After rebooting, navigate to the *Overview* tab:
+. Use the *Actions* menu or icon in the upper right corner to restart the VM.
+After rebooting, navigate to the *Overview* tab.
 
-. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *vlan0* interface obtains a DHCP IP address from the flat network (*192.168.64.0/18*).
+. Once the machine restarts, you can see in the *Network Interfaces* section of the *Overview* screen that the *vlan0* interface obtains a DHCP IP address from the flat network (*192.168.XX.0/18*).
 +
 image::module-03/08_New_IP_Address.png[link=self, window=blank, width=100%]
 
@@ -129,7 +130,8 @@ The password is `{bastion_ssh_password}`
 For this section of the lab we are going to create a *MultiNetwork Policy* that prevents all network traffic from reaching the VM's that are attached to our `vmexamples/vlan0` *Network Attachment Definition* including our VMs `fedora01`, and `fedora02`.
 We will then explictly allow one-way connectivity from `fedora02` to `fedora01` to show how we can fine tune network connections, even within the same namespace.
 
-NOTE: The IP addresses of your virtual guests will differ from those in the attached images or examples.
+[NOTE]
+The IP addresses of your virtual guests will differ from those in the attached images or examples.
 
 To begin, we are going to change the network configuration of the Fedora VMs to make their IP addresses static.
 This is required, because the policy will block traffic from the DHCP server to the VMs.
@@ -213,7 +215,8 @@ spec:
 
 . Ping each of your Fedora VMs to confirm that you can currently connect to them. (This will also confirm that you are using the correct IP addresses.)
 +
-[source,sh]
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ ping -c3 192.168.64.28
 PING 192.168.64.28 (192.168.64.28) 56(84) bytes of data.
@@ -235,18 +238,26 @@ PING 192.168.64.29 (192.168.64.29) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
 rtt min/avg/max/mdev = 0.870/1.673/3.118/1.023 ms
 ----
-+
+
 . Apply the multinetwork policy with the following syntax:
 +
-[source,sh]
+[source,sh,role=execute]
+----
+oc create -f deny-all.yaml -n vmexamples
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ oc create -f deny-all.yaml -n vmexamples
 multinetworkpolicy.k8s.cni.cncf.io/deny-by-default created
 ----
+
+. Now try again to ping the IP addresses your Fedora virtual machines; your ping attempts should now fail.
+(It may take a few seconds for the policy to become effective.)
 +
-. Now try again to ping the IP addresses your Fedora virtual machines; your ping attempts should now fail.  (It may take a few seconds for the policy to become effective.)
-+
-[source,sh]
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ ping -c3 192.168.64.36
 PING 192.168.64.36 (192.168.64.36) 56(84) bytes of data.
@@ -260,19 +271,19 @@ PING 192.168.64.37 (192.168.64.37) 56(84) bytes of data.
 --- 192.168.64.37 ping statistics ---
 3 packets transmitted, 0 received, 100% packet loss, time 2034ms
 ----
-+
+
 . Return to your OpenShift console, and click on *Virtualization -> VirtualMachines* and select your *fedora02* machine.
 +
 image::module-03/14_Fedora02_Overview.png[link=self, window=blank, width=100%]
-+
+
 . Click on the button to open it's web console, and login with the provided credentials.
 +
 image::module-03/15_Fedora02_Console.png[link=self, window=blank, width=100%]
-+
+
 . Attempt to ping the ip address for the *fedora01* virtual machine, notice that it is also blocked, even though we are on the same subnet, in the same namespace. *Leave the ping running.*
 +
 image::module-03/16_Fedora02_Ping_Fail.png[link=self, window=blank, width=100%]
-+
+
 . Return to the bastion host console, and create a new file called `allow-host.yaml`, and paste in the following content:
 +
 [source,yaml,role=execute]
@@ -293,40 +304,49 @@ spec:
         cidr: <IP_ADDR_FROM_FEDORA02>/32
 ----
 +
-IMPORTANT: Make sure that you substitute the correct IP from the *fedora02* VM and leave the the prefix length as *32*.  (We only want to allow traffic from this single IP address, not the subnet.)
+[IMPORTANT]
+Make sure that you substitute the correct IP from the *fedora02* VM and leave the the prefix length as *32*.
+(We only want to allow traffic from this single IP address, not the subnet.)
 +
 image::module-03/17_Allow_Host_Syntax.png[link=self, window=blank, width=100%]
-+
+
 . Apply the policy using the following syntax:
 +
-[source,sh]
+[source,sh,role=execute]
+----
+oc apply -f allow-host.yaml -n vmexamples
+----
++
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ oc apply -f allow-host.yaml -n vmexamples
 multinetworkpolicy.k8s.cni.cncf.io/ingress-ipblock created
 ----
-
 +
 image::module-03/18_Allow_Host_Applied.png[link=self, window=blank, width=100%]
-+
+
 . Attempt to ping from the bastion host. This attempt should still fail as we have not explictly allowed it.
 +
 image::module-03/19_Bastion_Still_Blocked.png[link=self, window=blank, width=100%]
-+
+
 . Return to your *fedora02* VM console, you should find that the ping has now resumed successfully.
 +
 image::module-03/20_Fedora02_Ping_Allowed.png[link=self, window=blank, width=100%]
-+
+
 . Let's clean up the policies for the next section.
-+
-IMPORTANT: For the next lab, it's important that we clear out the two network policies we created.
-+
 Please run the following command:
 +
-[source,sh]
+[source,sh,role=execute]
 ----
-$ oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
+oc delete -f allow-host.yaml -f deny-all.yaml -n vmexamples
 ----
++
+[IMPORTANT]
+For the next lab, it's important that we clear out the two network policies we created.
 
 == Summary
 
-In this section we learned a little bit more about how networking works in OpenShift Virtualization. We created a network attachment definition so that our VMs have network access from outside of the cluster. We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access.
+In this section we learned a little bit more about how networking works in OpenShift Virtualization.
+We created a network attachment definition so that our VMs have network access from outside of the cluster.
+We also implemented a MultiNetwork Policy to demonstrate how we can secure connections to our VMs by only allowing specified hosts access.

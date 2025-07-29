@@ -448,6 +448,7 @@ image::module-00/21_VM_Dialog_Migrate.png[link=self, window=blank, width=100%]
 
 . After a few seconds, the VM will change the status to *Migrating*.
 A few seconds later, it will return to the *Running* status, but on a new node.
+Refresh the page to view the change.
 The VM has been successfully live migrated!
 +
 image::module-00/22_Migrated.png[link=self, window=blank, width=100%]
