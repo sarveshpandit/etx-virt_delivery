@@ -1,6 +1,7 @@
 # VMs and GitOps
 
-In this exercise we will create VMs and pods using OpenShift GitOps. We will also configure a network policy to control the traffic between the VM and the pod.
+In this exercise we will create VMs and pods using OpenShift GitOps.
+We will also configure a network policy to control the traffic between the VM and the pod.
 
 [NOTE]
 ====
@@ -10,13 +11,29 @@ Many of the commands in this module use variable substitutions, which will ident
 ## Clone the GitOps repository
 
 To run this exercise we need to clone the course git repo.
-The course git repo is located at `https://github.com/juliovp01/etx-virt_delivery`.
+The course git repo is located at `https://github.com/RedHatQuickCourses/etx-virt_delivery`.
 
 Clone the repository to your  bastion VM.
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
 ----
-$ git clone https://github.com/juliovp01/etx-virt_delivery
+git clone https://github.com/RedHatQuickCourses/etx-virt_delivery
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+cd etx-virt_delivery
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+git switch self-paced
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
+----
+$ git clone https://github.com/RedHatQuickCourses/etx-virt_delivery
 Cloning into 'etx-virt_delivery'...
 remote: Enumerating objects: 1300, done.
 remote: Counting objects: 100% (169/169), done.
@@ -26,14 +43,33 @@ Receiving objects: 100% (1300/1300), 50.33 MiB | 31.68 MiB/s, done.
 Resolving deltas: 100% (412/412), done.
 
 $ cd etx-virt_delivery
+
+$ git switch self-paced
 ----
 
 ## Install the OpenShift GitOps Operator
 
-This Openshift environment does not have Argo CD already deployed. So we have to deploy it.
+This Openshift environment does not have Argo CD already deployed.
+So we have to deploy it.
 Run the following commands on your bastion VM.
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
+----
+oc adm new-project openshift-gitops
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+oc apply -f content/gitops/bootstrap/subscription.yaml
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+oc apply -f content/gitops/bootstrap/cluster-rolebinding.yaml
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ oc adm new-project openshift-gitops
 Created project openshift-gitops
@@ -58,17 +94,41 @@ Choose *LOG IN VIA OPENSHIFT* and enter your OpenShift credentials:
 * *User:* {openshift_cluster_admin_username}
 * *Password:* {openshift_cluster_admin_password}
 
-When prompted to authorize access, click on *Allow selected permissions*.  The ArgoCD console will be shown.
+When prompted to authorize access, click on *Allow selected permissions*.
+The ArgoCD console will be shown.
 
 image::VMs-and-gitops/argocd-console.png[link=self, window=blank, width=100%]
 
 ## Deploy the Argo CD Instance
 
-Let's deploy the Argo CD instance. In this case we are going to deploy the default Argo CD instance, but in a real world scenario , you might have to design for multitenancy, in which case you might end up needing more than one instance. Run the following commands.
+Let's deploy the Argo CD instance.
+In this case we are going to deploy the default Argo CD instance, but in a real world scenario, you might have to design for multitenancy, in which case you might end up needing more than one instance.
+Run the following commands.
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
 ----
-$ export gitops_repo=https://github.com/juliovp01/etx-virt_delivery.git
+export gitops_repo=https://github.com/RedHatQuickCourses/etx-virt_delivery.git
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+export platform_base_domain=${cluster_base_domain#*.}
+----
+
+[source,sh,role=execute,subs="attributes"]
+----
+envsubst < content/gitops/bootstrap/argocd.yaml | oc apply -f -
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
+----
+$ export gitops_repo=https://github.com/RedHatQuickCourses/etx-virt_delivery.git
 
 $ export cluster_base_domain=$(oc get ingress.config.openshift.io cluster --template={{.spec.domain}} | sed -e "s/^apps.//")
 
@@ -88,15 +148,23 @@ group.user.openshift.io/cluster-admins created
 
 ## Deploy the gitops root Application
 
-We are going to deploy two applications in the same namespace: one VM and one pod. The pod will be able to talk to the VM, but the VM will not be able to talk to the pod.
+We are going to deploy two applications in the same namespace: one VM and one pod.
+The pod will be able to talk to the VM, but the VM will not be able to talk to the pod.
 
-To do so we are going to employ the https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern[app of apps pattern]. In this pattern, we have a root application that deploys other applications.
+To do so we are going to employ the https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern[app of apps pattern].
+In this pattern, we have a root application that deploys other applications.
 
 The root application will look for applications to deploy in the `content/gitops/applications` directory.
 
 Deploy the root application by running the following command.
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
+----
+envsubst < content/gitops/bootstrap/appset.yaml | oc apply -f -
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ envsubst < content/gitops/bootstrap/appset.yaml | oc apply -f -
 applicationset.argoproj.io/root-applications created
@@ -112,7 +180,13 @@ image::VMs-and-gitops/appset-working.png[link=self, window=blank, width=100%]
 
 Examine the network policies that were created
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
+----
+oc get networkpolicy -n gitops-test
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ oc get networkpolicy -n gitops-test
 NAME                          POD-SELECTOR   AGE
@@ -120,43 +194,62 @@ allow-from-ingress-to-nginx   app=nginx      10m
 apache-network-policy         app=apache     10m
 ----
 
-* The nginx pod only accepts traffic from the openshift-ingress namespace. This means that we can create a route for it.
+* The nginx pod only accepts traffic from the openshift-ingress namespace.
+This means that we can create a route for it.
 * The apache VM only accepts traffic from pods in the same namespace, including the nginx pod.
 
 Within your OpenShift console, log in to the console of the `fedora-apache` VM in the `gitops-test` namespace, and run the following commands:
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
 ----
-$ sudo -i # to become root
+sudo -i # to become root
+----
 
-# dnf install -y httpd
+[source,sh,role=execute,subs="attributes"]
+----
+dnf install -y httpd
+----
 
-# systemctl enable httpd --now
+[source,sh,role=execute,subs="attributes"]
+----
+systemctl enable httpd --now
 ----
 
 Now the VM is listening on port 80.
 
 From your bastion host, run the following commands to get the service IPs:
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
 ----
-$ export nginx_ip=$(oc get svc nginx -n gitops-test -o jsonpath='{.spec.clusterIP}')
+export nginx_ip=$(oc get svc nginx -n gitops-test -o jsonpath='{.spec.clusterIP}')
+----
 
-$ export apache_ip=$(oc get svc apache -n gitops-test -o jsonpath='{.spec.clusterIP}')
+[source,sh,role=execute,subs="attributes"]
+----
+export apache_ip=$(oc get svc apache -n gitops-test -o jsonpath='{.spec.clusterIP}')
 ----
 
 Verify that the nginx pod *can* talk to the apache VM.
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
 ----
-$ export nginx_pod_name=$(oc get pod -n gitops-test -l app=nginx -o jsonpath='{.items[0].metadata.name}')
+export nginx_pod_name=$(oc get pod -n gitops-test -l app=nginx -o jsonpath='{.items[0].metadata.name}')
+----
 
-$ oc exec -n gitops-test $nginx_pod_name -- curl -s http://${apache_ip}:80
+[source,sh,role=execute,subs="attributes"]
+----
+oc exec -n gitops-test $nginx_pod_name -- curl -s http://${apache_ip}:80
 ----
 
 To verify that the apache VM *cannot* talk to the nginx pod, you will need the IP address of the nginx service:
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
+----
+echo $nginx_ip
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ echo $nginx_ip
 172.31.208.10
@@ -164,12 +257,19 @@ $ echo $nginx_ip
 
 [NOTE]
 ====
-The IP address of the nginx service will be different in your environment. Be sure to copy the IP address from the last command to use in the next step.
+The IP address of the nginx service will be different in your environment.
+Be sure to copy the IP address from the last command to use in the next step.
 ====
 
 Then go to OpenShift web interface, log in to the console of the `fedora-apache` VM in the `gitops-test` namespace, and run the following command:
 
-[source,console,subs="attributes"]
+[source,sh,role=execute,subs="attributes"]
+----
+curl -v http://{replace_with nginx_ip}:8080
+----
+
+.Sample Output
+[source,texinfo,subs="attributes"]
 ----
 $ curl -v http://{replace_with nginx_ip}:8080
 ----
@@ -180,7 +280,8 @@ No output should be returned.
 
 In this example, one can also use the K8s services' fully qualified domain names instead of omitting name resolution by using explicitely the IP addresses.
 
-nginx is a regular container workload, the VM workload itself is only in the pod network. Hence we can also make use of the service FQDNs.
+`nginx` is a regular container workload, the VM workload itself is only in the pod network.
+Hence we can also make use of the service FQDNs.
 
 The service FQDN follows the following naming pattern: `svc-name`.`namespace`.svc.cluster.local.
 
@@ -197,31 +298,30 @@ So you can e.g. reach the apache by calling the following endpoints from within 
 
 So, you can also run the following command, that only relies on names, not on actual IP addresses:
 
-[source,bash]
+[source,sh,role=execute,subs="attributes"]
 ----
 oc exec -n gitops-test $nginx_pod_name -- curl -s http://apache:80
 ----
 
-
 Earlier we've verified that the network policies are in place, so that nginx, can only be reached via route.
-
 
 To create that route run the following command:
 
-[source,bash]
+[source,sh,role=execute,subs="attributes"]
 ----
 oc create route edge --service nginx --port 8080 nginx -n gitops-test
 ----
 
 To retrieve the hostname run:
 
-```bash
+[source,sh,role=execute,subs="attributes"]
+----
 export nginx_route_host=`oc get route nginx -n gitops-test -ojsonpath='{.spec.host}'`
-```
+----
 
 To verify you can reach it via route, run:
 
-```bash
+[source,sh,role=execute,subs="attributes"]
+----
 curl -s https://${nginx_route_host}
-```
-
+----
