@@ -178,7 +178,8 @@ image::VMs-and-gitops/appset-working.png[link=self, window=blank, width=100%]
 
 ## Verify the deployed applications and traffic policies
 
-Examine the network policies that were created
+Examine the network policies that were created.
+This may take sometime to be available.
 
 [source,sh,role=execute,subs="attributes"]
 ----
@@ -202,7 +203,7 @@ Within your OpenShift console, log in to the console of the `fedora-apache` VM i
 
 [source,sh,role=execute,subs="attributes"]
 ----
-sudo -i # to become root
+sudo -i
 ----
 
 [source,sh,role=execute,subs="attributes"]
@@ -217,7 +218,7 @@ systemctl enable httpd --now
 
 Now the VM is listening on port 80.
 
-From your bastion host, run the following commands to get the service IPs:
+From your `bastion` host, run the following commands to get the service IPs:
 
 [source,sh,role=execute,subs="attributes"]
 ----
