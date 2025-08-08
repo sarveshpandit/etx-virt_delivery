@@ -2,7 +2,9 @@
 
 The installation of Ansible for OpenShift Virtualization Migration configured many of the primitives that are used to support the migration of Virtual Machines into OpenShift in an automated fashion.
 
-As individual Migration Waves are defined and related applications are migrated into OpenShift, dedicated Projects/Namespaces are created to better organize and manage content. We saw this in prior exercises where a dedicated Project called `vmexamples` was used. To illustrate how the Ansible for OpenShift Virtualization Migration can be used to support migration activities, we will create a separate _Project_ where we can demonstrate the capabilities of the Ansible for OpenShift Virtualization Migration.
+As individual Migration Waves are defined and related applications are migrated into OpenShift, dedicated Projects/Namespaces are created to better organize and manage content.
+We saw this in prior exercises where a dedicated Project called `vmexamples` was used.
+To illustrate how the Ansible for OpenShift Virtualization Migration can be used to support migration activities, we will create a separate _Project_ where we can demonstrate the capabilities of the Ansible for OpenShift Virtualization Migration.
 
 == Creating a Dedicated Project for Automation
 
