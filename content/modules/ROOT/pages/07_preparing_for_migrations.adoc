@@ -4,13 +4,18 @@ The installation of Ansible for OpenShift Virtualization Migration configured ma
 
 As individual Migration Waves are defined and related applications are migrated into OpenShift, dedicated Projects/Namespaces are created to better organize and manage content.
 We saw this in prior exercises where a dedicated Project called `vmexamples` was used.
+
 To illustrate how the Ansible for OpenShift Virtualization Migration can be used to support migration activities, we will create a separate _Project_ where we can demonstrate the capabilities of the Ansible for OpenShift Virtualization Migration.
 
 == Creating a Dedicated Project for Automation
 
 Create a new Project called `vmexamples-automation` by navigating the OpenShift Web Console, expanding *Home* on the left hand navigation bar, and then selecting *Projects*.
 
-Click the *Create Project* button and enter the name *vmexamples-automation* into the _Name_ field. Feel free to optionally enter a _Display name_ and _Description_. Click the *Create* button to create the new _Project_.
+Click the *Create Project* button and enter the name *vmexamples-automation* into the _Name_ field.
+
+Feel free to optionally enter a _Display name_ and _Description_.
+
+Click the *Create* button to create the new _Project_.
 
 image::Ansible-Migration-Prep/openshift-console-projects.png[link=self, window=blank, width=100%]
 
@@ -25,7 +30,8 @@ The activities that were previously performed manually can be automated with cap
 
 === Network Management
 
-Nmstate is a declarative network manager and is responsible for many of the networking components of OpenShift and OpenShift Virtualization. Ansible for OpenShift Virtualization Migration includes functionality to automate the network configurations from a VMware environment or to define explicitly how networking configurations, like `NetworkAttachmentDefinition` resources are created in OpenShift.
+Nmstate is a declarative network manager and is responsible for many of the networking components of OpenShift and OpenShift Virtualization.
+Ansible for OpenShift Virtualization Migration includes functionality to automate the network configurations from a VMware environment or to define explicitly how networking configurations, like `NetworkAttachmentDefinition` resources are created in OpenShift.
 
 An Ansible Automation Platform _Job Template_ was created during the provisioning of the Ansible for OpenShift Virtualization Migration in the prior section to manage NMstate configurations.
 
@@ -35,7 +41,8 @@ Locate the Job Template named *Configure Networks - vmware-etx - etx.redhat.com*
 
 image::Ansible-Migration-Prep/aap-job-templates-nmstate.png[link=self, window=blank, width=100%]
 
-This job template is configured to allow additional variables to be specified at launch time. Since the ETX OpenShift environment includes a customized network set up, we will define how the automation creates the associated Nmstate resources.
+This job template is configured to allow additional variables to be specified at launch time.
+Since the ETX OpenShift environment includes a customized network set up, we will define how the automation creates the associated Nmstate resources.
 
 image::Ansible-Migration-Prep/aap-nmstate-variables.png[link=self, window=blank, width=100%]
 
@@ -67,7 +74,9 @@ image::Ansible-Migration-Prep/aap-nmstate-job-template-review.png[link=self, win
 
 Click *Finish* to launch the Job Template.
 
-Monitor the output from the execution of the Job and confirm that it has completed successfully. Once complete a `NetworkAttachmentDefinition` will be created in the `vmexamples-automation` namespace.
+Monitor the output from the execution of the Job and confirm that it has completed successfully.
+
+Once complete a `NetworkAttachmentDefinition` will be created in the `vmexamples-automation` namespace.
 
 Confirm the `NetworkAttachmentDefinition` was created by navigating to the OpenShift Web Console and under _Networking_ on the left hand navigation bar, select *NetworkAttachmentDefinition*.
 
@@ -79,19 +88,20 @@ image::Ansible-Migration-Prep/openshift-console-nad.png[link=self, window=blank,
 
 To migrate Virtual Machines using the Migration Toolkit for Virtualization (MTV), StorageMaps and NetworkMaps must be present within the Namespace the Plans and Migration resources will be created within.
 
-In the prior section when the Ansible for OpenShift Virtualization Migration was deployed a set of activities were performed including the creation of StorageMaps and NetworkMaps within the `openshift-mtv` Namespace. The creation of these resources leverage information from the source and destination environments which has been captured and stored within the MTV Inventory.
+In the prior section when the Ansible for OpenShift Virtualization Migration was deployed a set of activities were performed including the creation of StorageMaps and NetworkMaps within the `openshift-mtv` Namespace.
+The creation of these resources leverage information from the source and destination environments which has been captured and stored within the MTV Inventory.
 
 Similar to the management of Nmstate resources, the creation of StorageMap and NetworkMap resources can be customized and their configurations can be influenced to achieve the desired results.
 
-A _Workflow Job Template_ called *Configure Target - vmware-etx - etx.redhat.com* is available to initialize individual Namespaces, such as the `vmexamples-automation` Namespace, with the remaining set of resources the is needed to support Migration activities including the NetworkMaps, StorageMaps, and credentials for the VDDK image.
+A _Workflow Job Template_ called _Configure Target - vmware-etx - etx.redhat.com_ is available to initialize individual Namespaces, such as the `vmexamples-automation` Namespace, with the remaining set of resources the is needed to support Migration activities including the NetworkMaps, StorageMaps, and credentials for the VDDK image.
 
 Navigate to Ansible Automation Platform and select *Templates* underneath the _Automation Execution_ section of the left hand navigation bar.
 
-Click the Rocket icon next to the _Configure Target - vmware-etx - etx.redhat.com_ Workflow Job Template which, like the Nmstate Job Template, allow for additional Ansible variables to be specified.
+Click the Rocket icon next to the *Configure Target - vmware-etx - etx.redhat.com* Workflow Job Template which, like the Nmstate Job Template, allow for additional Ansible variables to be specified.
 
 Within the _Variables_ dialog, specify the `mtv_management_migration_namespace` variable to be `vmexamples-automation` so that any of the resources that are to be created are created within this namespace instead of the default `openshift-mtv` Namespace as shown below:
 
-[source,yaml]
+[source,sh,role=execute,subs="attributes"]
 ----
 mtv_management_migration_namespace: vmexamples-automation
 ----
@@ -102,17 +112,23 @@ image::Ansible-Migration-Prep/aap-configure-target.png[link=self, window=blank, 
 
 Review the resources that were created in OpenShift by navigating back to the OpenShift Console.
 
-On the left hand navigation bar, expand _Workloads_ and select *Secrets*. Confirm that you are in the `vmexamples-automation` namespace by confirming that the *vmexamples-automation* Project is selected at the _Project_ dropdown at the top of the screen.
+On the left hand navigation bar, expand _Workloads_ and select *Secrets*.
+
+Confirm that you are in the `vmexamples-automation` namespace by confirming that the *vmexamples-automation* Project is selected at the _Project_ dropdown at the top of the screen.
 
 Confirm the *vmware-etx-vddk* _Secret_ is present in the namespace.
 
 image::Ansible-Migration-Prep/openshift-console-namespace-secrets.png[link=self, window=blank, width=100%]
 
-Review the _NetworkMaps_ and _StorageMaps_ that were also created in the `vmexamples-automation` Namespace. If you look at the *vmware-etx-host* _NetworkMap_ within the *NetworkMaps for Virtualization* page under the _Migration_ section of the left hand navigation bar, select the *YAML* tab to view the details of the resource.
+Review the _NetworkMaps_ and _StorageMaps_ that were also created in the `vmexamples-automation` Namespace.
+
+If you look at the *vmware-etx-host* _NetworkMap_ within the *NetworkMaps for Virtualization* page under the _Migration_ section of the left hand navigation bar, select the *YAML* tab to view the details of the resource.
 
 image::Ansible-Migration-Prep/openshift-console-networkmap.png[link=self, window=blank, width=100%]
 
-Notice how the _NetworkMap_ was configured with the connection to the `NetworkAttachmentDefinition` automatically. This is due an annotation present on the `NetworkAttachmentDefinition` matching the name of the VMware network that is being mapped.
+Notice how the _NetworkMap_ was configured with the connection to the `NetworkAttachmentDefinition` automatically.
+
+This is due an annotation present on the `NetworkAttachmentDefinition` matching the name of the VMware network that is being mapped.
 
 The *vmware-etx-host* _StorageMap_ on the *NetworkMaps for Virtualization* page was configured with the connection to the `ocs-external-storagecluster-ceph-rbd` as it is the default _StorageClass_ in the cluster.
 

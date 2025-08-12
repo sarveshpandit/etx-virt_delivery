@@ -114,7 +114,7 @@ This should be the location where you cloned the ETX workshop Git repository.
 
 [TIP]
 ====
-The *ETX Workshop Git Repository* is the repository located at link:https://github.com/RedHatQuickCourses/etx-virt_delivery[https://github.com/RedHatQuickCourses/etx-virt_delivery] which was cloned in the prior exercise relating to xref:VMs-and-gitops.adoc[GitOps and Virtual Machines].
+The *ETX Workshop Git Repository* is the repository located at link:https://github.com/RedHatQuickCourses/etx-virt_delivery[https://github.com/RedHatQuickCourses/etx-virt_delivery] which was cloned in the prior exercise relating to xref:05_vms_and_gitops.adoc[GitOps and Virtual Machines].
 ====
 
 [source,sh,role=execute,subs="attributes"]
@@ -266,6 +266,7 @@ cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx.ym
 ----
 
 There are several methods for which Ansible Automation Platform can be subscribed, including using a Service Account from the Red Hat Hybrid Cloud Console or a Subscription manifest.
+
 You can follow the insructions from the lab support gudie to create and download your own manifest.
 // For this workshop, you will make use of a Subscription manifest that provides the necessary entitlements for the target Ansible Automation Platform.
 // Download the manifest file to your local machine from the location provided by the instructors.
@@ -284,7 +285,7 @@ If you're using the bastion machine provided by the RHDP deployment as your inst
 aap-manifest.zip  etx-virt_delivery  openshift_virtualization_migration
 (etx) [lab-user@bastion ~]$ pwd
 /home/lab-user
-(etx) [lab-user@bastion ~]$ mv aap-manifest.zip openshift_virtualization_migration/
+(etx) [lab-user@bastion ~]$ cp aap-manifest.zip openshift_virtualization_migration/aap-manifest.zip
 (etx) [lab-user@bastion ~]$ ls openshift_virtualization_migration/aap-manifest.zip
 openshift_virtualization_migration/aap-manifest.zip
 ----
@@ -421,7 +422,16 @@ Since there is only 1 OpenShift cluster, we can provide the location of the Open
 
 The installation of the Ansible for OpenShift Virtualization Migration within the OpenShift ETX workshop environment involves the deployment and configuration of Ansible Automation Platform.
 
-Navigate to the root of the cloned Ansible for OpenShift Virtualization Migration Collection repository and deploy the Ansible for OpenShift Virtualization Migration to the OpenShift environment by executing the following command.
+Navigate to the root of the cloned Ansible for OpenShift Virtualization Migration Collection repository.
+
+.Sample Output
+[source,texinfo,subs="attributes"]
+----
+(etx) [lab-user@bastion openshift_virtualization_migration]$ pwd
+/home/lab-user/openshift_virtualization_migration
+----
+
+Deploy the Ansible for OpenShift Virtualization Migration to the OpenShift environment by executing the following command.
 
 [IMPORTANT]
 ====
@@ -514,6 +524,7 @@ image::Ansible-Migration-Install/aap-dashboard.png[link=self, window=blank, widt
 Once authenticated to Ansible Automation Platform, let's take a moment to explore the Ansible for OpenShift Virtualization Migration related content that was populated within the instance.
 
 First, the same Ansible Execution Environment that was used to facilitate the deployment of the Ansible for OpenShift Virtualization Migration has been added and will be used to run related automation activities within the platform.
+
 This can be verified by expanding the _Automation Execution_ section on the left hand navigation bar, expand _Infrastructure_, and then select *Execution Environments*.
 
 image::Ansible-Migration-Install/aap-dashboard-ee.png[link=self, window=blank, width=100%]
@@ -523,6 +534,7 @@ _OpenShift Virtualization Migration_ is the name of the Execution Environment th
 image::Ansible-Migration-Install/aap-ees.png[link=self, window=blank, width=100%]
 
 Next, an Organization called *OpenShift Virtualization Migration* was created to contain all of the resources related to the Ansible for OpenShift Virtualization Migration.
+
 This can be seen by expanding the _Access Management_ section on the left hand navigation bar and selecting *Organizations*.
 
 image::Ansible-Migration-Install/aap-orgs.png[link=self, window=blank, width=100%]
@@ -538,11 +550,13 @@ image::Ansible-Migration-Install/aap-credentials.png[link=self, window=blank, wi
 Some of these credentials makes use of custom _Credential Types_ which can be seen by selecting *Credential Types* right below _Credentials_ on the left hand navigation bar.
 
 The primary set of content (playbooks) responsible for execution is source from the aforementioned GitLab instance and is brought into Ansible Controller as a Project called _OpenShift Virtualization Migration_.
+
 This can be seen by selecting *Projects* under the _Automation Execution_ section on the left hand navigation bar.
 
 image::Ansible-Migration-Install/aap-projects.png[link=self, window=blank, width=100%]
 
 Finally, view all of the Ansible for OpenShift Virtualization Migration related _Job Templates_ and _Workflow Job Templates_ by selecting *Templates* under the _Automation Execution_ section on the left hand navigation bar.
+
 We will be leveraging these resources in the upcoming section to support automating the migration of Virtual Machines into OpenShift.
 
 image::Ansible-Migration-Install/aap-job-templates.png[link=self, window=blank, width=100%]
@@ -550,6 +564,7 @@ image::Ansible-Migration-Install/aap-job-templates.png[link=self, window=blank, 
 ## Finalizing the Installation
 
 The last step in the deployment process of the Ansible for OpenShift Virtualization Migration is to trigger a _Workflow Job Template_ that will setup OpenShift for baseline use.
+
 In particular, the following steps will occur:
 
 . Install Required OpenShift Operators
