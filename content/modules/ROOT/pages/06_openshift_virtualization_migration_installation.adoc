@@ -14,6 +14,7 @@ To get started, you will need the following:
 * link:https://access.redhat.com[Red Hat Customer Portal] / link:https://developers.redhat.com[Red Hat Developers] account
 * Image Registry Credentials to retrieve the Ansible for OpenShift Virtualization Migration Ansible Execution Environment
 * Git Credentials to retrieve the Ansible for OpenShift Virtualization Migration Ansible Content Collection
+* vCenter credentials
 
 The process of deploying the Ansible for OpenShift Virtualization Migration makes use of Ansible on the local machine to prepare an instance of Ansible Automation Platform on OpenShift for use managing the lifecycle of Virtual Machines and OpenShift Virtualization.
 While several architectural patterns are available for deploying the Ansible for OpenShift Virtualization Migration, including configuring an existing instance of Ansible Automation Platform, you will use the tooling provided with the Ansible for OpenShift Virtualization Migration to deploy a new instance of Ansible Automation Platform to your single OpenShift environment.
@@ -235,13 +236,16 @@ Three Inventory groups are available and described in the following table:
 |===
 
 In addition to the Inventory Groups, _Migration Targets_ which are located within vars section of the `migration_spoke` Inventory group represent source and destination environments containing Virtual Machines.
+
 In most cases, a VMware vSphere environment will be a source and an OpenShift cluster will be a destination.
 
 For this lab, since there is only 1 OpenShift cluster, we will leverage a combined hub and spoke architecture within the same cluster.
 The Ansible for OpenShift Virtualization Migration will also be responsible for deploying and configuring Ansible Automation Platform on the hub instance.
 
 Given that the Ansible for OpenShift Virtualization Migration relies heavily on the Inventory, there are a number of variables that can be configured.
+
 An inventory starter (in YAML format) is located in the `content/ansible/openshift-virtualization-migration/inventory-etx-base.yml` file within the ETX workshop Git repository.
+
 This file contains the base set of variables used to drive the deployment and should not need to be modified.
 
 Copy the file from the ETX repository to the root of the cloned Ansible for OpenShift Virtualization Migration Git repository.
@@ -252,18 +256,22 @@ cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx-ba
 ----
 
 Open the `inventory-etx-base.yml` file that has been copied to the root of the Ansible for OpenShift Virtualization Migration Git repository to review these base configuration.
+
 The inventory starter includes a lot of comments in order to illustrate the significance of each value and to ensure the proper configurations are set.
 No changes need to be made to this file.
+
 However, it is good to review the variables that are being configured.
 
 Also included in the ETX Git repository in the `content/ansible/openshift-virtualization-migration/inventory-etx.yml` file is the Ansible Inventory that you will modify and drive the deployment of the Ansible for OpenShift Virtualization Migration.
+
 Copy the `content/ansible/openshift-virtualization-migration/inventory-etx.yml` file to the root of the Ansible for OpenShift Virtualization Migration Git repository.
-Open the `inventory-etx.yml` file as you will begin editing the content with the specific properties to support your own individual ETX workshop environment.
 
 [source,sh,role=execute,subs="attributes"]
 ----
 cp $ETX_REPO/content/ansible/openshift-virtualization-migration/inventory-etx.yml $OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/inventory-etx.yml
 ----
+
+Open the `inventory-etx.yml` file as you will begin editing the content with the specific properties to support your own individual ETX workshop environment.
 
 There are several methods for which Ansible Automation Platform can be subscribed, including using a Service Account from the Red Hat Hybrid Cloud Console or a Subscription manifest.
 
@@ -295,11 +303,13 @@ The next section will describe the changes that you will need to make in order t
 ### General Variables
 
 There are a set of variables within the Inventory file located at `$OPENSHIFT_VIRTUALIZATION_MIGRATION_REPO/inventory-etx.yml` that are used throughout the automation and are found within the `all` Inventory Group.
+
 Update this file using the steps described below.
 
 The `all` Inventory Group applies variables to every _Inventory Group_ that is defined.
 
 To obtain the Ansible for OpenShift Virtualization Migration Ansible Execution Environment, set the `container_username` and `container_password` properties using the credentials from Migration Factory collections.
+
 You can refer the lab support guide for this.
 
 [source,yaml]
@@ -454,7 +464,7 @@ Otherwise, authenticate to OpenShift by running the following command:
 
 [source,sh,role=execute,subs="attributes"]
 ----
-oc login --insecure-skip-tls-verify=true -u ${openshift_cluster_admin_username} -p ${openshift_cluster_admin_password} ${openshift_api_server_url}
+oc login --insecure-skip-tls-verify=true -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} {openshift_api_server_url}
 ----
 
 If you used `ansible-vault` to encrypt your password, you will need to add an additional parameter `--ask-vault-password` to the following command
