@@ -1,15 +1,15 @@
 vsphere_host: "vcsrs00-vc.infra.demo.redhat.com"
-vsphere_user: "etx-dev@vsphere.local"
+vsphere_user: "etx-self-paced@vsphere.local"
 vsphere_password: "{{ lookup('env', 'VSPHERE_PASSWORD') }}"
 datacenter: "RS00"
 cluster: "vcs-rs-00"
 datastore: "workload_share_QHFNI"
-students_count: 50
+students_count: 5
 folder_name_prefix: "student-"
-parent_folder: ETX
+parent_folder: ETX-Self-paced
 vm_templates:
   - { name: "etx-win2019-template", vm_name: "win2019-1", folder: "ETX_Templates", powerState: "poweredoff" }
   - { name: "etx-win2019-template", vm_name: "win2019-2", folder: "ETX_Templates", powerState: "poweredoff" }
   - { name: "etx-rhel86-template", vm_name: "rhel86", folder: "ETX_Templates", powerState: "poweredoff" }
   - { name: "etx-rhel93-template", vm_name: "rhel93", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "etx-rhel9-trouble-template", vm_name: "some.troubles.here", folder: "ETX_Templates", powerState: "poweredoff" }    
+  - { name: "etx-rhel9-trouble-template", vm_name: "some.troubles.here", folder: "ETX_Templates", powerState: "poweredoff" }

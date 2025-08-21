@@ -6,6 +6,9 @@
 
 ```sh
 python -m venv etx
+```
+
+```sh
 source etx/bin/activate
 ```
 
@@ -29,8 +32,14 @@ pip install ansible-navigator
 
 ```sh
 chmod +x content/ansible/setenv.sh
+```
+
+```sh
 source content/ansible/setenv.sh
-podman --username $quay_user --password $quay_password login quay.io/redhat-cop/virt-migration-factory-ee
+```
+
+```sh
+podman login --username $quay_user --password $quay_password quay.io/redhat-cop/virt-migration-factory-ee
 ```
 
 ## Create VMs
@@ -41,7 +50,13 @@ Execute the following:
 
 ```sh
 chmod +x content/ansible/setenv.sh
+```
+
+```sh
 source content/ansible/setenv.sh
+```
+
+```sh
 ansible-navigator run --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/create_vms.yml
 ```
 
@@ -51,6 +66,12 @@ Execute the following
 
 ```sh
 chmod +x content/ansible/setenv.sh
+```
+
+```sh
 source content/ansible/setenv.sh
+```
+
+```sh
 ansible-navigator run --eei=quay.io/redhat-cop/virt-migration-factory-ee:latest --pp=missing -m stdout --penv VSPHERE_PASSWORD --pae=false content/ansible/remove_vms.yml
 ```

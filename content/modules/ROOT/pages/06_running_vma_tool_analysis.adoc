@@ -3,14 +3,15 @@
 :numbered:
 :imagesdir: ../assets/images/
 
-
 = VMA Analysis Guide
 
 == Summary
 
-This lab provides a comprehensive guide on using RVTools to extract detailed inventory data from VMware vSphere environments and utilizing the VMA-ANALYSIS Jupyter Notebook to analyze and interpret the collected data. It covers the entire workflow, from setting up the necessary environment to executing the analysis and extracting meaningful insights.
+This lab provides a comprehensive guide on using RVTools to extract detailed inventory data from VMware vSphere environments and utilizing the VMA-ANALYSIS Jupyter Notebook to analyze and interpret the collected data.
+It covers the entire workflow, from setting up the necessary environment to executing the analysis and extracting meaningful insights.
 
-Additionally, this lab outlines the required software dependencies, environment configurations, and the step-by-step process for conducting the analysis. By the end of the lab, users will be equipped with the skills to efficiently process RVTools data and apply the insights for migration planning, performance optimization, and virtualization assessments.
+Additionally, this lab outlines the required software dependencies, environment configurations, and the step-by-step process for conducting the analysis.
+By the end of the lab, users will be equipped with the skills to efficiently process RVTools data and apply the insights for migration planning, performance optimization, and virtualization assessments.
 
 .Goals
 * Understand the purpose of using RVTools for data extraction.
@@ -23,9 +24,13 @@ Additionally, this lab outlines the required software dependencies, environment 
 
 === Introduction to RVTools
 
-RVTools is a powerful, free Windows-based utility designed to collect and display detailed inventory data from VMware vSphere environments. Originally released in 2008, it has undergone continuous updates and improvements, making it one of the most widely used tools for VMware infrastructure assessment. Currently, RVTools runs on Windows systems utilizing the .NET 4.7.2 Framework and supports nearly all versions of ESXi and vCenter Server.
+RVTools is a powerful, free Windows-based utility designed to collect and display detailed inventory data from VMware vSphere environments.
+Originally released in 2008, it has undergone continuous updates and improvements, making it one of the most widely used tools for VMware infrastructure assessment.
+Currently, RVTools runs on Windows systems utilizing the .NET 4.7.2 Framework and supports nearly all versions of ESXi and vCenter Server.
 
-This tool provides a comprehensive snapshot of the vSphere infrastructure, offering insights into virtual machines (VMs), hosts, datastores, cluster configurations, networking, storage, and snapshots. Its user-friendly, spreadsheet-style graphical interface (GUI) organizes data across multiple tabs, allowing administrators to explore different aspects of their environment efficiently. Additionally, RVTools allows users to export reports in Excel (.xlsx) or Comma Separated Values (.csv) format, making it easier to analyze and share data.
+This tool provides a comprehensive snapshot of the vSphere infrastructure, offering insights into virtual machines (VMs), hosts, datastores, cluster configurations, networking, storage, and snapshots.
+Its user-friendly, spreadsheet-style graphical interface (GUI) organizes data across multiple tabs, allowing administrators to explore different aspects of their environment efficiently.
+Additionally, RVTools allows users to export reports in Excel (.xlsx) or Comma Separated Values (.csv) format, making it easier to analyze and share data.
 
 Assessing your vSphere environment with RVTools is a great way to gather insights into your virtual infrastructure, helping organizations optimize resource allocation, identify potential risks, and plan migrations effectively.
 
@@ -33,9 +38,11 @@ image::running_vma_tool_analysis/rvtools.png[scaledwidth=100%]
 
 === Enhancing Analysis with VMA-ANALYSIS Jupyter Notebook
 
-While RVTools provides raw data exports, deeper analysis and visualization require additional processing. The VMA-ANALYSIS Jupyter Notebook was designed to bridge this gap by analyzing RVTools-generated reports and providing a structured, interactive approach to data interpretation.
+While RVTools provides raw data exports, deeper analysis and visualization require additional processing.
+The VMA-ANALYSIS Jupyter Notebook was designed to bridge this gap by analyzing RVTools-generated reports and providing a structured, interactive approach to data interpretation.
 
-This notebook parses RVTools exports to extract critical VM attributes, evaluates migration feasibility, and generates detailed reports and visualizations. By leveraging NumPy and Pandas, it performs advanced data manipulation, filtering, and calculations, allowing Red Hatters tasked to conduct VMA's to assess workload distribution, migration complexity, and infrastructure details.
+This notebook parses RVTools exports to extract critical VM attributes, evaluates migration feasibility, and generates detailed reports and visualizations.
+By leveraging NumPy and Pandas, it performs advanced data manipulation, filtering, and calculations, allowing Red Hatters tasked to conduct VMA's to assess workload distribution, migration complexity, and infrastructure details.
 
 image::running_vma_tool_analysis/vma-analysis.png[scaledwidth=50%]
 
@@ -60,11 +67,13 @@ By combining RVToolsâ€™ data extraction with the VMA-ANALYSIS Jupyter Notebookâ€
 
 == RVTools - Installing, Setting Up and Exporting Data
 
-RVTools is compatible with any version of Windows, provided that .NET Framework is greater or equal to 4.7.2 installed (you can download it from the official Microsoft website). The tool does not have specific operating system requirements beyond this, making it highly flexible and easy to deploy across different Windows environments.
+RVTools is compatible with any version of Windows, provided that .NET Framework is greater or equal to 4.7.2 installed (you can download it from the official Microsoft website).
+The tool does not have specific operating system requirements beyond this, making it highly flexible and easy to deploy across different Windows environments.
 
 [NOTE]
 ====
-This section is for reference only and can be skipped. We have already provided four pre-generated RVTools files (Section 3.3) for analysis, allowing you to proceed directly to VMA ANALYSIS Tool (Section 4) for processing and interpretation without needing to extract data from vSphere manually. However, you may review this section if you wish to understand the data extraction process in more detail.
+This section is for reference only and can be skipped.
+We have already provided four pre-generated RVTools files (Section 3.3) for analysis, allowing you to proceed directly to VMA ANALYSIS Tool (Section 4) for processing and interpretation without needing to extract data from vSphere manually. However, you may review this section if you wish to understand the data extraction process in more detail.
 ====
 
 === Installing
@@ -133,7 +142,10 @@ RVTools â€“passthroughAuth â€“s vc5.robware.local -c ExportAll2xlsx -d c:\temp â
 
 === Provided RVTools Data
 
-We have provided four pre-generated RVTools files from different vCenter environments for analysis in this lab. These files have been sanitized to remove any real data, ensuring privacy and security. Additionally, certain data tab sections have been removed to streamline and optimize data ingestion, allowing for a more efficient analysis process. These modifications help simplify the workflow while still preserving the essential data needed for meaningful insights.
+We have provided four pre-generated RVTools files from different vCenter environments for analysis in this lab.
+These files have been sanitized to remove any real data, ensuring privacy and security.
+Additionally, certain data tab sections have been removed to streamline and optimize data ingestion, allowing for a more efficient analysis process.
+These modifications help simplify the workflow while still preserving the essential data needed for meaningful insights.
 
 Company "Acme, Inc." has 4 vCenters located in:
 
@@ -151,7 +163,7 @@ Please download these files to your laptop, as they will be required later in th
 
 === Setting the Environment
 
-===== PreRequisites
+==== Prerequisites
 
 .Linux/macOS Requirements
 * Ensure the following are installed:
@@ -173,17 +185,30 @@ Please download these files to your laptop, as they will be required later in th
 
 [IMPORTANT]
 ====
-The tool and repo below are an export of a non-supported project, and are not maintained by Red Hat. It is provided as a reference for educational purposes only and could be used at Consulting engagements without any guarantees. The version of the code provided in this repository for the execution of this lab is not the latest version of the tool.
+The tool and repo below are an export of a non-supported project, and are not maintained by Red Hat.
+It is provided as a reference for educational purposes only and could be used at Consulting engagements without any guarantees.
+The version of the code provided in this repository for the execution of this lab is not the latest version of the tool.
 If you are a Red Hatter, please check the latest version of the tool in the following internal GitLab repository: https://gitlab.cee.redhat.com/etx-virt-delivery/vma-rvtools-analysis[GitLab VMA RVTools Analysis].
 ====
 
 . Clone the Repository
-
-  git clone https://github.com/juliovp01/etx-virt_delivery.git
++
+[source,sh,role=execute,subs="attributes"]
+----
+git clone https://github.com/RedHatQuickCourses/etx-virt_delivery
+----
 
 . Navigate to the Project Directory
-
-  cd vma-rvtools-analysis
++
+[source,sh,role=execute,subs="attributes"]
+----
+cd etx-virt_delivery
+----
++
+[source,sh,role=execute,subs="attributes"]
+----
+cd vma-rvtools-analysis
+----
 
 . Set Up the Python Virtual Environment
 
@@ -192,13 +217,17 @@ A shell script (setup.sh) for Linux/macOS and a batch file (startanalyzer.bat) f
 
 _Linux/macOS_
 
-[source, shell]
- ./setup.sh
+[source,sh,role=execute,subs="attributes"]
+----
+./setup.sh
+----
 
 _Windows_
 
-[source, shell]
+[source,sh,role=execute,subs="attributes"]
+----
 startanalyzer.bat
+----
 
 .Manual Way
 If you prefer to set up the environment manually, follow these steps
@@ -206,49 +235,75 @@ If you prefer to set up the environment manually, follow these steps
 _Linux/macOS_
 
 * Create a virtual environment inside the project's root directory
-
-  python3 -m venv .venv
++
+[source,sh,role=execute,subs="attributes"]
+----
+python3 -m venv .venv
+----
 
 * Activate the virtual environment
-
-  source .venv/bin/activate
++
+[source,sh,role=execute,subs="attributes"]
+----
+source .venv/bin/activate
+----
 
 * Upgrade pip to the latest version
-
-  .venv/bin/pip install --upgrade pip
++
+[source,sh,role=execute,subs="attributes"]
+----
+.venv/bin/pip install --upgrade pip
+----
 
 * Install Dependencies
-
-  .venv/bin/pip install -r requirements.txt
++
+[source,sh,role=execute,subs="attributes"]
+----
+.venv/bin/pip install -r requirements.txt
+----
 
 _Windows_
 
 * Create a virtual environment
-
-  python -m venv .venv
++
+[source,sh,role=execute,subs="attributes"]
+----
+python -m venv .venv
+----
 
 * Add the virtual environment scripts to your system path
-
-  set PATH=%USERPROFILE%\mywork\rvtools-virt-analysis\.venv\Scripts;%PATH%
++
+[source,sh,role=execute,subs="attributes"]
+----
+set PATH=%USERPROFILE%\mywork\rvtools-virt-analysis\.venv\Scripts;%PATH%
+----
 
 * Activate the virtual environment
-
-  .venv\Scripts\activate
++
+[source,sh,role=execute,subs="attributes"]
+----
+.venv\Scripts\activate
+----
 
 * Upgrade pip to the latest version
-
-  .venv\Scripts\pip.exe install --upgrade pip
++
+[source,sh,role=execute,subs="attributes"]
+----
+.venv\Scripts\pip.exe install --upgrade pip
+----
 
 * Install Dependencies
-
-  .venv\Scripts\pip.exe install -r requirements.txt
++
+[source,sh,role=execute,subs="attributes"]
+----
+.venv\Scripts\pip.exe install -r requirements.txt
+----
 
 [NOTE]
 ====
 * The commands above create a hidden .venv directory inside the project.
 * Unless you add .venv/bin (Linux/macOS) or .venv\Scripts (Windows) to your system path, you will need to specify the full path when using pip or python.
 ====
-
 
 === Preparing the Data
 
@@ -299,8 +354,11 @@ These scripts automate the setup process by creating and activating the virtual 
 
 . Start JupyterLab
 * Run the following command in the terminal
-
-  jupyter lab
++
+[source,sh,role=execute,subs="attributes"]
+----
+jupyter lab
+----
 
 [start=3]
 . Access the Notebook
@@ -312,7 +370,7 @@ These scripts automate the setup process by creating and activating the virtual 
 ====
 If you deployed the rvtool analysis tool in your bastion node, you could access it by forwarding the port using the following command: 
 
-[source, shell]
+[source,sh,role=execute,subs="attributes"]
 ----
 ssh -L 8888:localhost:8888 lab-user@<bastion-node> -p <port>
 ----
@@ -344,7 +402,7 @@ Set nrows to the total number of files + 1 (to account for the header row in the
 
 === Interpreting the Data
 
-Once the RVTools data has been processed using the VMA-ANALYSIS Jupyter Notebook, the resulting insights will help in understanding the virtual infrastructure and planning migration strategies. 
+Once the RVTools data has been processed using the VMA-ANALYSIS Jupyter Notebook, the resulting insights will help in understanding the virtual infrastructure and planning migration strategies.
 
 .The analysis will provide:
 
@@ -388,4 +446,4 @@ image::running_vma_tool_analysis/migration.png[scaledwidth=100%]
 [start=9]
 . and much, much more...
 
-Please feel free to explore the notebook and its outputs to gain a deeper understanding of the vSphere environment and contribute to the tool if possible. 
+Please feel free to explore the notebook and its outputs to gain a deeper understanding of the vSphere environment and contribute to the tool if possible.
