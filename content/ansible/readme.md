@@ -5,11 +5,11 @@
 1. Ensure Python is available on the local machine and create a new Virtual Environment called `etx` and activate the newly created Virtual Environment
 
 ```sh
-python -m venv etx
+python -m venv ~/etx
 ```
 
 ```sh
-source etx/bin/activate
+source ~/etx/bin/activate
 ```
 
 2. Install required Python dependencies
