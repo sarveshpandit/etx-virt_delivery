@@ -14,6 +14,10 @@ source ~/etx/bin/activate
 
 2. Install required Python dependencies
 
+```sh
+cd etx-virt_delivery
+```
+
 Create a file called `content/ansible/setenv.sh` with the following contents:
 
 ```sh
