@@ -8,8 +8,8 @@ students_count: 5
 folder_name_prefix: "student-"
 parent_folder: ETX-Self-paced
 vm_templates:
-  - { name: "etx-win2019-template", vm_name: "win2019-1", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "etx-win2019-template", vm_name: "win2019-2", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "etx-rhel86-template", vm_name: "rhel86", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "etx-rhel93-template", vm_name: "rhel93", folder: "ETX_Templates", powerState: "poweredoff" }
-  - { name: "etx-rhel9-trouble-template", vm_name: "some.troubles.here", folder: "ETX_Templates", powerState: "poweredoff" }
+  - { name: "etx-win2019-template", vm_name: "win2019-1", folder: "ETX-Self-paced-Templates", powerState: "poweredoff" }
+  - { name: "etx-win2019-template", vm_name: "win2019-2", folder: "ETX-Self-paced-Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel86-template", vm_name: "rhel86", folder: "ETX-Self-paced-Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel93-template", vm_name: "rhel93", folder: "ETX-Self-paced-Templates", powerState: "poweredoff" }
+  - { name: "etx-rhel9-trouble-template", vm_name: "some.troubles.here", folder: "ETX-Self-paced-Templates", powerState: "poweredoff" }
