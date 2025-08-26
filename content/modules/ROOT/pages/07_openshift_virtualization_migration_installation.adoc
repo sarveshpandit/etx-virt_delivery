@@ -1,5 +1,12 @@
 # Ansible for OpenShift Virtualization Migration Installation
 
+[IMPORTANT]
+====
+From this section onward, you will need access to Ansible Execution Environment and VMware environment.
+These access will be given on request.
+Please follow the Lab support guide to get the required accesses.
+====
+
 The Ansible for OpenShift Virtualization Migration is a set of Ansible based tooling, powered by Ansible Automation Platform (AAP), that simplifies the use of OpenShift Virtualization and focuses on three (3) primary areas:
 
 . Analyzing existing environments

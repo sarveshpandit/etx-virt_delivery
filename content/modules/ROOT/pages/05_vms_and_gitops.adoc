@@ -25,11 +25,6 @@ git clone https://github.com/RedHatQuickCourses/etx-virt_delivery
 cd etx-virt_delivery
 ----
 
-[source,sh,role=execute,subs="attributes"]
-----
-git switch self-paced
-----
-
 .Sample Output
 [source,texinfo,subs="attributes"]
 ----
@@ -43,8 +38,6 @@ Receiving objects: 100% (1300/1300), 50.33 MiB | 31.68 MiB/s, done.
 Resolving deltas: 100% (412/412), done.
 
 $ cd etx-virt_delivery
-
-$ git switch self-paced
 ----
 
 ## Install the OpenShift GitOps Operator

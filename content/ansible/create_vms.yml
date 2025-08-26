@@ -41,7 +41,7 @@
         datastore: "{{ datastore }}"
         template: "{{ item.0.name }}"
         name: "{{ vm_name }}"
-        folder: "/RS00/vm/ETX/{{ folder_name }}"
+        folder: "/RS00/vm/ETX-Self-paced/{{ folder_name }}"
         state: "{{ powerState }}"
       loop: "{{ vm_templates | product(range(1, students_count + 1)) }}"
       loop_control:
